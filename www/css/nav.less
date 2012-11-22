@@ -1,0 +1,44 @@
+.ember-view.container.nav {
+	
+	width:100%;
+	position: fixed;
+	top:0px;
+	left:0px;
+	background:#FFFFFF;
+	height:@navHeight;
+
+	-webkit-box-shadow:  0px 0px 3px 0px rgba(0, 0, 0, .4);
+	box-shadow:  0px 0px 3px 0px rgba(0, 0, 0, .4);
+
+	.nav-content{
+		min-width:@site-min-width;
+		width:87%;
+		position: relative;
+		margin:auto;
+		color:#FFFFFF;
+		// height: 144px;
+
+
+		#masterHead-container{
+			width:136px;
+			height: 30px;
+			position: relative;
+			margin:auto;
+			top:8px;
+			overflow: hidden;
+		}
+		
+		#headerReutersLogo{
+			background-image:url("../images/icons/nav-reuters-logo.png");
+			width:132px;
+			height: 34px;
+			position: absolute;
+			left:0px;
+			top:10px;
+		}
+		#headerReutersLogo:hover{
+			background-position: 0px -34px;
+		}
+	}
+
+}

@@ -1,0 +1,13 @@
+<script type="text/x-handlebars" data-template-name="footer-template" >
+	<div class="wrapper">
+		<ul>
+			{{#each config.links}}
+				<li {{bindAttr class="class"}} > 
+					<a target="_blank" {{bindAttr src="url"}} >{{title}}</a>
+				</li>
+			{{/each}}
+		  </ul>
+		  <p>{{{config.smallprint}}}</p>
+	  </div>
+</script>
+

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		<title>FoundersGrotCond-Light Demo</title>
+		<style type="text/css">
+			@font-face {
+				font-family: "FoundersGrotCond-Light";
+				src: url("FoundersGrotCond-Light.eot?") format("embedded-opentype"),
+				     url("FoundersGrotCond-Light.woff") format("woff"),
+				     url("FoundersGrotCond-Light.svg") format("svg"),
+				     url("FoundersGrotCond-Light.ttf") format("opentype");
+				font-style: normal;
+				font-weight: 500;
+				font-stretch: normal;
+			}
+
+			body {
+				background-color: white;
+				padding: 10px;
+				margin: 0px;
+				font-family: Helvetica;
+			}
+
+			h1 {
+				font-family: Helvetica;
+				font-weight: normal;
+				font-size: 12px;
+				margin: 30px 0px 10px 0px;
+				padding: 0px 0px 10px 0px;
+				border-bottom: 1px solid black;
+			}
+
+			p.fontSample {
+				margin: 0px 0px 2px 0px;
+				font-family: "FoundersGrotCond-Light";
+				font-style: normal;
+				font-weight: 500;
+				font-stretch: normal;
+				font-size: 75px;
+			}
+			
+			pre {
+				font-family: Menlo, Monaco, monospace;
+				font-size: 12px;
+			}
+
+			table {
+				font-family: Helvetica;
+				font-size: 12px;
+				padding: 0px;
+				background-color: rgba(0,0,0,.05);
+			}
+			tr:nth-child(odd) {
+				background-color: rgba(0,0,0,.05);
+			}
+			td {
+				padding: 5px;
+			}
+		</style>
+
+	</head>
+	<body>
+
+		<h1>Set text in the font:</h1>
+		<p class="fontSample">ZANY FJORD MUGS WHILST VEXING QUICK BOP. 0123456789 zany fjord mugs whilst vexing quick bop.</p>
+
+		<h1>Show the raw CSS @font-face rule:</h1>
+		<pre>@font-face {
+	font-family: "FoundersGrotCond-Light";
+	src: url("FoundersGrotCond-Light.eot?") format("embedded-opentype"),
+	     url("FoundersGrotCond-Light.woff") format("woff"),
+	     url("FoundersGrotCond-Light.svg") format("svg"),
+	     url("FoundersGrotCond-Light.ttf") format("opentype");
+	font-style: normal;
+	font-weight: 500;
+	font-stretch: normal;
+}</pre>
+
+		<h1>Show the CSS @font-face settings individually:</h1>
+		<table>
+			<tr>
+				<td>File Name:</td>
+				<td>FoundersGrotCond-Light</td>
+			</tr>
+			<tr>
+				<td>Family Name:</td>
+				<td>FoundersGrotCond-Light</td>
+			</tr>
+			<tr>
+				<td>Style:</td>
+				<td>normal</td>
+			</tr>
+			<tr>
+				<td>Weight:</td>
+				<td>500</td>
+			</tr>
+			<tr>
+				<td>Stretch:</td>
+				<td>normal</td>
+			</tr>
+		</table>
+
+	</body>
+</html>

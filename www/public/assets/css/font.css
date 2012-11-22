@@ -1,0 +1,75 @@
+@font-face {
+  font-family: "FoundersGrotCond-Bold";
+  src: url("../fonts/FoundersGrotCond-Bold.eot?") format("embedded-opentype"), url("../fonts/FoundersGrotCond-Bold.woff") format("woff"), url("../fonts/FoundersGrotCond-Bold.svg") format("svg"), url("../fonts/FoundersGrotCond-Bold.ttf") format("opentype");
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: normal;
+}
+@font-face {
+  font-family: "FoundersGrotCond-Semibold";
+  src: url("../fonts/FoundersGrotCond-Semibold.eot?") format("embedded-opentype"), url("../fonts/FoundersGrotCond-Semibold.woff") format("woff"), url("../fonts/FoundersGrotCond-Semibold.svg") format("svg"), url("../fonts/FoundersGrotCond-Semibold.ttf") format("opentype");
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: normal;
+}
+@font-face {
+  font-family: "FoundersGrotCond-Medium";
+  src: url("../fonts/FoundersGrotCond-Medium.eot?") format("embedded-opentype"), url("../fonts/FoundersGrotCond-Medium.woff") format("woff"), url("../fonts/FoundersGrotCond-Medium.svg") format("svg"), url("../fonts/FoundersGrotCond-Medium.ttf") format("opentype");
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: normal;
+}
+@font-face {
+  font-family: "FoundersGrotCond-Light";
+  src: url("../fonts/FoundersGrotCond-Light.eot?") format("embedded-opentype"), url("../fonts/FoundersGrotCond-Light.woff") format("woff"), url("../fonts/FoundersGrotCond-Light.svg") format("svg"), url("../fonts/FoundersGrotCond-Light.ttf") format("opentype");
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: normal;
+}
+@font-face {
+  font-family: "FoundersGrotCond-Regular";
+  src: url("../fonts/FoundersGrotCond-Regular.eot?") format("embedded-opentype"), url("../fonts/FoundersGrotCond-Regular.woff") format("woff"), url("../fonts/FoundersGrotCond-Regular.svg") format("svg"), url("../fonts/FoundersGrotCond-Regular.ttf") format("opentype");
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: normal;
+}
+.font-nav {
+  font-family: "FoundersGrotCond-Semibold";
+  font-size: 18px;
+  color: #333333;
+  text-transform: uppercase;
+}
+.georgiafont {
+  font-family: Georgia, Serif;
+}
+h2 {
+  color: #ff8000;
+  text-transform: uppercase;
+  font-family: "FoundersGrotCond-Semibold", sans-serif;
+}
+.title {
+  font-family: "FoundersGrotCond-Semibold";
+  color: #444444;
+  letter-spacing: .06em;
+  font-size: 30px;
+}
+.font-feature-sub-nav {
+  font-size: 22px;
+  font-family: "FoundersGrotCond-Semibold";
+  letter-spacing: 1px;
+  color: #333333;
+}
+.feature-description {
+  color: #999;
+  font-family: arial, sans-serif;
+  font-size: 12px;
+  height: 65px;
+  line-height: 18px;
+  margin: auto;
+  padding-bottom: 10px;
+  position: relative;
+  width: 500px;
+}
+.arialfont {
+  font-family: arial, sans-serif;
+}

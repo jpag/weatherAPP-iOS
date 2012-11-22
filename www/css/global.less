@@ -1,0 +1,88 @@
+@orangeFont:#ff8000;
+@highlightColor:#34b6f2;
+
+//import HTML5 bp top wrapper files
+@import "html5bp/topwrapper";
+
+/*
+ LESS CSS
+ BEGIN CUSTOM CODE
+*/
+
+@import "fonts";
+
+
+@site-min-width: 970px;
+@site-min-height: 600px;
+@special-container-height:620px; //575px;//@site-min-height;
+
+@navHeight:55px;
+
+body {
+  min-width:@site-min-width;
+  width:100%;
+  position:absolute;
+  margin: 0 auto;
+  font-family:Arial,Tahoma,sans-serif;
+  background:#F9F9F9;
+  min-height: @site-min-height*2; //hide the special above the feature
+}
+
+.btn, a{
+  cursor:pointer;
+  border:none;
+}
+ul,li{
+  list-style: none;
+  position:relative;
+}
+
+.container{
+  position: relative;
+  width: 100%;
+  min-width: @site-min-width;
+}
+
+/* animations */
+//add escape property when passing into this mixin
+// .animate-default(e("width, color, blah"));
+
+.animate-default(@property:all, @time:500ms ){
+  -webkit-transition: @property @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+       -moz-transition: @property @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+        -ms-transition: @property @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+         -o-transition: @property @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+            transition: @property @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+}
+.animate-height-width(@time:500ms ){
+  -webkit-transition: height @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+       -moz-transition: height @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+        -ms-transition: height @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+         -o-transition: height @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+            transition: height @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+
+  -webkit-transition: width @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+       -moz-transition: width @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+        -ms-transition: width @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+         -o-transition: width @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+            transition: width @time cubic-bezier(0.385, 0.205, 0.235, 0.835);
+}
+
+.colorize_bg(@color: #FFFFFF, @alpha: 1) {
+           background: hsla(hue(@color), saturation(@color), lightness(@color), @alpha);
+}
+
+.animate{
+  .animate-default(all,250ms);
+}
+
+@import "nav";
+@import "feature";
+@import "footer";
+
+/* Z-INDEXES: */
+
+/*END CUSTOM CODE*/
+
+//import HTML5 bp bottom wrapper files
+@import "html5bp/bottomwrapper";
