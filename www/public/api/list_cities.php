@@ -1,6 +1,6 @@
 <?php	
 	
-	//IPHONE REQUEST to get the full list of CITIES available (do the math of gps matching to cities on the iphone side)
+	//IOS REQUEST to get the full list of CITIES available (do the math of gps matching to cities on the iphone side)
 
 
 	header('Content-type: application/json');

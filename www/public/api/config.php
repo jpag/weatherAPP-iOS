@@ -1,5 +1,6 @@
 <?php
 	$STATE = 'live';
+	$DAYSSAVED = '7 days';
 	
 	$CACHEEXPIRE = '24 hours';
 	$AUTH_TOKEN = 'f37a11b8a4173144122111';

@@ -38,27 +38,44 @@
 
 	while( $city = mysql_fetch_array( $cities ) ) {
 		//echo $city['id'] . ' ' . $city['city'] . ' ' . $city['state'] . ' ' . $city['country'] . ' ' . $city['lat'] . ' ' . $city['lng'];
+		//check to see if THIS cityID has been done for this day.
+
+		$sql_city_alreadydone_today = 'SELECT city_id FROM temps WHERE date_stamp = "'.$dateToday.'" AND city_id = '.$city['id'];
 		
-		$RESULT = $WORLDWEATHER->queryGPS( array( 
-												$city['lat'], 
-												$city['lng']
-											), 
-											$city['id'].'_'.$city['city'] 
-										);
+		$alreadyDoneTodayResult = mysql_query($sql_city_alreadydone_today);
 		
-		$RESULT_DECODED = json_decode($RESULT);
-		$tempNowInCelsius = $RESULT_DECODED->data->current_condition[0]->temp_C;
+		if( mysql_num_rows($alreadyDoneTodayResult) > 0 ){
+			echo '<br> already done for today '. $city['id'].'_'.$city['city'];
+		}else{
+			echo '<br> INSERT today '. $city['id'].'_'.$city['city'];
 
-		//INSERT updated result
-		$sql_insert_temp = "INSERT INTO temp_each_day (city_id, temperature, date_stamp ) ";
-		$sql_insert_temp .= "VALUES ( ".$city['id']." , ".$tempNowInCelsius.", '".$dateToday."' )";
+			$RESULT = $WORLDWEATHER->queryGPS( array( 
+													$city['lat'], 
+													$city['lng']
+												), 
+												$city['id'].'_'.$city['city'] 
+											);
+			
+			$RESULT_DECODED = json_decode($RESULT);
+			$tempNowInCelsius = $RESULT_DECODED->data->current_condition[0]->temp_C;
 
-		$insertTemp = mysql_query($sql_insert_temp);
+			//INSERT updated result
+			$sql_insert_temp = "INSERT INTO temps (city_id, temperature, date_stamp ) ";
+			$sql_insert_temp .= "VALUES ( ".$city['id']." , ".$tempNowInCelsius.", '".$dateToday."' )";
+			//echo $sql_insert_temp;
 
-		//do we care about multiple crons of the same day? not really...
+			$insertTemp = mysql_query($sql_insert_temp);
+			
+			if (mysql_errno()){
+				message('error', array("type"=> mysql_errno() , "sql"=>$sql_insert_temp , "message"=>mysql_error() ) );
+				die;
+			}	
+		}
 	}
 
 	//NOW CLEAN UP. REMOVE any older dates no longer needed (older then 8 days.)
-
+	$oldestDate = strtotime("-".$DAYSSAVED, strtotime(date('Y-m-d') ));
+	//echo '<br>'.date('Y-m-d' , $oldestDate);
+	
 
 ?>
