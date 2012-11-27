@@ -3,12 +3,11 @@
 	$DAYSSAVED = '7 days';
 	
 	$CACHEFOLDER = 'cache/';
-	
 	$CACHEEXPIRE_CRON = '23 hours';
 	$CACHEEXPIRE_CITIES = '1 day';
-	$AUTH_TOKEN = 'f37a11b8a4173144122111';
-
 	
+	//WEATHER API TOKEN
+	$WEATHER_API_AUTH_TOKEN = 'f37a11b8a4173144122111';
 	
 
 	//auto detect states
@@ -37,7 +36,7 @@
 
 
 	function message($type, $msg){
-		echo(	json_encode(array($type=>$msg))   );
+		echo( json_encode(array($type=>$msg)) );
 	}
 
 	function dieAndCacheIfNotExpired($cacheFile){
@@ -47,12 +46,20 @@
 			$decodedCache = json_decode($cacheJSON, true);
 		
 			if( $decodedCache['cacheDate'] > time('now') ){
-				//not enough time to query again, wait some more:
+				//not enough time to query again
+				//display cache and die/stop query:
 				echo $cacheJSON;
 				die;
 			}
 		}
 	}
 
+	//calculations convert Temperatures - C to F or - F to C.
+	function convertFarenToCel($f){
+		return ( (( $f + 40 ) * 5/9 ) - 40);
+	}
+	function convertCelToFaren($c){
+		return ( (( $c + 40 ) * 9/5 ) - 40 );
+	}
 
 ?>

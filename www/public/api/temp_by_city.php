@@ -1,33 +1,46 @@
 <?php 
-	
-	require_once('json_header.php');
+	//DISPLAYS CITY and most recent TEMPERATURES
+	// can pass either a city name or ID
+	//OUTPUTS JSON:	
 
-	//echo $_REQUEST['city'];
-	if( !isset( $_REQUEST['city'] ) ){
-		echo json_encode(array('error' => 'city not defined' ));
-		die;
-	}
+	require_once('json_header.php');
 
 	require_once('config.php');
 	
-	$cacheFile = $CACHEFOLDER."city_temp_".strtolower( $_REQUEST['city'] ).".json";
-	//now check for the cache and create one if needed:
-	dieAndCacheIfNotExpired($cacheFile);
+	//DETERMINE HOW TO MATCH CITY by NAME or CITY ID:
 
+	if( isset($_REQUEST['city']) ):
+		$cacheFile = $CACHEFOLDER."city_temp_".strtolower( $_REQUEST['city'] ).".json";
+		$sqlFindCityWhereFilter = "WHERE LOWER(cities.city) = LOWER('".$_REQUEST['city']."') ";
+	elseif( isset($_REQUEST['id'] ) ):
+		$cacheFile = $CACHEFOLDER."city_temp_".strtolower( $_REQUEST['id'] ).".json";
+		$sqlFindCityWhereFilter = "WHERE cities.id = ".$_REQUEST['id']." ";
+	else:
+		echo json_encode(array(
+								'error' => 'city not defined' ,
+								'days' => null,
+								"city" => null
+						));
+		die;
+	endif;
+
+
+	//now check for the cache and create one if needed:
+	//echo $cacheFile;
+	dieAndCacheIfNotExpired($cacheFile);
 
 	//script runs through array of cities to pull
 	require_once('db_connect.php');
 	
 	//GET CITIES:
-	//$sql  = "SELECT id, city, state, country, lat, lng, zipcode";
-	$sqlFindCity  = "SELECT cities.id, cities.city, temps.date_stamp, temps.temperature, temps.city_id ";
-	
 	//DO WE NEED ALL THIS:
+	//$sql  = "SELECT id, city, state, country, lat, lng, zipcode";
+
+	$sqlFindCity  = "SELECT cities.id, cities.city, temps.date_stamp, temps.temperature, temps.city_id ";
 	$sqlFindCity .= ", cities.zipcode, cities.lat, cities.lng, cities.country, cities.state ";
-	
 	$sqlFindCity .= "FROM cities LEFT JOIN temps ";
 	$sqlFindCity .= "ON cities.id = temps.city_id ";
-	$sqlFindCity .= "WHERE LOWER(cities.city) = LOWER('".$_REQUEST['city']."') ";
+	$sqlFindCity .= $sqlFindCityWhereFilter;
 	$sqlFindCity .= "ORDER BY temps.date_stamp DESC";
 
 	$cityTemps = mysql_query($sqlFindCity);
@@ -57,7 +70,9 @@
 
 			$decodedTemps['days'][] = array( 
 												'date' => $cityTemp['date_stamp'] , 
-												'temp' => $cityTemp['temperature'] 
+												'temp' => array( "c" => $cityTemp['temperature'] + 0,
+																"f" => ( convertCelToFaren( $cityTemp['temperature'] ) )
+																)
 											);
 		}	
 		$decodedTemps['city'] = $city;
@@ -68,13 +83,15 @@
 		echo json_encode($decodedTemps );
 
 	}else{
+		$errorMsg = array(
+							"days"=> null,
+							"city" => null,
+							"error" => "we did not find any reference to this city"
+						);
 		if( $STATE == 'dev' ){
-			echo json_encode(array("error_sql" , $sqlFindCity ));
-		}else{
-			echo json_encode(array("error" , "we did not find any reference to this city" ));	
-		}
-		
-
+			$errorMsg['sql'] = $sqlFindCity;
+		}	
+		echo json_encode( $errorMsg );	
 		die;
 	}
 

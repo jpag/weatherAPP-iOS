@@ -24,7 +24,7 @@
 	//for CRON OVERRIDECACHE = true;
 	$WORLDWEATHER = new worldweather(
 		array(
-		"ACCESS_TOKEN"=> $AUTH_TOKEN ,
+		"ACCESS_TOKEN"=> $WEATHER_API_AUTH_TOKEN ,
 		"CACHEEXPIRES" => $CACHEEXPIRE_CRON ,
 		"OVERRIDECACHE" => false,
 		"CACHEFOLDER" => $CACHEFOLDER
@@ -35,13 +35,13 @@
 
 	while( $city = mysql_fetch_array( $cities ) ) {
 		//echo $city['id'] . ' ' . $city['city'] . ' ' . $city['state'] . ' ' . $city['country'] . ' ' . $city['lat'] . ' ' . $city['lng'];
-		//check to see if THIS cityID has been done for this day.
 
+		//check to see if THIS cityID has been done for this day.
 		$sql_city_alreadydone_today = 'SELECT city_id FROM temps WHERE date_stamp = "'.$dateToday.'" AND city_id = '.$city['id'];
-		
 		$alreadyDoneTodayResult = mysql_query($sql_city_alreadydone_today);
-		
+		//has it?
 		if( mysql_num_rows($alreadyDoneTodayResult) > 0 ){
+
 			echo '<br> already done for today '. $city['id'].'_'.$city['city'];
 		}else{
 			echo '<br> INSERT today '. $city['id'].'_'.$city['city'];

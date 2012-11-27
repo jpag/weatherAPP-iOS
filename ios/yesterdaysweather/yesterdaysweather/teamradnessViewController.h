@@ -10,4 +10,10 @@
 
 @interface teamradnessViewController : UIViewController
 
+@property (nonatomic, strong) IBOutlet UILabel * label_lastchecked;
+@property (nonatomic, strong) IBOutlet UILabel * label_todaysTemp;
+@property (nonatomic, strong) IBOutlet UILabel * label_yesterdaysTemp;
+@property (nonatomic, strong) IBOutlet UILabel * label_currentLocation;
+
+
 @end

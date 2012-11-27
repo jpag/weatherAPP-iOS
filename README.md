@@ -2,6 +2,11 @@ Weather App
 compares today's temperature to yesterdays
 
 
+API:
+
+
+
+
 all weather measured in C (and converted as needed)
 	C to F
 	37 + 40 = 77, and 77 * 9/5 = 138.6. For the final calculation, remove the 40. 138.6 - 40 = 98.6 

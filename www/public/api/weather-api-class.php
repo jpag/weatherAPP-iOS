@@ -132,9 +132,8 @@
 			$ARRAY->cachedate = strtotime($EXPIRES);
 			$JSON_TIMESTAMPED = json_encode($ARRAY);
 
-			$CACHEFILE = $this->generateCacheFileName($TYPE, $ID);
-
 			if( $this->CACHE == true ){
+				$CACHEFILE = $this->generateCacheFileName($TYPE, $ID);
 				$fh = fopen($CACHEFILE, 'w') or die(json_encode("error"));
 				fwrite($fh, $JSON_TIMESTAMPED );
 				fclose($fh);
@@ -173,7 +172,20 @@
 		}
 
 		protected function generateCacheFileName($TYPE , $ID ){
-			return $this->CACHEFOLDER.$TYPE.'_'.$ID.'.json';
+			return $this->CACHEFOLDER.$TYPE.'_'. $this->sanitize($ID) .'.json';
+		}
+
+		/**
+		* Function: sanitize
+		* Returns a sanitized string, typically for URLs.
+		*
+		* Parameters:
+		*     $string - The string to sanitize.
+		*     $force_lowercase - Force the string to lowercase?
+		*     $anal - If set to *true*, will remove all non-alphanumeric characters.
+		*/
+		public function sanitize($string) {
+			return strtolower( preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), $string ) );
 		}
 
 	}/* END CLASS */
