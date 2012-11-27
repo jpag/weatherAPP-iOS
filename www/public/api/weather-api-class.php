@@ -26,6 +26,7 @@
 		protected $CACHE = true;
 		protected $OVERRIDECACHE = false;
 		protected $CACHEEXPIRES = '1 day';
+		protected $CACHEFOLDER = 'cache/';
 
 		public function __construct($config){
 			
@@ -51,6 +52,10 @@
 
 			if( isset($config['OVERRIDECACHE'])){
 				$this->OVERRIDECACHE = $config['OVERRIDECACHE'];
+			}
+			
+			if( isset($config['CACHEFOLDER'])){
+				$this->CACHEFOLDER = $config['CACHEFOLDER'];
 			}
 		}
 
@@ -153,7 +158,7 @@
 				//echo $decodedCache['cachedate'] . ' vs ' . time('now');
 			  	
 			  	if( $decodedCache != null && 
-			  		$decodedCache['cachedate'] > time('now') ){	
+			  		$decodedCache['cacheDate'] > time('now') ){	
 			  		//echo ' cache '. time('now') ;
 
 			  		return $cachefileJSON;
@@ -168,7 +173,7 @@
 		}
 
 		protected function generateCacheFileName($TYPE , $ID ){
-			return 'cache/'.$TYPE.'_'.$ID.'.json';
+			return $this->CACHEFOLDER.$TYPE.'_'.$ID.'.json';
 		}
 
 	}/* END CLASS */

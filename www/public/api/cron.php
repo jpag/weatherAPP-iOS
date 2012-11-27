@@ -1,12 +1,8 @@
 <?php
 
-	//header('Content-type: application/json');
-	//header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
-	//header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-	//header("Cache-Control: post-check=0, pre-check=0", false);
-	//header("Pragma: no-cache");
-
 	//script runs through array of cities to pull
+	
+	//require_once('json_header.php');
 
 	require_once('config.php');
 	require_once('db_connect.php');
@@ -29,8 +25,9 @@
 	$WORLDWEATHER = new worldweather(
 		array(
 		"ACCESS_TOKEN"=> $AUTH_TOKEN ,
-		"CACHEEXPIRES" => $CACHEEXPIRE ,
-		"OVERRIDECACHE" => false
+		"CACHEEXPIRES" => $CACHEEXPIRE_CRON ,
+		"OVERRIDECACHE" => false,
+		"CACHEFOLDER" => $CACHEFOLDER
 		)
 	);
 
