@@ -129,9 +129,9 @@
 		protected function cacheQuery($TYPE , $ID, $EXPIRES, $JSON_DECODED ){
 			
 			$ARRAY = json_decode($JSON_DECODED);
-			$ARRAY->cachedate = strtotime($EXPIRES);
+			$ARRAY->cacheDate = strtotime($EXPIRES);
 			$JSON_TIMESTAMPED = json_encode($ARRAY);
-
+			
 			if( $this->CACHE == true ){
 				$CACHEFILE = $this->generateCacheFileName($TYPE, $ID);
 				$fh = fopen($CACHEFILE, 'w') or die(json_encode("error"));
@@ -154,7 +154,7 @@
 				$decodedCache = json_decode($cachefileJSON, true);
 
 				//var_dump($decodedCache);
-				//echo $decodedCache['cachedate'] . ' vs ' . time('now');
+				//echo $decodedCache['cacheDate'] . ' vs ' . time('now');
 			  	
 			  	if( $decodedCache != null && 
 			  		$decodedCache['cacheDate'] > time('now') ){	

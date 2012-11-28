@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F0D4ADB316665E4A0042FC68 /* user_Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F0D4ADB116665E4A0042FC68 /* user_Model.xcdatamodeld */; };
 		F0F17C0C165D766000040356 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F17C0B165D766000040356 /* UIKit.framework */; };
 		F0F17C0E165D766000040356 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F17C0D165D766000040356 /* Foundation.framework */; };
 		F0F17C10165D766000040356 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F17C0F165D766000040356 /* CoreGraphics.framework */; };
@@ -21,9 +22,12 @@
 		F0F17C2B165D766000040356 /* mainViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F17C29165D766000040356 /* mainViewController_iPad.xib */; };
 		F0FF9171166553E9003AFDFA /* api_worldweatheronline.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FF9170166553E9003AFDFA /* api_worldweatheronline.m */; };
 		F0FF917516656F8B003AFDFA /* settingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FF917416656F8B003AFDFA /* settingsViewController.m */; };
+		F0FF91771665A50D003AFDFA /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0FF91761665A50D003AFDFA /* CoreData.framework */; };
+		F0FF917A1665A5B3003AFDFA /* api_worldweatheronlineModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F0FF91781665A5B3003AFDFA /* api_worldweatheronlineModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F0D4ADB216665E4A0042FC68 /* user_Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = user_Model.xcdatamodel; sourceTree = "<group>"; };
 		F0F17C07165D766000040356 /* yesterdaysweather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = yesterdaysweather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0F17C0B165D766000040356 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0F17C0D165D766000040356 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -45,6 +49,8 @@
 		F0FF9170166553E9003AFDFA /* api_worldweatheronline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = api_worldweatheronline.m; path = api/api_worldweatheronline.m; sourceTree = "<group>"; };
 		F0FF917316656F8B003AFDFA /* settingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = settingsViewController.h; path = views/settingsViewController.h; sourceTree = "<group>"; };
 		F0FF917416656F8B003AFDFA /* settingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = settingsViewController.m; path = views/settingsViewController.m; sourceTree = "<group>"; };
+		F0FF91761665A50D003AFDFA /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		F0FF91791665A5B3003AFDFA /* api_worldweatheronlineModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = api_worldweatheronlineModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0FF91771665A50D003AFDFA /* CoreData.framework in Frameworks */,
 				F0F17C0C165D766000040356 /* UIKit.framework in Frameworks */,
 				F0F17C0E165D766000040356 /* Foundation.framework in Frameworks */,
 				F0F17C10165D766000040356 /* CoreGraphics.framework in Frameworks */,
@@ -61,6 +68,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F0D4ADAF16665E250042FC68 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				F0FF91781665A5B3003AFDFA /* api_worldweatheronlineModel.xcdatamodeld */,
+				F0D4ADB116665E4A0042FC68 /* user_Model.xcdatamodeld */,
+			);
+			name = models;
+			sourceTree = "<group>";
+		};
 		F0F17BFC165D766000040356 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +97,7 @@
 		F0F17C0A165D766000040356 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F0FF91761665A50D003AFDFA /* CoreData.framework */,
 				F0F17C0B165D766000040356 /* UIKit.framework */,
 				F0F17C0D165D766000040356 /* Foundation.framework */,
 				F0F17C0F165D766000040356 /* CoreGraphics.framework */,
@@ -91,6 +108,7 @@
 		F0F17C11165D766000040356 /* yesterdaysweather */ = {
 			isa = PBXGroup;
 			children = (
+				F0D4ADAF16665E250042FC68 /* models */,
 				F0FF917216656F26003AFDFA /* views */,
 				F0FF91681665524E003AFDFA /* api */,
 				F0F17C1A165D766000040356 /* AppDelegate.h */,
@@ -209,6 +227,8 @@
 				F0F17C25165D766000040356 /* mainViewController.m in Sources */,
 				F0FF9171166553E9003AFDFA /* api_worldweatheronline.m in Sources */,
 				F0FF917516656F8B003AFDFA /* settingsViewController.m in Sources */,
+				F0FF917A1665A5B3003AFDFA /* api_worldweatheronlineModel.xcdatamodeld in Sources */,
+				F0D4ADB316665E4A0042FC68 /* user_Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +358,31 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F0D4ADB116665E4A0042FC68 /* user_Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F0D4ADB216665E4A0042FC68 /* user_Model.xcdatamodel */,
+			);
+			currentVersion = F0D4ADB216665E4A0042FC68 /* user_Model.xcdatamodel */;
+			name = user_Model.xcdatamodeld;
+			path = models/user_Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		F0FF91781665A5B3003AFDFA /* api_worldweatheronlineModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F0FF91791665A5B3003AFDFA /* api_worldweatheronlineModel.xcdatamodel */,
+			);
+			currentVersion = F0FF91791665A5B3003AFDFA /* api_worldweatheronlineModel.xcdatamodel */;
+			name = api_worldweatheronlineModel.xcdatamodeld;
+			path = api/api_worldweatheronlineModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = F0F17BFE165D766000040356 /* Project object */;
 }

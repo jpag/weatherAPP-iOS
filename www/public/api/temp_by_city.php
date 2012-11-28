@@ -1,13 +1,13 @@
 <?php 
+
 	//DISPLAYS CITY and most recent TEMPERATURES
-	// can pass either a city name or ID
+	//can pass EITHER a city NAME or ID
 	//OUTPUTS JSON:	
-
+	
 	require_once('json_header.php');
-
 	require_once('config.php');
 	
-	//DETERMINE HOW TO MATCH CITY by NAME or CITY ID:
+	//DETERMINE HOW TO MATCH CITY: by NAME or CITY ID:
 
 	if( isset($_REQUEST['city']) ):
 		$cacheFile = $CACHEFOLDER."city_temp_".strtolower( $_REQUEST['city'] ).".json";
@@ -32,14 +32,13 @@
 	//script runs through array of cities to pull
 	require_once('db_connect.php');
 	
-	//GET CITIES:
-	//DO WE NEED ALL THIS:
-	//$sql  = "SELECT id, city, state, country, lat, lng, zipcode";
-
+	//GET ALL TEMPS for CITY:
 	$sqlFindCity  = "SELECT cities.id, cities.city, temps.date_stamp, temps.temperature, temps.city_id ";
+	//DO WE NEED ALL THIS:
 	$sqlFindCity .= ", cities.zipcode, cities.lat, cities.lng, cities.country, cities.state ";
 	$sqlFindCity .= "FROM cities LEFT JOIN temps ";
 	$sqlFindCity .= "ON cities.id = temps.city_id ";
+	// filter specific to the get REQUEST made.
 	$sqlFindCity .= $sqlFindCityWhereFilter;
 	$sqlFindCity .= "ORDER BY temps.date_stamp DESC";
 
@@ -49,17 +48,17 @@
 
 	if( $cityTemps && mysql_num_rows($cityTemps) > 0 ){
 		
-		//$decodedTemps['city']['cityname'] = $cityArray[0]['city'];
-		//$decodedTemps['city']['id'] = $cityArray[0]['city_id'];
-		//$decodedTemps[['city']'zip'] = $cityArray[0]['cities.zipcode'];
-
-		$city;
+		//will be defined after the first row in the array in the below while loop.
+		$city; 
 
 		while( $cityTemp = mysql_fetch_array( $cityTemps ) ) {
+			
+			//for the first city pull all the added data
 			if( !isset($cityData)){
 				$city = array(  'id' => $cityTemp['city_id'],
-								//DO WE NEED ALL THIS:
-								'name' => $cityTemp['city'],
+								//DO WE NEED ALL THESE:
+								//proper unicode for accents in city names: http://www.developpez.net/forums/d878296/webmasters-developpement-web/javascript/bibliotheques-frameworks/dojo/accent-json/
+								'name' => utf8_encode($cityTemp['city']), 
 								'state' => $cityTemp['state'],
 								'country' => $cityTemp['country'],
 								'lat' => $cityTemp['lat'],
