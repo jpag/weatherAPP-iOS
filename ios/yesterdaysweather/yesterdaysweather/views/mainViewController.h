@@ -1,5 +1,5 @@
 //
-//  teamradnessViewController.h
+//  mainViewController.h
 //  yesterdaysweather
 //
 //  Created by jpg on 11/21/12.
@@ -7,13 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+@class api_worldweatheronline;
 
-@interface teamradnessViewController : UIViewController
+@interface mainViewController : UIViewController
+//@interface weatherAPI : NSObject
 
 @property (nonatomic, strong) IBOutlet UILabel * label_lastchecked;
 @property (nonatomic, strong) IBOutlet UILabel * label_todaysTemp;
 @property (nonatomic, strong) IBOutlet UILabel * label_yesterdaysTemp;
 @property (nonatomic, strong) IBOutlet UILabel * label_currentLocation;
 
+@property (strong, nonatomic) api_worldweatheronline *weatherAPI;
 
 @end

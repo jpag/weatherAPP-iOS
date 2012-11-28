@@ -12,13 +12,15 @@
 		F0F17C10165D766000040356 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F17C0F165D766000040356 /* CoreGraphics.framework */; };
 		F0F17C16165D766000040356 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0F17C14165D766000040356 /* InfoPlist.strings */; };
 		F0F17C18165D766000040356 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F17C17165D766000040356 /* main.m */; };
-		F0F17C1C165D766000040356 /* teamradnessAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F17C1B165D766000040356 /* teamradnessAppDelegate.m */; };
+		F0F17C1C165D766000040356 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F17C1B165D766000040356 /* AppDelegate.m */; };
 		F0F17C1E165D766000040356 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = F0F17C1D165D766000040356 /* Default.png */; };
 		F0F17C20165D766000040356 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0F17C1F165D766000040356 /* Default@2x.png */; };
 		F0F17C22165D766000040356 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0F17C21165D766000040356 /* Default-568h@2x.png */; };
-		F0F17C25165D766000040356 /* teamradnessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F17C24165D766000040356 /* teamradnessViewController.m */; };
-		F0F17C28165D766000040356 /* teamradnessViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F17C26165D766000040356 /* teamradnessViewController_iPhone.xib */; };
-		F0F17C2B165D766000040356 /* teamradnessViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F17C29165D766000040356 /* teamradnessViewController_iPad.xib */; };
+		F0F17C25165D766000040356 /* mainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F17C24165D766000040356 /* mainViewController.m */; };
+		F0F17C28165D766000040356 /* mainViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F17C26165D766000040356 /* mainViewController_iPhone.xib */; };
+		F0F17C2B165D766000040356 /* mainViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F17C29165D766000040356 /* mainViewController_iPad.xib */; };
+		F0FF9171166553E9003AFDFA /* api_worldweatheronline.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FF9170166553E9003AFDFA /* api_worldweatheronline.m */; };
+		F0FF917516656F8B003AFDFA /* settingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FF917416656F8B003AFDFA /* settingsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,15 +32,19 @@
 		F0F17C15165D766000040356 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F0F17C17165D766000040356 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F0F17C19165D766000040356 /* yesterdaysweather-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "yesterdaysweather-Prefix.pch"; sourceTree = "<group>"; };
-		F0F17C1A165D766000040356 /* teamradnessAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = teamradnessAppDelegate.h; sourceTree = "<group>"; };
-		F0F17C1B165D766000040356 /* teamradnessAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = teamradnessAppDelegate.m; sourceTree = "<group>"; };
+		F0F17C1A165D766000040356 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F0F17C1B165D766000040356 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F0F17C1D165D766000040356 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		F0F17C1F165D766000040356 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		F0F17C21165D766000040356 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		F0F17C23165D766000040356 /* teamradnessViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = teamradnessViewController.h; sourceTree = "<group>"; };
-		F0F17C24165D766000040356 /* teamradnessViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = teamradnessViewController.m; sourceTree = "<group>"; };
-		F0F17C27165D766000040356 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/teamradnessViewController_iPhone.xib; sourceTree = "<group>"; };
-		F0F17C2A165D766000040356 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/teamradnessViewController_iPad.xib; sourceTree = "<group>"; };
+		F0F17C23165D766000040356 /* mainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = mainViewController.h; path = views/mainViewController.h; sourceTree = "<group>"; };
+		F0F17C24165D766000040356 /* mainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = mainViewController.m; path = views/mainViewController.m; sourceTree = "<group>"; };
+		F0F17C27165D766000040356 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/mainViewController_iPhone.xib; sourceTree = "<group>"; };
+		F0F17C2A165D766000040356 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/mainViewController_iPad.xib; sourceTree = "<group>"; };
+		F0FF916F166553E9003AFDFA /* api_worldweatheronline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = api_worldweatheronline.h; path = api/api_worldweatheronline.h; sourceTree = "<group>"; };
+		F0FF9170166553E9003AFDFA /* api_worldweatheronline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = api_worldweatheronline.m; path = api/api_worldweatheronline.m; sourceTree = "<group>"; };
+		F0FF917316656F8B003AFDFA /* settingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = settingsViewController.h; path = views/settingsViewController.h; sourceTree = "<group>"; };
+		F0FF917416656F8B003AFDFA /* settingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = settingsViewController.m; path = views/settingsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,12 +91,12 @@
 		F0F17C11165D766000040356 /* yesterdaysweather */ = {
 			isa = PBXGroup;
 			children = (
-				F0F17C1A165D766000040356 /* teamradnessAppDelegate.h */,
-				F0F17C1B165D766000040356 /* teamradnessAppDelegate.m */,
-				F0F17C23165D766000040356 /* teamradnessViewController.h */,
-				F0F17C24165D766000040356 /* teamradnessViewController.m */,
-				F0F17C26165D766000040356 /* teamradnessViewController_iPhone.xib */,
-				F0F17C29165D766000040356 /* teamradnessViewController_iPad.xib */,
+				F0FF917216656F26003AFDFA /* views */,
+				F0FF91681665524E003AFDFA /* api */,
+				F0F17C1A165D766000040356 /* AppDelegate.h */,
+				F0F17C1B165D766000040356 /* AppDelegate.m */,
+				F0F17C26165D766000040356 /* mainViewController_iPhone.xib */,
+				F0F17C29165D766000040356 /* mainViewController_iPad.xib */,
 				F0F17C12165D766000040356 /* Supporting Files */,
 			);
 			path = yesterdaysweather;
@@ -108,6 +114,26 @@
 				F0F17C21165D766000040356 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F0FF91681665524E003AFDFA /* api */ = {
+			isa = PBXGroup;
+			children = (
+				F0FF916F166553E9003AFDFA /* api_worldweatheronline.h */,
+				F0FF9170166553E9003AFDFA /* api_worldweatheronline.m */,
+			);
+			name = api;
+			sourceTree = "<group>";
+		};
+		F0FF917216656F26003AFDFA /* views */ = {
+			isa = PBXGroup;
+			children = (
+				F0F17C23165D766000040356 /* mainViewController.h */,
+				F0F17C24165D766000040356 /* mainViewController.m */,
+				F0FF917316656F8B003AFDFA /* settingsViewController.h */,
+				F0FF917416656F8B003AFDFA /* settingsViewController.m */,
+			);
+			name = views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,8 +192,8 @@
 				F0F17C1E165D766000040356 /* Default.png in Resources */,
 				F0F17C20165D766000040356 /* Default@2x.png in Resources */,
 				F0F17C22165D766000040356 /* Default-568h@2x.png in Resources */,
-				F0F17C28165D766000040356 /* teamradnessViewController_iPhone.xib in Resources */,
-				F0F17C2B165D766000040356 /* teamradnessViewController_iPad.xib in Resources */,
+				F0F17C28165D766000040356 /* mainViewController_iPhone.xib in Resources */,
+				F0F17C2B165D766000040356 /* mainViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,8 +205,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0F17C18165D766000040356 /* main.m in Sources */,
-				F0F17C1C165D766000040356 /* teamradnessAppDelegate.m in Sources */,
-				F0F17C25165D766000040356 /* teamradnessViewController.m in Sources */,
+				F0F17C1C165D766000040356 /* AppDelegate.m in Sources */,
+				F0F17C25165D766000040356 /* mainViewController.m in Sources */,
+				F0FF9171166553E9003AFDFA /* api_worldweatheronline.m in Sources */,
+				F0FF917516656F8B003AFDFA /* settingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,20 +223,20 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		F0F17C26165D766000040356 /* teamradnessViewController_iPhone.xib */ = {
+		F0F17C26165D766000040356 /* mainViewController_iPhone.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				F0F17C27165D766000040356 /* en */,
 			);
-			name = teamradnessViewController_iPhone.xib;
+			name = mainViewController_iPhone.xib;
 			sourceTree = "<group>";
 		};
-		F0F17C29165D766000040356 /* teamradnessViewController_iPad.xib */ = {
+		F0F17C29165D766000040356 /* mainViewController_iPad.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				F0F17C2A165D766000040356 /* en */,
 			);
-			name = teamradnessViewController_iPad.xib;
+			name = mainViewController_iPad.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -307,6 +335,7 @@
 				F0F17C30165D766000040356 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

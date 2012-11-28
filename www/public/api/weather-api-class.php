@@ -17,7 +17,7 @@
 
 		// SCRIBBLE API:
 		protected $API_ENDPOINT = 'http://free.worldweatheronline.com/feed/weather.ashx';
-		// q=70.00,40.00&format=json&num_of_days=2&key=f37a11b8a4173144122111
+		//example of added params: q=70.00,40.00&format=json&num_of_days=2&key=f37a11b8a4173144122111
 		protected $ACCESS_TOKEN;
 
 		//CONFIG SETTINGS

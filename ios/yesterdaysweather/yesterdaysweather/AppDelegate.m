@@ -1,25 +1,25 @@
 //
-//  teamradnessAppDelegate.m
+//  AppDelegate.m
 //  yesterdaysweather
 //
 //  Created by jpg on 11/21/12.
 //  Copyright (c) 2012 com.teamradness. All rights reserved.
 //
 
-#import "teamradnessAppDelegate.h"
+#import "AppDelegate.h"
 
-#import "teamradnessViewController.h"
+#import "mainViewController.h"
 
-@implementation teamradnessAppDelegate
+@implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        self.viewController = [[teamradnessViewController alloc] initWithNibName:@"teamradnessViewController_iPhone" bundle:nil];
+        self.viewController = [[mainViewController alloc] initWithNibName:@"mainViewController_iPhone" bundle:nil];
     } else {
-        self.viewController = [[teamradnessViewController alloc] initWithNibName:@"teamradnessViewController_iPad" bundle:nil];
+        self.viewController = [[mainViewController alloc] initWithNibName:@"mainViewController_iPad" bundle:nil];
     }
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
