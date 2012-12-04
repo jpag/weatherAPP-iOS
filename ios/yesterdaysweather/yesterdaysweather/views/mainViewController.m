@@ -16,11 +16,14 @@
 @implementation mainViewController
 
 //synthesize here
-@synthesize weatherAPI;
+@synthesize settingsController;
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    weatherAPI = [api_worldweatheronline apiWorldWeather];
 	// Do any additional setup after loading the view, typically from a nib.
     [self update];
 }
@@ -46,13 +49,32 @@
     
     
     //query api for location.
+    
+    /*
     //create api if it does not exist.
     if( self.weatherAPI == NULL ){
         NSLog(@"weather API is null create it");
         self.weatherAPI = [[api_worldweatheronline alloc] init];
     }
+    */
     
-    [self.weatherAPI getCities];
+    [weatherAPI getCities];
+    weatherAPI.someNum = 5;
+    //now lets create the settings page? just to test the singleton object ability
+    [self displaySettingsView];
+}
+
+
+- (void)displaySettingsView
+{
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        self.settingsController = [[settingsViewController alloc] initWithNibName:@"settingsViewController_iPhone" bundle:nil];
+    } else {
+        NSLog(@"warning no settings panel made for ipad");
+        //self.settingsController = [[settingsViewController alloc] initWithNibName:@"settingsViewController_iPad" bundle:nil];
+    }
+    
+    [self.view addSubview:settingsController.view];
     
 }
 

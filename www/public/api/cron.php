@@ -50,7 +50,7 @@
 			echo '<br><br>';
 			*/
 		}else{
-			echo '<br> INSERT today '. $city['id'].'_'.$city['city'];
+			echo '<br> INSERT Today '. $city['city']. ' ';
 
 			$RESULT = $WORLDWEATHER->queryGPS( array( 
 													$city['lat'], 
@@ -64,14 +64,16 @@
 
 			//INSERT updated result
 			$sql_insert_temp = "INSERT INTO temps (city_id, temperature, date_stamp ) ";
-			$sql_insert_temp .= "VALUES ( ".$city['id']." , ".$tempNowInCelsius.", ".$dateToday." )";
-			//echo $sql_insert_temp;
+			$sql_insert_temp .= "VALUES ( ".$city['id']." , ".$tempNowInCelsius.", '".$dateToday."' )";
+			echo '     '. $sql_insert_temp;
 
 			$insertTemp = mysql_query($sql_insert_temp);
 			
 			if (mysql_errno()){
 				message('error', array("type"=> mysql_errno() , "sql"=>$sql_insert_temp , "message"=>mysql_error() ) );
 				die;
+			}else{
+				echo ' sucess.';
 			}
 		}
 	}
@@ -83,7 +85,6 @@
 	$sql_remove_old .= "WHERE date_stamp < '".date('Y-m-d' , $oldestDate)."'";
 
 	$removeOld_result = mysql_query($sql_remove_old);
-	
 	echo '<br><br>'.$sql_remove_old . '<br> num rows deleted/affected ' . mysql_affected_rows() . '<br>';
 
 	if (mysql_errno()){

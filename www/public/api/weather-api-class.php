@@ -158,7 +158,8 @@
 			  	
 			  	if( $decodedCache != null && 
 			  		$decodedCache['cacheDate'] > time('now') ){	
-			  		//echo ' cache '. time('now') ;
+			  		
+			  		//echo ' cache file '. time('now') ;
 
 			  		return $cachefileJSON;
 			  	}else{

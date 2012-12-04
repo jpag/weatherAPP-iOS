@@ -7,16 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "settingsViewController.h"
+
 @class api_worldweatheronline;
 
-@interface mainViewController : UIViewController
-//@interface weatherAPI : NSObject
+@interface mainViewController : UIViewController{
+    api_worldweatheronline *weatherAPI;
+}
 
 @property (nonatomic, strong) IBOutlet UILabel * label_lastchecked;
 @property (nonatomic, strong) IBOutlet UILabel * label_todaysTemp;
 @property (nonatomic, strong) IBOutlet UILabel * label_yesterdaysTemp;
 @property (nonatomic, strong) IBOutlet UILabel * label_currentLocation;
 
-@property (strong, nonatomic) api_worldweatheronline *weatherAPI;
+@property (strong, nonatomic) settingsViewController *settingsController;
+
+//@property (strong, nonatomic) api_worldweatheronline *weatherAPI;
 
 @end

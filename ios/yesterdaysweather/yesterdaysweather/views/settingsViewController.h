@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface settingsViewController : UIViewController
+@class api_worldweatheronline;
+
+@interface settingsViewController : UIViewController{
+    api_worldweatheronline *weatherAPI;
+}
 
 
 @end

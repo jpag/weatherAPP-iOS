@@ -106,6 +106,9 @@
     return persistentStoreCoordinator;
 }
 
+//GETTER METHOD
+//The context object isn’t created until you ask for it.
+//sets off a chain of events that initializes the whole Core Data stack.
 - (NSManagedObjectContext *)managedObjectContext
 {
     if (managedObjectContext == nil) {

@@ -12,9 +12,8 @@
 // -change C/F temparture
 
 
-
-
 #import "settingsViewController.h"
+#import "api_worldweatheronline.h"
 
 @interface settingsViewController ()
 
@@ -35,6 +34,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    weatherAPI = [api_worldweatheronline apiWorldWeather];
+    NSLog(@" settings view init...");
+    NSLog(@"weather some num model singleton example: %d " , weatherAPI.someNum );
+    
 }
 
 - (void)didReceiveMemoryWarning
