@@ -12,6 +12,9 @@
 
 @interface User : NSManagedObject
 
+//As of iOS 5 you can apparently also use primitive values in your NSManagedObject classes,
+// otherwise listed as NSNumber objects instead of double int float bool values
+
 @property (nonatomic, retain) NSString * city_name;
 @property (nonatomic, retain) NSNumber * lat;
 @property (nonatomic, retain) NSNumber * lng;

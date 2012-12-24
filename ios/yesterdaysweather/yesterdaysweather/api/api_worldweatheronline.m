@@ -4,19 +4,22 @@
 //
 //  Created by jpg on 11/27/12.
 //  Copyright (c) 2012 com.teamradness. All rights reserved.
-//
-// mainly this source:
+
+//  THIS CLASS IS TREATED AS A SINGLETON TO SHARE DATA BETWEEN VIEWS
+//  DATA SHOULD BE STORED IN LOCAL STORAGE FOR EASY ACCESS
+
+// mainly this REF:
 //  http://klanguedoc.hubpages.com/hub/iOS-5-How-To-Share-Data-Between-View-Controllers-using-a-Singleton
+
 // and a bit of:
 //  http://gigaom.com/apple/iphone-dev-sessions-using-singletons/
 //  http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaObjects/CocoaObjects.html
 
-#import "api_worldweatheronline.h"
 
-#define requestURL_domain   [NSURL URLWithString: @"http://local.weatherapp.com"];
-#define requestURL_cities   [NSURL URLWithString: @"/api/citylist/"];
-#define requestURL_byName   [NSURL URLWithString: @"/api/city/"];
-#define requestURL_byID     [NSURL URLWithString: @"/api/cityid/"];
+//  LOCAL STORAGE:
+
+
+#import "api_worldweatheronline.h"
 
 @interface api_worldweatheronline();
 
@@ -27,6 +30,9 @@
 
 //SYNTHESIZE HERE:
 @synthesize someNum;
+@synthesize lastPullRequest; //taken from core if it exists.
+@synthesize currentTime;
+@synthesize cacheExpired;
 
 +(api_worldweatheronline *)apiWorldWeather{
     static api_worldweatheronline *apiWorldWeatherSingleton = nil;
@@ -39,38 +45,47 @@
             apiWorldWeatherSingleton = [[api_worldweatheronline alloc] init];
         }
     }
+    
     return apiWorldWeatherSingleton;
 }
 
+// compare now to the last update made..
+// check to see if the cache is valid or needs updating
+- (void)setCurrentTime
+{
+    if( currentTime == nil ){
+        
+        currentTime = [NSDate date];
+        
+        //get last cache pull from LOCAL STORAGE:
+        
+        //compare time add expiresin value:
+        int expiresIn = CACHE_EXPIRES;
 
-
-//-(id)init
-//{
-//    if((self = [super init] )){
-//        //perform own initialization here;
-//        //self.text = @"hello";
-//    }
-//    return self;
-//}
-
-//
-//- (void)viewDidLoad
-//{
-//    [super viewDidLoad];
-//}
-//
-//- (void)viewDidUnload
-//{
-//    [super viewDidUnload];
-//    // Release any retained subviews of the main view.
-//    
-//}
+//http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/DatesAndTimes/Articles/dtDates.html
+//        NSTimeInterval secondsPerDay = 24 * 60 * 60;
+//        NSDate *tomorrow = [[NSDate alloc]
+//                            initWithTimeIntervalSinceNow:secondsPerDay];
+//        NSDate *yesterday = [[NSDate alloc]
+//                             initWithTimeIntervalSinceNow:-secondsPerDay];
+//        [tomorrow release];
+//        [yesterday release];
+        
+        
+        NSLog(@" cache expires: %d ", expiresIn );
+        cacheExpired = false;
+    }
+    //compare
+}
 
 
 - (void)getCities
 {
     
     NSLog(@"get cities");
+    
+    [self setCurrentTime];
+    
     //check cache date of cities list.
     
     //if over a day old
@@ -84,6 +99,8 @@
 - (void)matchClosestCityToLatLong
 {
     NSLog(@"matchClosestCityToLatLong()");
+    [self setCurrentTime];
+    
     
     //get the lat long values
     

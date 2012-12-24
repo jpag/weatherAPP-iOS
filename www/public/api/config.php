@@ -1,6 +1,6 @@
 <?php
 	$STATE = 'live';
-	$DAYSSAVED = '7 days';
+	$DAYSSAVED = '20 days';
 	
 	$CACHEFOLDER = 'cache/';
 	$CACHEEXPIRE_CRON = '23 hours';

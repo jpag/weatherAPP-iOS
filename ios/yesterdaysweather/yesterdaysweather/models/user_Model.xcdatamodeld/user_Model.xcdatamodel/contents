@@ -9,6 +9,6 @@
         <attribute name="useCelsius" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
     <elements>
-        <element name="User" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="User" positionX="-2007" positionY="-837" width="128" height="135"/>
     </elements>
 </model>

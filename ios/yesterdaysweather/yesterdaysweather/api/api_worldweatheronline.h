@@ -9,18 +9,28 @@
 //THIS IS A SINGLETON!
 
 #import <Foundation/Foundation.h>
+#import "../global_constants.h"
 
 @interface api_worldweatheronline : NSObject
 
-//http://stackoverflow.com/questions/5293406/another-warning-question-incompatible-integer-to-pointer-conversion-assigning
-
+//ints are not pointers:
 @property(nonatomic, assign) NSInteger someNum;
-//@property(nonatomic, assign) NSInteger * someNum; //would be a pointer
+
+//dates are
+@property(nonatomic, retain) NSDate *lastPullRequest;
+@property(nonatomic, retain) NSDate *currentTime;
+
+//booleans are not...?
+@property(nonatomic, assign) Boolean cacheExpired;
+
 
 //define it as a singleton:
 +(api_worldweatheronline *)apiWorldWeather;
 
 //functions:
 - (void)getCities;
+- (void)matchClosestCityToLatLong;
+- (void)getTemperature;
+
 
 @end

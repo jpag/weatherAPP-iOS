@@ -8,7 +8,6 @@
 
 #import "User.h"
 
-
 @implementation User
 
 // Normally we would use @synthesize to create a backing ivar for each property and to

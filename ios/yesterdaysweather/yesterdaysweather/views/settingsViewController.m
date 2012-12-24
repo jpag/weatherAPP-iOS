@@ -38,6 +38,8 @@
     NSLog(@" settings view init...");
     NSLog(@"weather some num model singleton example: %d " , weatherAPI.someNum );
     
+    NSLog(@"weather some Current Time: %@ " , weatherAPI.currentTime );
+    
 }
 
 - (void)didReceiveMemoryWarning

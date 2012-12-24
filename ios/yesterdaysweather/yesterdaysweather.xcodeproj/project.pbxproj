@@ -10,6 +10,7 @@
 		F0CF6325166D62F400B45F21 /* settingsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0CF6323166D62F400B45F21 /* settingsViewController_iPhone.xib */; };
 		F0D4ADB316665E4A0042FC68 /* user_Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F0D4ADB116665E4A0042FC68 /* user_Model.xcdatamodeld */; };
 		F0D4ADB61666A4D90042FC68 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D4ADB51666A4D90042FC68 /* User.m */; };
+		F0E23E83166E960900813CBD /* LastUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E23E82166E960900813CBD /* LastUpdate.m */; };
 		F0F17C0C165D766000040356 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F17C0B165D766000040356 /* UIKit.framework */; };
 		F0F17C0E165D766000040356 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F17C0D165D766000040356 /* Foundation.framework */; };
 		F0F17C10165D766000040356 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F17C0F165D766000040356 /* CoreGraphics.framework */; };
@@ -33,6 +34,9 @@
 		F0D4ADB216665E4A0042FC68 /* user_Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = user_Model.xcdatamodel; sourceTree = "<group>"; };
 		F0D4ADB41666A4D90042FC68 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = models/User.h; sourceTree = "<group>"; };
 		F0D4ADB51666A4D90042FC68 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = models/User.m; sourceTree = "<group>"; };
+		F0E23E81166E960900813CBD /* LastUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LastUpdate.h; path = models/LastUpdate.h; sourceTree = "<group>"; };
+		F0E23E82166E960900813CBD /* LastUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LastUpdate.m; path = models/LastUpdate.m; sourceTree = "<group>"; };
+		F0EA4E061688E8FE00420DC1 /* global_constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = global_constants.h; sourceTree = "<group>"; };
 		F0F17C07165D766000040356 /* yesterdaysweather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = yesterdaysweather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0F17C0B165D766000040356 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0F17C0D165D766000040356 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -77,6 +81,8 @@
 			isa = PBXGroup;
 			children = (
 				F0FF91781665A5B3003AFDFA /* api_worldweatheronlineModel.xcdatamodeld */,
+				F0E23E81166E960900813CBD /* LastUpdate.h */,
+				F0E23E82166E960900813CBD /* LastUpdate.m */,
 				F0D4ADB116665E4A0042FC68 /* user_Model.xcdatamodeld */,
 				F0D4ADB41666A4D90042FC68 /* User.h */,
 				F0D4ADB51666A4D90042FC68 /* User.m */,
@@ -121,6 +127,7 @@
 				F0F17C1A165D766000040356 /* AppDelegate.h */,
 				F0F17C1B165D766000040356 /* AppDelegate.m */,
 				F0F17C12165D766000040356 /* Supporting Files */,
+				F0EA4E061688E8FE00420DC1 /* global_constants.h */,
 			);
 			path = yesterdaysweather;
 			sourceTree = "<group>";
@@ -239,6 +246,7 @@
 				F0FF917A1665A5B3003AFDFA /* api_worldweatheronlineModel.xcdatamodeld in Sources */,
 				F0D4ADB316665E4A0042FC68 /* user_Model.xcdatamodeld in Sources */,
 				F0D4ADB61666A4D90042FC68 /* User.m in Sources */,
+				F0E23E83166E960900813CBD /* LastUpdate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

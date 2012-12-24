@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-
 @class api_worldweatheronline;
 
 @interface settingsViewController : UIViewController{

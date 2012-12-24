@@ -49,17 +49,10 @@
     
     
     //query api for location.
-    
-    /*
-    //create api if it does not exist.
-    if( self.weatherAPI == NULL ){
-        NSLog(@"weather API is null create it");
-        self.weatherAPI = [[api_worldweatheronline alloc] init];
-    }
-    */
-    
     [weatherAPI getCities];
-    weatherAPI.someNum = 5;
+    [weatherAPI matchClosestCityToLatLong];
+    [weatherAPI getTemperature];
+    
     //now lets create the settings page? just to test the singleton object ability
     [self displaySettingsView];
 }
@@ -67,6 +60,9 @@
 
 - (void)displaySettingsView
 {
+    //test passing of the singleton object information from one view to another.
+    weatherAPI.someNum = 5;
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         self.settingsController = [[settingsViewController alloc] initWithNibName:@"settingsViewController_iPhone" bundle:nil];
     } else {
@@ -74,6 +70,7 @@
         //self.settingsController = [[settingsViewController alloc] initWithNibName:@"settingsViewController_iPad" bundle:nil];
     }
     
+    //add to view:
     [self.view addSubview:settingsController.view];
     
 }
