@@ -8,16 +8,7 @@
 //  THIS CLASS IS TREATED AS A SINGLETON TO SHARE DATA BETWEEN VIEWS
 //  DATA SHOULD BE STORED IN LOCAL STORAGE FOR EASY ACCESS
 
-// mainly this REF:
-//  http://klanguedoc.hubpages.com/hub/iOS-5-How-To-Share-Data-Between-View-Controllers-using-a-Singleton
-
-// and a bit of:
-//  http://gigaom.com/apple/iphone-dev-sessions-using-singletons/
-//  http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaObjects/CocoaObjects.html
-
-
 //  LOCAL STORAGE:
-
 
 #import "api_worldweatheronline.h"
 
@@ -29,10 +20,16 @@
 @implementation api_worldweatheronline
 
 //SYNTHESIZE HERE:
+@synthesize CoreData_lastUpdate;
+
 @synthesize someNum;
 @synthesize lastPullRequest; //taken from core if it exists.
 @synthesize currentTime;
-@synthesize cacheExpired;
+//@synthesize cacheExpired;
+
+//@synthesize fetchedResultsController = __fetchedResultsController;
+//@synthesize managedObjectContext = __managedObjectContext;
+
 
 +(api_worldweatheronline *)apiWorldWeather{
     static api_worldweatheronline *apiWorldWeatherSingleton = nil;
@@ -43,6 +40,8 @@
         
         if( apiWorldWeatherSingleton == nil ){
             apiWorldWeatherSingleton = [[api_worldweatheronline alloc] init];
+            
+
         }
     }
     
@@ -51,31 +50,40 @@
 
 // compare now to the last update made..
 // check to see if the cache is valid or needs updating
-- (void)setCurrentTime
+- (Boolean)useCache
 {
     if( currentTime == nil ){
         
         currentTime = [NSDate date];
-        
-        //get last cache pull from LOCAL STORAGE:
-        
-        //compare time add expiresin value:
-        int expiresIn = CACHE_EXPIRES;
-
-//http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/DatesAndTimes/Articles/dtDates.html
-//        NSTimeInterval secondsPerDay = 24 * 60 * 60;
-//        NSDate *tomorrow = [[NSDate alloc]
-//                            initWithTimeIntervalSinceNow:secondsPerDay];
-//        NSDate *yesterday = [[NSDate alloc]
-//                             initWithTimeIntervalSinceNow:-secondsPerDay];
-//        [tomorrow release];
-//        [yesterday release];
-        
-        
-        NSLog(@" cache expires: %d ", expiresIn );
-        cacheExpired = false;
     }
+    
+    //get last cache pull from LOCAL STORAGE:
+    
+    //compare time add expiresin value:
+    int expiresIn = CACHE_EXPIRES;
+    
+    CoreData_lastUpdate.lastPullRequest = currentTime;
+    
+    NSLog( @"CoreData_lastUpdate.lastPullRequest %@", CoreData_lastUpdate.lastPullRequest );
+    
+    //http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/DatesAndTimes/Articles/dtDates.html
+    //        NSTimeInterval secondsPerDay = 24 * 60 * 60;
+    //        NSDate *tomorrow = [[NSDate alloc]
+    //                            initWithTimeIntervalSinceNow:secondsPerDay];
+    //        NSDate *yesterday = [[NSDate alloc]
+    //                             initWithTimeIntervalSinceNow:-secondsPerDay];
+    //        [tomorrow release];
+    //        [yesterday release];
+    
+    
+    NSLog(@" cache expires: %d ", expiresIn );
+
     //compare
+
+    
+    //cacheExpired = false;
+    return false;
+
 }
 
 
@@ -84,23 +92,21 @@
     
     NSLog(@"get cities");
     
-    [self setCurrentTime];
-    
     //check cache date of cities list.
-    
-    //if over a day old
-        //query for new list
-    //else
-        //show cache
-    
-    //return result
+    if( [self useCache] == true ){
+        //return city list:
+        
+    }else{
+        //NO CACHE:
+        //call JSON city list
+        //write to Core Data
+        //return city list
+    }
 }
 
 - (void)matchClosestCityToLatLong
 {
     NSLog(@"matchClosestCityToLatLong()");
-    [self setCurrentTime];
-    
     
     //get the lat long values
     
@@ -116,11 +122,20 @@
 - (void)getTemperature
 {
     NSLog(@"getTemperature()");
+    
     //has city?
     
     //what temperature type?
     
-    //return results:
+    if( [self useCache] == true ){
+        //return temperature list:
+        
+    }else{
+        //NO CACHE:
+        //call JSON temperature list
+        //write to Core Data
+        //return temperature list
+    }
     
 }
 

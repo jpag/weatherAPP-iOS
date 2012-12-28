@@ -11,6 +11,7 @@
 		F0D4ADB316665E4A0042FC68 /* user_Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F0D4ADB116665E4A0042FC68 /* user_Model.xcdatamodeld */; };
 		F0D4ADB61666A4D90042FC68 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D4ADB51666A4D90042FC68 /* User.m */; };
 		F0E23E83166E960900813CBD /* LastUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E23E82166E960900813CBD /* LastUpdate.m */; };
+		F0EA4E081688F22300420DC1 /* CoreDataTableViewController in Resources */ = {isa = PBXBuildFile; fileRef = F0EA4E071688F22300420DC1 /* CoreDataTableViewController */; };
 		F0F17C0C165D766000040356 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F17C0B165D766000040356 /* UIKit.framework */; };
 		F0F17C0E165D766000040356 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F17C0D165D766000040356 /* Foundation.framework */; };
 		F0F17C10165D766000040356 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F17C0F165D766000040356 /* CoreGraphics.framework */; };
@@ -37,6 +38,7 @@
 		F0E23E81166E960900813CBD /* LastUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LastUpdate.h; path = models/LastUpdate.h; sourceTree = "<group>"; };
 		F0E23E82166E960900813CBD /* LastUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LastUpdate.m; path = models/LastUpdate.m; sourceTree = "<group>"; };
 		F0EA4E061688E8FE00420DC1 /* global_constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = global_constants.h; sourceTree = "<group>"; };
+		F0EA4E071688F22300420DC1 /* CoreDataTableViewController */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CoreDataTableViewController; sourceTree = "<group>"; };
 		F0F17C07165D766000040356 /* yesterdaysweather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = yesterdaysweather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0F17C0B165D766000040356 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0F17C0D165D766000040356 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -121,6 +123,7 @@
 		F0F17C11165D766000040356 /* yesterdaysweather */ = {
 			isa = PBXGroup;
 			children = (
+				F0EA4E071688F22300420DC1 /* CoreDataTableViewController */,
 				F0D4ADAF16665E250042FC68 /* models */,
 				F0FF917216656F26003AFDFA /* views */,
 				F0FF91681665524E003AFDFA /* api */,
@@ -228,6 +231,7 @@
 				F0F17C28165D766000040356 /* mainViewController_iPhone.xib in Resources */,
 				F0F17C2B165D766000040356 /* mainViewController_iPad.xib in Resources */,
 				F0CF6325166D62F400B45F21 /* settingsViewController_iPhone.xib in Resources */,
+				F0EA4E081688F22300420DC1 /* CoreDataTableViewController in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

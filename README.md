@@ -86,6 +86,8 @@ http://maniacdev.com/2012/03/tutorial-getting-started-with-core-data-in-ios-5-us
 
 
 SINGLETONS:
+http://klanguedoc.hubpages.com/hub/iOS-5-How-To-Share-Data-Between-View-Controllers-using-a-Singleton
+http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaObjects/CocoaObjects.html
 http://stackoverflow.com/questions/6335767/core-data-singleton-manager
 
 POINTERS:
