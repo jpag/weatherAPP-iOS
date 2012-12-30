@@ -2,18 +2,21 @@ TODO:
 	IOS:
 		store local storage properly (test with settings)
 		expand settings view (for testing local storage etc)
-		load JSON into IOS
 		custom animations
-		create constants HEADER
+		build front end / design
 
 	WEB:
 		build front end / teaser site
+		extend api and error checking
+		add more cities
 
 COMPLETE:
 
 	IOS:
 		share singletons to multiple views
 		open a view inside of the main view
+		load JSON into IOS
+		create constants HEADER
 
 	WEB:
 		build out api (draft)
@@ -75,8 +78,8 @@ SETUP with LESS and EmberJs
 all API calls should return a 'type' value for the IOS app to understand what type of data it is getting back 
 	type = cities (city list)
 	type= temps (temperatures)
-	
-	
+
+
 --------------------
 ---- IOS ref links:
 --------------------
