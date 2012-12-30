@@ -9,17 +9,19 @@
 //THIS IS A SINGLETON!
 
 #import <Foundation/Foundation.h>
+#import "../AFNetworking/AFJSONRequestOperation.h"
 #import "../global_constants.h"
+
+
 
 //http://timroadley.com/2012/02/12/core-data-basics-part-2-core-data-views/
 //#import "../CoreDataTableViewController/CoreDataTableViewController.h" // so we can fetch
 
 //DATA model header ref:
-#import "../models/LastUpdate.h"
+#import "../models/Day.h"
+#import "../models/Settings.h"
 
 @interface api_worldweatheronline : NSObject
-
-@property(nonatomic, retain) LastUpdate *CoreData_lastUpdate;
 
 //ints are not pointers:
 //test item

@@ -28,8 +28,6 @@
 @synthesize lastPullRequest; //taken from core if it exists.
 @synthesize currentTime;
 
-@synthesize CoreData_lastUpdate;
-
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
@@ -66,9 +64,9 @@
     //compare time add expiresin value:
     int expiresIn = CACHE_EXPIRES;
     
-    CoreData_lastUpdate.lastPullRequest = currentTime;
+    //CoreData_lastUpdate.lastPullRequest = currentTime;
     
-    NSLog( @"CoreData_lastUpdate.lastPullRequest %@", CoreData_lastUpdate.lastPullRequest );
+    //NSLog( @"CoreData_lastUpdate.lastPullRequest %@", CoreData_lastUpdate.lastPullRequest );
     
     //http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/DatesAndTimes/Articles/dtDates.html
     //        NSTimeInterval secondsPerDay = 24 * 60 * 60;
@@ -103,6 +101,11 @@
     }else{
         //NO CACHE:
         //call JSON city list
+        
+        NSString *path = PATH_CITIES;
+        NSLog(@" load cities %@", path );
+        [self jsonRequest:path];
+        
         //write to Core Data
         //return city list
     }
@@ -122,7 +125,6 @@
     
 }
 
-
 - (void)getTemperature
 {
     NSLog(@"getTemperature()");
@@ -137,13 +139,84 @@
     }else{
         //NO CACHE:
         //call JSON temperature list
+        
         //write to Core Data
+        
         //return temperature list
     }
 }
 
+- (void)loadTemperature
+{
+    NSString *path = PATH_byID;
+    //get current setting CITY ID
+    NSString *id = 0;
+    path = [path stringByAppendingString:id];
+    //[self jsonRequest:path];
+}
+
+
+#pragma mark - JSON REQUEST
+
+- (void)jsonRequest:(NSString*)urlPath
+{
+    
+    NSString *stringURL = URL_DOMAIN;
+    stringURL = [stringURL stringByAppendingString:urlPath];
+    NSLog(@" url path %@", stringURL );
+    NSURL * url = [NSURL URLWithString:stringURL];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    //http://afnetworking.github.com/AFNetworking/Classes/AFJSONRequestOperation.html
+    
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            //NSLog(@"SUCCESS: %@", JSON);
+            [self jsonLoaded:JSON];
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON ) {
+            NSLog(@"Error searching for songs: %@", error);
+            
+        }];
+    
+    [operation start];
+    
+}
+
+- (void)jsonLoaded:(id)JSON{
+    
+    NSLog(@" JSON LOADED %@", JSON);
+    NSString *type = [JSON objectForKey:@"type"];
+    if( [type isEqualToString:@"error"]){
+        NSLog(@"ERROR HAPPENED");
+        
+    }else if( [type isEqualToString:@"cities"] ){
+        NSLog(@" IS CITY LIST");
+        
+    }else if ([type isEqualToString:@"temps"]){
+        NSLog(@" IS TEMPERATURES");
+        
+    }
+}
+
+
+//- (void)saveContext
+//{
+//    NSError *error = nil;
+//    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+//    if (managedObjectContext != nil) {
+//        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
+//            // Replace this implementation with code to handle the error appropriately.
+//            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+//            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//            abort();
+//        }
+//    }
+//}
+
 
 #pragma mark - Core Data stack
+// ray saves the day again...
+// http://www.raywenderlich.com/934/core-data-on-ios-5-tutorial-getting-started
 
 // Returns the managed object context for the application.
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
@@ -168,7 +241,7 @@
     if (__managedObjectModel != nil) {
         return __managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"FailedBankCD" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"apiWorldWeather" withExtension:@"momd"];
     __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return __managedObjectModel;
 }

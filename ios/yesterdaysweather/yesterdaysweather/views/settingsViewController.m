@@ -34,11 +34,16 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
     weatherAPI = [api_worldweatheronline apiWorldWeather];
+    
     NSLog(@" settings view init...");
     NSLog(@"weather some num model singleton example: %d " , weatherAPI.someNum );
     
     NSLog(@"weather some Current Time: %@ " , weatherAPI.currentTime );
+    
+    //TEST:
+    [weatherAPI getCities];
     
 }
 

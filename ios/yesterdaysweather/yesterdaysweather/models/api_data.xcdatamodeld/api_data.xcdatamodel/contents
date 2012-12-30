@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="11G63" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="City" representedClassName="City" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="lng" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Day" representedClassName="Day" syncable="YES">
         <attribute name="city_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="day" optional="YES" attributeType="Date" syncable="YES"/>
@@ -14,7 +20,8 @@
         <attribute name="useCelsius" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Settings" positionX="-2007" positionY="-837" width="128" height="135"/>
         <element name="Day" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="Settings" positionX="-2007" positionY="-837" width="128" height="135"/>
+        <element name="City" positionX="160" positionY="192" width="128" height="105"/>
     </elements>
 </model>

@@ -13,10 +13,11 @@
 #define CACHE_EXPIRES 3600;
 
 // URLS
-#define URL_DOMAIN   [NSURL URLWithString: @"http://local.weatherapp.com"];
-#define PATH_CITIES   [NSURL URLWithString: @"/api/citylist/"];
-#define PATH_byNAME   [NSURL URLWithString: @"/api/city/"];
-#define PATH_byID     [NSURL URLWithString: @"/api/cityid/"];
+//[NSURL URLWithString:@"string"]
+#define URL_DOMAIN    [NSString stringWithFormat: @"http://local.weatherapp.com"];
+#define PATH_CITIES   [NSString stringWithFormat: @"/api/citylist"];
+#define PATH_byNAME   [NSString stringWithFormat: @"/api/city/"];
+#define PATH_byID     [NSString stringWithFormat: @"/api/cityid/"];
 
 
 

@@ -75,6 +75,8 @@
 											);
 		}	
 		$decodedTemps['city'] = $city;
+		$decodedTemps['type'] = 'temps';
+
 		if( $STATE == 'dev' ){
 			$decodedTemps['mysql'] = $sqlFindCity;
 		}
@@ -85,7 +87,8 @@
 		$errorMsg = array(
 							"days"=> null,
 							"city" => null,
-							"error" => "we did not find any reference to this city"
+							"error" => "we did not find any reference to this city",
+							"type" => 'error'
 						);
 		if( $STATE == 'dev' ){
 			$errorMsg['sql'] = $sqlFindCity;

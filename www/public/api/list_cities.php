@@ -17,7 +17,13 @@
 	
 	$citiesSQL = mysql_query($sql);
 	if (mysql_errno()){
-		message('error', array("type"=> mysql_errno() , "sql"=>$sql , "message"=>mysql_error() ) );
+		message('error', array(
+								"type"=>"error",
+								"mysql_type"=> mysql_errno() , 
+								"sql"=>$sql , 
+								"message"=>mysql_error() 
+								)
+				);
 		die;
 	}
 
@@ -38,7 +44,7 @@
 										);
 		};
 	}
-
+	$cities['type'] = 'cities';
 	$cities['cacheDate'] = strtotime($CACHEEXPIRE_CITIES);
 	$citiesJSON = json_encode($cities);
 

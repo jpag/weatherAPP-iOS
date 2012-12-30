@@ -72,9 +72,16 @@ cloud:
 SETUP with LESS and EmberJs
 
 
+all API calls should return a 'type' value for the IOS app to understand what type of data it is getting back 
+	type = cities (city list)
+	type= temps (temperatures)
+	
+	
 --------------------
 ---- IOS ref links:
 --------------------
+basics:
+http://cocoadevcentral.com/d/learn_objectivec/
 
 CORE DATE / STORAGE:
 http://stackoverflow.com/questions/9421271/ios-core-data-class-method

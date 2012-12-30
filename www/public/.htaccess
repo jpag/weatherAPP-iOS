@@ -15,9 +15,9 @@ RewriteEngine On
 #RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ index.php?x=$1&y=$2
 #RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/$ index.php?x=$1&y=$2
 
-
 RewriteRule ^api/lat/(.+)/lng/(.+)/$ api/temp_by_latlng.php?lat=$1&lng=$2
 RewriteRule ^api/city/([a-zA-Z]+)$ api/temp_by_city.php?city=$1
 RewriteRule ^api/cityid/([0-9]+)$ api/temp_by_city.php?id=$1
+
 
 RewriteRule ^api/citylist*$ api/list_cities.php
