@@ -1,5 +1,5 @@
 <?php
-	$STATE = 'live';
+	$STATE = 'dev';
 	$DAYSSAVED = '20 days';
 	
 	$CACHEFOLDER = 'cache/';
@@ -11,8 +11,8 @@
 	
 
 	//auto detect states
-	if( strpos( $_SERVER['HTTP_HOST'] , 'local') >= 0 ){
-		$STATE = 'dev';
+	if( strpos( $_SERVER['HTTP_HOST'], 'local' ) === false ){
+		$STATE = 'live';
 	}
 
 	//database setup:
@@ -25,10 +25,10 @@
 
 	}else if( $STATE == 'live' ){
 		
-		$DB_USER = 'root';
-		$DB_PASS = 'root';
-		$DB_HOST = 'localhost';
-		$DB_NAME = 'weatherapp';
+		$DB_USER = 'db162706_weather';
+		$DB_PASS = 'kiera2010';
+		$DB_HOST = 'internal-db.s162706.gridserver.com';
+		$DB_NAME = 'db162706_weatherapp';
 
 		//CHANGE THIS?
 		$CACHEFOLDER = 'cache/';
