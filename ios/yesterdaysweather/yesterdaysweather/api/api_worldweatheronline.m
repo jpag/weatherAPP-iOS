@@ -12,6 +12,9 @@
 
 #import "api_worldweatheronline.h"
 
+// http://www.raywenderlich.com/5492/working-with-json-in-ios-5 
+#define apiQueue dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT , 0 )
+
 @interface api_worldweatheronline();
 
 @end;
@@ -31,6 +34,7 @@
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
+
 
 
 +(api_worldweatheronline *)apiWorldWeather{
@@ -106,6 +110,7 @@
         NSLog(@" load cities %@", path );
         [self jsonRequest:path];
         
+        NSLog(@"Get cities is complete");
         //write to Core Data
         //return city list
     }
@@ -157,9 +162,7 @@
     //[self jsonRequest:path];
 }
 
-
 #pragma mark - JSON REQUEST
-
 - (void)jsonRequest:(NSString*)urlPath
 {
     
@@ -168,41 +171,26 @@
     NSLog(@" url path %@", stringURL );
     NSURL * url = [NSURL URLWithString:stringURL];
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    // Remember it is only OK to run a synchronous method
+    // such as dataWithContentsOfURL in a background thread,
+    // otherwise the GUI will seem unresponsive to the user.
     
-    //http://afnetworking.github.com/AFNetworking/Classes/AFJSONRequestOperation.html
-    
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            //NSLog(@"SUCCESS: %@", JSON);
-            [self jsonLoaded:JSON];
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON ) {
-            NSLog(@"Error searching for songs: %@", error);
-            [self jsonFailed];
-        }];
-    
-    [operation start];
-    
+    dispatch_async(apiQueue, ^{
+        NSData* data = [NSData dataWithContentsOfURL:url];
+        [self performSelectorOnMainThread:@selector(fetchedData:)
+                               withObject:data waitUntilDone:YES];
+    });
+
 }
 
-- (void)jsonLoaded:(id)JSON{
+- (void)fetchedData:(NSData *)responseData {
+    //parse out the JSON data
+    NSError* error;
+    NSDictionary* json = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error ];
     
-    NSLog(@" JSON LOADED %@", JSON);
-    NSString *type = [JSON objectForKey:@"type"];
-    if( [type isEqualToString:@"error"]){
-        NSLog(@"ERROR HAPPENED");
-        
-    }else if( [type isEqualToString:@"cities"] ){
-        NSLog(@" IS CITY LIST");
-        
-    }else if ([type isEqualToString:@"temps"]){
-        NSLog(@" IS TEMPERATURES");
-        
-    }
-}
-
-- (void)jsonFailed
-{
-    //remove loader icon if any?
+    NSArray* cities = [json objectForKey:@"cities"];
+    NSLog(@" cities loaded : %@", cities[0]);
+    
 }
 
 
