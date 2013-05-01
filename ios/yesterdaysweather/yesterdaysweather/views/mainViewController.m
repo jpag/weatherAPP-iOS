@@ -44,19 +44,35 @@
     //if( ){ }
     
     //run update
+    weatherAPI.delegate = self;
     
-    //get city/location id
     
+    //determine if there is a city defined from COREDATA:
+    [weatherAPI isCityDefined];
     
-    //query api for location.
-    [weatherAPI getCities];
-    [weatherAPI matchClosestCityToLatLong];
+}
+
+- (void) wasCityDefined:(BOOL *)response{
+    NSLog( @"WAS CITY DEFINED? %s" , response  );
+    
+    //no city: query api for location.
+    //[weatherAPI getCities];
+    
+    //feature later on:
+    //[weatherAPI matchClosestCityToLatLong];
+    
+    //we have a city:
     [weatherAPI getTemperature];
+    
     
     //now lets create the settings page? just to test the singleton object ability
     [self displaySettingsView];
+    
 }
 
+-(void)temperatureList:(NSArray *)temps{
+    NSLog(@" TEMPS returned---");
+}
 
 - (void)displaySettingsView
 {
@@ -69,11 +85,10 @@
         NSLog(@"warning no settings panel made for ipad");
         //self.settingsController = [[settingsViewController alloc] initWithNibName:@"settingsViewController_iPad" bundle:nil];
     }
-    
+
     //add to view:
     [self.view addSubview:settingsController.view];
     
 }
-
 
 @end

@@ -12,16 +12,18 @@
 //It's common to put put an additional @interface that defines a category containing private methods:
 //These properties are only meant to be used inside the AppDelegate.m file.
 @interface AppDelegate ()
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+//@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+//@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
+//@property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
 @end
 
 @implementation AppDelegate
 
-@synthesize managedObjectContext;
-@synthesize managedObjectModel;
-@synthesize persistentStoreCoordinator;
+//@synthesize managedObjectContext = __managedObjectContext;
+//@synthesize managedObjectModel = __managedObjectModel;
+//@synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -65,62 +67,6 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
-
-////////// ---- core data ---- //////
-#pragma mark - Core Data
-
-- (NSManagedObjectModel *)managedObjectModel
-{
-    if (managedObjectModel == nil){
-        NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"DataModel"ofType:@"momd"];
-        NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
-        managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    }
-    return managedObjectModel;
-}
-
-- (NSString *)documentsDirectory
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return documentsDirectory;
-}
-
-- (NSString *)dataStorePath
-{
-    return [[self documentsDirectory] stringByAppendingPathComponent:@"DataStore.sqlite"];
-}
-
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-    if (persistentStoreCoordinator == nil) {
-        NSURL *storeURL = [NSURL fileURLWithPath:[self dataStorePath]];
-        persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
-        NSError *error;
-        if (![persistentStoreCoordinator addPersistentStoreWithType:
-              NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&
-              error]) {
-            NSLog(@"Error adding persistent store %@, %@", error, [error userInfo]); abort();
-        }
-    }
-    return persistentStoreCoordinator;
-}
-
-//GETTER METHOD
-//The context object isn’t created until you ask for it.
-//sets off a chain of events that initializes the whole Core Data stack.
-- (NSManagedObjectContext *)managedObjectContext
-{
-    if (managedObjectContext == nil) {
-        NSPersistentStoreCoordinator *coordinator = self.persistentStoreCoordinator;
-        if (coordinator != nil) {
-            managedObjectContext = [[NSManagedObjectContext alloc] init];
-            [managedObjectContext setPersistentStoreCoordinator:coordinator]; }
-    }
-    return managedObjectContext;
-}
-
 
 
 @end

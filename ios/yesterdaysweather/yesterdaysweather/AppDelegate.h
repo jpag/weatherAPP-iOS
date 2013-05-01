@@ -17,10 +17,12 @@
 
 
 //// ---- core data
-//@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-//@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
-//@property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+//@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+//@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+//@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-
+//@property (readonly, nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+//@property (readonly, nonatomic, strong) NSManagedObjectModel *managedObjectModel;
+//@property (readonly, nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 @end
