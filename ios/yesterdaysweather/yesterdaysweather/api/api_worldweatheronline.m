@@ -12,25 +12,27 @@
 
 #import "api_worldweatheronline.h"
 
+// http://www.raywenderlich.com/5492/working-with-json-in-ios-5 
+#define apiQueue dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT , 0 )
+
 @interface api_worldweatheronline();
-
 @end;
-
 
 @implementation api_worldweatheronline
 
 //SYNTHESIZE HERE:
+@synthesize delegate;
 
 //test item:
 @synthesize someNum;
 
-
 @synthesize lastPullRequest; //taken from core if it exists.
 @synthesize currentTime;
 
-@synthesize managedObjectContext = __managedObjectContext;
-@synthesize managedObjectModel = __managedObjectModel;
-@synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
+//@synthesize managedObjectContext = __managedObjectContext;
+//@synthesize managedObjectModel = __managedObjectModel;
+//@synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
+
 
 
 +(api_worldweatheronline *)apiWorldWeather{
@@ -38,15 +40,12 @@
     
     @synchronized(self){
         
-        NSLog(@"creating singleton API WorldWeatherOnline");
+        NSLog(@"-----SINGLETON CREATED - API WorldWeatherOnline------");
         
         if( apiWorldWeatherSingleton == nil ){
             apiWorldWeatherSingleton = [[api_worldweatheronline alloc] init];
-            
-
         }
     }
-    
     return apiWorldWeatherSingleton;
 }
 
@@ -54,8 +53,8 @@
 // check to see if the cache is valid or needs updating
 - (Boolean)useCache
 {
+    
     if( currentTime == nil ){
-        
         currentTime = [NSDate date];
     }
     
@@ -65,7 +64,6 @@
     int expiresIn = CACHE_EXPIRES;
     
     //CoreData_lastUpdate.lastPullRequest = currentTime;
-    
     //NSLog( @"CoreData_lastUpdate.lastPullRequest %@", CoreData_lastUpdate.lastPullRequest );
     
     //http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/DatesAndTimes/Articles/dtDates.html
@@ -78,16 +76,22 @@
     //        [yesterday release];
     
     
-    NSLog(@" cache expires: %d ", expiresIn );
+    //NSLog(@" cache expires: %d ", expiresIn );
 
     //compare
 
-    
     //cacheExpired = false;
     return false;
-
 }
 
+- (void)isCityDefined
+{
+    NSLog(@" --- isCityDefined");
+    //find a city if it is defined in the core data
+    //BOOL *listen = [delegate respondsToSelector:@selector(wasCityDefined:)];
+    //NSLog(@"is listening %s" , listen);
+    [delegate wasCityDefined: FALSE ];
+}
 
 - (void)getCities
 {
@@ -103,14 +107,14 @@
         //call JSON city list
         
         NSString *path = PATH_CITIES;
-        NSLog(@" load cities %@", path );
+        NSLog(@"  ---- load cities %@ ----", path );
         [self jsonRequest:path];
         
+        NSLog(@"Get cities is complete");
         //write to Core Data
         //return city list
     }
 }
-
 
 
 - (void)matchClosestCityToLatLong
@@ -129,7 +133,7 @@
 
 - (void)getTemperature
 {
-    NSLog(@"getTemperature()");
+    NSLog(@" --- getTemperature() ---- ");
     
     //has city?
     
@@ -157,150 +161,50 @@
     //[self jsonRequest:path];
 }
 
-
 #pragma mark - JSON REQUEST
-
 - (void)jsonRequest:(NSString*)urlPath
 {
     
     NSString *stringURL = URL_DOMAIN;
     stringURL = [stringURL stringByAppendingString:urlPath];
-    NSLog(@" url path %@", stringURL );
+    //NSLog(@" url path %@", stringURL );
     NSURL * url = [NSURL URLWithString:stringURL];
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    // Remember it is only OK to run a synchronous method
+    // such as dataWithContentsOfURL in a background thread,
+    // otherwise the GUI will seem unresponsive to the user.
     
-    //http://afnetworking.github.com/AFNetworking/Classes/AFJSONRequestOperation.html
-    
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-            //NSLog(@"SUCCESS: %@", JSON);
-            [self jsonLoaded:JSON];
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON ) {
-            NSLog(@"Error searching for songs: %@", error);
-            [self jsonFailed];
-        }];
-    
-    [operation start];
-    
+    dispatch_async(apiQueue, ^{
+        NSData* data = [NSData dataWithContentsOfURL:url];
+        [self performSelectorOnMainThread:@selector(fetchedData:)
+                               withObject:data waitUntilDone:YES];
+    });
 }
 
-- (void)jsonLoaded:(id)JSON{
+- (void)fetchedData:(NSData *)responseData {
+    //parse out the JSON data
+    NSError* error;
+    NSDictionary* json = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error ];
     
-    NSLog(@" JSON LOADED %@", JSON);
-    NSString *type = [JSON objectForKey:@"type"];
-    if( [type isEqualToString:@"error"]){
-        NSLog(@"ERROR HAPPENED");
+    //do a switch case here to determine which delegate protocol to request:
+    //Is anyone listening
+    if( [json objectForKey:@"cities"] && [delegate respondsToSelector:@selector(cityList:)] ){
+        NSArray* cities = [json objectForKey:@"cities"];
+        NSLog(@" cities loaded : %@", cities[0]);
         
-    }else if( [type isEqualToString:@"cities"] ){
-        NSLog(@" IS CITY LIST");
+        [delegate cityList: cities ];
+    }else if( [json objectForKey:@"days"] && [delegate respondsToSelector:@selector(temperatureList:)] ){
+        NSArray* temps = [json objectForKey:@"days"];
+        NSLog(@" temperature days loaded : %@", temps[0]);
         
-    }else if ([type isEqualToString:@"temps"]){
-        NSLog(@" IS TEMPERATURES");
-        
-    }
-}
-
-- (void)jsonFailed
-{
-    //remove loader icon if any?
-}
-
-
-//- (void)saveContext
-//{
-//    NSError *error = nil;
-//    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-//    if (managedObjectContext != nil) {
-//        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-//            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-//            abort();
-//        }
-//    }
-//}
-
-
-#pragma mark - Core Data stack
-// ray saves the day again...
-// http://www.raywenderlich.com/934/core-data-on-ios-5-tutorial-getting-started
-
-// Returns the managed object context for the application.
-// If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
-- (NSManagedObjectContext *)managedObjectContext
-{
-    if (__managedObjectContext != nil) {
-        return __managedObjectContext;
+        [delegate temperatureList: temps];
+    }else{
+        NSLog(@" API weather fetched Data - NO Key found matches request ");
     }
     
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        __managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [__managedObjectContext setPersistentStoreCoordinator:coordinator];
-    }
-    return __managedObjectContext;
 }
 
-// Returns the managed object model for the application.
-// If the model doesn't already exist, it is created from the application's model.
-- (NSManagedObjectModel *)managedObjectModel
-{
-    if (__managedObjectModel != nil) {
-        return __managedObjectModel;
-    }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"apiWorldWeather" withExtension:@"momd"];
-    __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    return __managedObjectModel;
-}
 
-// Returns the persistent store coordinator for the application.
-// If the coordinator doesn't already exist, it is created and the application's store added to it.
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-    if (__persistentStoreCoordinator != nil) {
-        return __persistentStoreCoordinator;
-    }
-    
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"apiWorldWeather"];
-    
-    NSError *error = nil;
-    __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-         
-         Typical reasons for an error here include:
-         * The persistent store is not accessible;
-         * The schema for the persistent store is incompatible with current managed object model.
-         Check the error message to determine what the actual problem was.
-         
-         
-         If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
-         
-         If you encounter schema incompatibility errors during development, you can reduce their frequency by:
-         * Simply deleting the existing store:
-         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
-         
-         * Performing automatic lightweight migration by passing the following dictionary as the options parameter:
-         [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
-         
-         Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
-         
-         */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    
-    return __persistentStoreCoordinator;
-}
-
-#pragma mark - Application's Documents directory
-
-// Returns the URL to the application's Documents directory.
-- (NSURL *)applicationDocumentsDirectory
-{
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-}
 
 @end
 

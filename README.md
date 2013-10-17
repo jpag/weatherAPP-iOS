@@ -1,5 +1,6 @@
 TODO:
 	IOS:
+		make the singleton work as a singleton.. keeps intializing..
 		store local storage properly (test with settings)
 		expand settings view (for testing local storage etc)
 		custom animations
@@ -13,6 +14,7 @@ TODO:
 COMPLETE:
 
 	IOS:
+		created a delegate/protocol to dispatch events from the API back to views 
 		share singletons to multiple views
 		open a view inside of the main view
 		load JSON into IOS
@@ -100,9 +102,17 @@ http://klanguedoc.hubpages.com/hub/iOS-5-How-To-Share-Data-Between-View-Controll
 http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaObjects/CocoaObjects.html
 http://stackoverflow.com/questions/6335767/core-data-singleton-manager
 
+DELEGATES / PROTOCOL
+delegate for a singleton object http://stackoverflow.com/questions/9475469/delegate-for-a-singleton-object
+singleton class in objective c http://stackoverflow.com/questions/7130128/singleton-class-in-objective-c
+http://developer.apple.com/library/ios/#featuredarticles/ViewControllerPGforiPhoneOS/ManagingDataFlowBetweenViewControllers/ManagingDataFlowBetweenViewControllers.html#//apple_ref/doc/uid/TP40007457-CH8-SW9
+http://mobile.tutsplus.com/tutorials/iphone/ios-sdk-custom-delegates/
+Simple delegate tutorial for ios development - http://www.roostersoftstudios.com/2011/04/12/simple-delegate-tutorial-for-ios-development/
+http://stackoverflow.com/questions/5210535/passing-data-between-view-controllers
+
+
 POINTERS:
 http://stackoverflow.com/questions/5293406/another-warning-question-incompatible-integer-to-pointer-conversion-assigning
-
 
 http://www.daveoncode.com/2011/12/19/fundamental-ios-design-patterns-sharedinstance-singleton-objective-c/
 http://www.cimgf.com/2011/01/07/passing-around-a-nsmanagedobjectcontext-on-the-iphone/

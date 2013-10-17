@@ -43,8 +43,13 @@
     NSLog(@"weather some Current Time: %@ " , weatherAPI.currentTime );
     
     //TEST:
+    weatherAPI.delegate = self;
     [weatherAPI getCities];
     
+}
+
+- (void)cityList:(NSArray*)cities{
+    NSLog(@" cities in settings %lu", (unsigned long)cities.count );
 }
 
 - (void)didReceiveMemoryWarning

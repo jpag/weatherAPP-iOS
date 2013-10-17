@@ -9,10 +9,7 @@
 //THIS IS A SINGLETON!
 
 #import <Foundation/Foundation.h>
-#import "../AFNetworking/AFJSONRequestOperation.h"
 #import "../global_constants.h"
-
-
 
 //http://timroadley.com/2012/02/12/core-data-basics-part-2-core-data-views/
 //#import "../CoreDataTableViewController/CoreDataTableViewController.h" // so we can fetch
@@ -21,17 +18,28 @@
 #import "../models/Day.h"
 #import "../models/Settings.h"
 
-@interface api_worldweatheronline : NSObject
+//Weather Delegate
+@protocol WeatherDelegate <NSObject>
+@optional
+- (void)cityList:(NSArray*)cities;
+- (void)wasCityDefined:(BOOL*)hasCity;
+- (void)temperatureList:(NSArray*)temps;
+@end
 
-//ints are not pointers:
+@interface api_worldweatheronline : NSObject{
+    __unsafe_unretained id<WeatherDelegate> delegate;
+}
+
+@property(nonatomic,assign)id delegate;
 //test item
+//ints are not pointers:
 @property(nonatomic, assign) NSInteger someNum;
 
 //dates are pointers
 @property(nonatomic, retain) NSDate *lastPullRequest;
 @property(nonatomic, retain) NSDate *currentTime;
 
-
+/*
 //core data:
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 // “scratch pad” for Core Data in the application for managing fetching, updating,
@@ -46,13 +54,13 @@
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 //the database connection. Here’s where you set up the actual names and
 //locations of what databases will be used to store the objects,
-
-
+*/
 
 //define functions it as a singleton:
 +(api_worldweatheronline *)apiWorldWeather;
 
 //functions:
+- (void)isCityDefined;
 - (void)getCities;
 - (void)matchClosestCityToLatLong;
 - (void)getTemperature;
