@@ -1,24 +1,22 @@
 //
-//  api_worldweatheronline.m
+//  api_forecast.m
 //  yesterdaysweather
+//  Using forecast.io
+
 //
-//  Created by jpg on 11/27/12.
-//  Copyright (c) 2012 com.teamradness. All rights reserved.
+//  Created by jpg on 10/18/13.
+//  Copyright (c) 2013 com.teamradness. All rights reserved.
+//
 
-//  THIS CLASS IS TREATED AS A SINGLETON TO SHARE DATA BETWEEN VIEWS
-//  DATA SHOULD BE STORED IN LOCAL STORAGE FOR EASY ACCESS
-
-//  LOCAL STORAGE:
-
-#import "api_worldweatheronline.h"
+#import "api_forecast.h"
 
 // http://www.raywenderlich.com/5492/working-with-json-in-ios-5 
 #define apiQueue dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT , 0 )
 
-@interface api_worldweatheronline();
+@interface api_forecast();
 @end;
 
-@implementation api_worldweatheronline
+@implementation api_forecast
 
 //SYNTHESIZE HERE:
 @synthesize delegate;
@@ -33,37 +31,32 @@
 //@synthesize managedObjectModel = __managedObjectModel;
 //@synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 
++(api_forecast *)apiForecast{
+	static api_forecast *apiForecastSingleton = nil;
 
+	@synchronized(self){
+		NSLog(@"---- SINGLETON CREATED - API Forecast io");
 
-+(api_worldweatheronline *)apiWorldWeather{
-    static api_worldweatheronline *apiWorldWeatherSingleton = nil;
-    
-    @synchronized(self){
-        
-        NSLog(@"-----SINGLETON CREATED - API WorldWeatherOnline------");
-        
-        if( apiWorldWeatherSingleton == nil ){
-            apiWorldWeatherSingleton = [[api_worldweatheronline alloc] init];
-        }
-    }
-    return apiWorldWeatherSingleton;
+		if( apiForecastSingleton == nil ){
+			apiForecastSingleton = [[api_forecast alloc] init];
+		}
+	}
+	return apiForecastSingleton;
 }
 
-// compare now to the last update made..
-// check to see if the cache is valid or needs updating
-- (Boolean)useCache
+-(Boolean)useCache
 {
-    
-    if( currentTime == nil ){
-        currentTime = [NSDate date];
-    }
-    
-    //get last cache pull from LOCAL STORAGE:
-    
-    //compare time add expiresin value:
-    // int expiresIn = CACHE_EXPIRES;
-    
-    //CoreData_lastUpdate.lastPullRequest = currentTime;
+
+	if(currentTime== nil ){
+		currentTime = [NSDate date];
+	}
+
+	// int expiresIn = CACHE_EXPIRES;
+
+	//compare time 
+	//get last cache pull from Local Storage
+
+	//CoreData_lastUpdate.lastPullRequest = currentTime;
     //NSLog( @"CoreData_lastUpdate.lastPullRequest %@", CoreData_lastUpdate.lastPullRequest );
     
     //http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/DatesAndTimes/Articles/dtDates.html
@@ -78,58 +71,10 @@
     
     //NSLog(@" cache expires: %d ", expiresIn );
 
-    //compare
+	// For now we are just going to always return false
+	return false;
+}	
 
-    //cacheExpired = false;
-    return false;
-}
-
-- (void)isCityDefined
-{
-    NSLog(@" --- isCityDefined");
-    //find a city if it is defined in the core data
-    //BOOL *listen = [delegate respondsToSelector:@selector(wasCityDefined:)];
-    //NSLog(@"is listening %s" , listen);
-    [delegate wasCityDefined: FALSE ];
-}
-
-- (void)getCities
-{
-    
-    NSLog(@"get cities");
-    
-    //check cache date of cities list.
-    if( [self useCache] == true ){
-        //return city list:
-        
-    }else{
-        //NO CACHE:
-        //call JSON city list
-        
-        NSString *path = PATH_CITIES;
-        NSLog(@"  ---- load cities %@ ----", path );
-        [self jsonRequest:path];
-        
-        NSLog(@"Get cities is complete");
-        //write to Core Data
-        //return city list
-    }
-}
-
-
-- (void)matchClosestCityToLatLong
-{
-    NSLog(@"matchClosestCityToLatLong()");
-    
-    //get the lat long values
-    
-    //call getCities()
-    
-    //eval values to determine which cities are closest
-    
-    //maybe return 1 or more... to suggest other options?
-    
-}
 
 - (void)getTemperature
 {
@@ -145,6 +90,7 @@
     }else{
         //NO CACHE:
         //call JSON temperature list
+        [self loadTemperature];
         
         //write to Core Data
         
@@ -154,21 +100,32 @@
 
 - (void)loadTemperature
 {
-    NSString *path = PATH_byID;
-    //get current setting CITY ID
-    NSString *id = 0;
-    path = [path stringByAppendingString:id];
-    //[self jsonRequest:path];
+    // Temperature format: api/lat/[XXX]/lng/[XXX]/u/[xx]
+    
+    // GET GPS:
+    NSString* lat = [NSString stringWithFormat:@"lat/%d/", 40];
+    NSString* lng = [NSString stringWithFormat:@"lng/%d/", -73];
+    
+    // GET Unit of Measurement
+    NSString* unit = @"u/si/";
+    
+    
+    // FORM PATH URL
+    NSString *path = URL_DOMAIN PATH_API;
+    path = [path stringByAppendingString:lat];
+    path = [path stringByAppendingString:lng];
+    path = [path stringByAppendingString:unit];
+    
+    NSLog(@" path: %@", path);
+    [self jsonRequest:path];
 }
 
 #pragma mark - JSON REQUEST
 - (void)jsonRequest:(NSString*)urlPath
 {
     
-    NSString *stringURL = URL_DOMAIN;
-    stringURL = [stringURL stringByAppendingString:urlPath];
     //NSLog(@" url path %@", stringURL );
-    NSURL * url = [NSURL URLWithString:stringURL];
+    NSURL * url = [NSURL URLWithString:urlPath];
     
     // Remember it is only OK to run a synchronous method
     // such as dataWithContentsOfURL in a background thread,
@@ -192,12 +149,12 @@
         NSArray* cities = [json objectForKey:@"cities"];
         NSLog(@" cities loaded : %@", cities[0]);
         
-        [delegate cityList: cities ];
+        // [delegate cityList: cities ];
     }else if( [json objectForKey:@"days"] && [delegate respondsToSelector:@selector(temperatureList:)] ){
         NSArray* temps = [json objectForKey:@"days"];
         NSLog(@" temperature days loaded : %@", temps[0]);
         
-        [delegate temperatureList: temps];
+        // [delegate temperatureList: temps];
     }else{
         NSLog(@" API weather fetched Data - NO Key found matches request ");
     }
@@ -205,6 +162,4 @@
 }
 
 
-
 @end
-

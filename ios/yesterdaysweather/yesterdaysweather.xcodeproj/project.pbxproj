@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D1AEBBF31811702D003594E1 /* api_forecast.m in Sources */ = {isa = PBXBuildFile; fileRef = D1AEBBF21811702D003594E1 /* api_forecast.m */; };
 		F0CF6325166D62F400B45F21 /* settingsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0CF6323166D62F400B45F21 /* settingsViewController_iPhone.xib */; };
 		F0D4ADB316665E4A0042FC68 /* api_data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F0D4ADB116665E4A0042FC68 /* api_data.xcdatamodeld */; };
 		F0D88FD3168FBA0700C7B812 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D88FD2168FBA0600C7B812 /* City.m */; };
@@ -26,12 +27,13 @@
 		F0F17C28165D766000040356 /* mainViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F17C26165D766000040356 /* mainViewController_iPhone.xib */; };
 		F0F17C2B165D766000040356 /* mainViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F17C29165D766000040356 /* mainViewController_iPad.xib */; };
 		F0F5902D172B136C00375D19 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F5902C172B136C00375D19 /* SystemConfiguration.framework */; };
-		F0FF9171166553E9003AFDFA /* api_worldweatheronline.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FF9170166553E9003AFDFA /* api_worldweatheronline.m */; };
 		F0FF917516656F8B003AFDFA /* settingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FF917416656F8B003AFDFA /* settingsViewController.m */; };
 		F0FF91771665A50D003AFDFA /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0FF91761665A50D003AFDFA /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D1AEBBF11811702D003594E1 /* api_forecast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = api_forecast.h; path = api/api_forecast.h; sourceTree = "<group>"; };
+		D1AEBBF21811702D003594E1 /* api_forecast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = api_forecast.m; path = api/api_forecast.m; sourceTree = "<group>"; };
 		F0CF6324166D62F400B45F21 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/settingsViewController_iPhone.xib; sourceTree = "<group>"; };
 		F0D4ADB216665E4A0042FC68 /* api_data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = api_data.xcdatamodel; sourceTree = "<group>"; };
 		F0D88FD1168FBA0600C7B812 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = City.h; path = models/City.h; sourceTree = "<group>"; };
@@ -60,8 +62,6 @@
 		F0F17C27165D766000040356 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/mainViewController_iPhone.xib; sourceTree = "<group>"; };
 		F0F17C2A165D766000040356 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/mainViewController_iPad.xib; sourceTree = "<group>"; };
 		F0F5902C172B136C00375D19 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		F0FF916F166553E9003AFDFA /* api_worldweatheronline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = api_worldweatheronline.h; path = api/api_worldweatheronline.h; sourceTree = "<group>"; };
-		F0FF9170166553E9003AFDFA /* api_worldweatheronline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = api_worldweatheronline.m; path = api/api_worldweatheronline.m; sourceTree = "<group>"; };
 		F0FF917316656F8B003AFDFA /* settingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = settingsViewController.h; path = views/settingsViewController.h; sourceTree = "<group>"; };
 		F0FF917416656F8B003AFDFA /* settingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = settingsViewController.m; path = views/settingsViewController.m; sourceTree = "<group>"; };
 		F0FF91761665A50D003AFDFA /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -158,8 +158,8 @@
 		F0FF91681665524E003AFDFA /* api */ = {
 			isa = PBXGroup;
 			children = (
-				F0FF916F166553E9003AFDFA /* api_worldweatheronline.h */,
-				F0FF9170166553E9003AFDFA /* api_worldweatheronline.m */,
+				D1AEBBF11811702D003594E1 /* api_forecast.h */,
+				D1AEBBF21811702D003594E1 /* api_forecast.m */,
 			);
 			name = api;
 			sourceTree = "<group>";
@@ -251,7 +251,7 @@
 				F0F17C18165D766000040356 /* main.m in Sources */,
 				F0F17C1C165D766000040356 /* AppDelegate.m in Sources */,
 				F0F17C25165D766000040356 /* mainViewController.m in Sources */,
-				F0FF9171166553E9003AFDFA /* api_worldweatheronline.m in Sources */,
+				D1AEBBF31811702D003594E1 /* api_forecast.m in Sources */,
 				F0FF917516656F8B003AFDFA /* settingsViewController.m in Sources */,
 				F0D4ADB316665E4A0042FC68 /* api_data.xcdatamodeld in Sources */,
 				F0DAD1BE168E712800990F14 /* Day.m in Sources */,
@@ -356,8 +356,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "yesterdaysweather/yesterdaysweather-Prefix.pch";
 				INFOPLIST_FILE = "yesterdaysweather/yesterdaysweather-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -368,8 +370,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "yesterdaysweather/yesterdaysweather-Prefix.pch";
 				INFOPLIST_FILE = "yesterdaysweather/yesterdaysweather-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -12,3 +12,4 @@ RewriteEngine On
 
 RewriteRule ^api/lat/(.*)/lng/(.*)/$ api_forecast/temp_by_latlng.php?lat=$1&lng=$2
 RewriteRule ^api/lat/(.*)/lng/(.*)/u/(.*)$ api_forecast/temp_by_latlng.php?lat=$1&lng=$2&unit=$3
+RewriteRule ^api/lat/(.*)/lng/(.*)/u/(.*)/$ api_forecast/temp_by_latlng.php?lat=$1&lng=$2&unit=$3

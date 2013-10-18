@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-@class api_worldweatheronline;
+@class api_forecast;
 
 @interface settingsViewController : UIViewController{
-    api_worldweatheronline *weatherAPI;
+    api_forecast *weatherAPI;
 }
 
 

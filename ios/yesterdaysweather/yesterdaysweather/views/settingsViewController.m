@@ -13,7 +13,7 @@
 
 
 #import "settingsViewController.h"
-#import "api_worldweatheronline.h"
+#import "api_forecast.h"
 
 @interface settingsViewController ()
 
@@ -35,7 +35,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    weatherAPI = [api_worldweatheronline apiWorldWeather];
+    weatherAPI = [api_forecast apiForecast];
     
     NSLog(@" settings view init...");
     NSLog(@"weather some num model singleton example: %d " , weatherAPI.someNum );
@@ -44,13 +44,13 @@
     
     //TEST:
     weatherAPI.delegate = self;
-    [weatherAPI getCities];
+    // [weatherAPI getCities];
     
 }
 
-- (void)cityList:(NSArray*)cities{
-    NSLog(@" cities in settings %lu", (unsigned long)cities.count );
-}
+//- (void)cityList:(NSArray*)cities{
+//    NSLog(@" cities in settings %lu", (unsigned long)cities.count );
+//}
 
 - (void)didReceiveMemoryWarning
 {

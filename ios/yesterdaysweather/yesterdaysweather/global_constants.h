@@ -14,11 +14,11 @@
 
 // URLS
 //[NSURL URLWithString:@"string"]
-#define URL_DOMAIN    [NSString stringWithFormat: @"http://local.weatherapp.com"];
-#define PATH_CITIES   [NSString stringWithFormat: @"/api/citylist"];
-#define PATH_byNAME   [NSString stringWithFormat: @"/api/city/"];
-#define PATH_byID     [NSString stringWithFormat: @"/api/cityid/"];
+//#define URL_DOMAIN  [NSString stringWithFormat: @"http://local.weather.com/"];
+//#define PATH_API    [NSString stringWithFormat: @"api/"];
 
+#define URL_DOMAIN  @"http://local.weather.com/";
+#define PATH_API    @"api/";
 
 
 #endif

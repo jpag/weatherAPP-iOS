@@ -7,7 +7,7 @@
 //
 
 #import "mainViewController.h"
-#import "api_worldweatheronline.h"
+#import "api_forecast.h"
 
 @interface mainViewController ()
 
@@ -23,9 +23,10 @@
 {
     [super viewDidLoad];
     
-    weatherAPI = [api_worldweatheronline apiWorldWeather];
+    weatherAPI = [api_forecast apiForecast];
 	// Do any additional setup after loading the view, typically from a nib.
     [self update];
+    // [self displaySettingsView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -46,27 +47,9 @@
     //run update
     weatherAPI.delegate = self;
     
-    
     //determine if there is a city defined from COREDATA:
-    [weatherAPI isCityDefined];
-    
-}
-
-- (void) wasCityDefined:(BOOL *)response{
-    NSLog( @"WAS CITY DEFINED? %s" , response  );
-    
-    //no city: query api for location.
-    //[weatherAPI getCities];
-    
-    //feature later on:
-    //[weatherAPI matchClosestCityToLatLong];
-    
-    //we have a city:
+    //[weatherAPI isCityDefined];
     [weatherAPI getTemperature];
-    
-    
-    //now lets create the settings page? just to test the singleton object ability
-    [self displaySettingsView];
     
 }
 
