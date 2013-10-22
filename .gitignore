@@ -1,2 +1,4 @@
-www/public/api/cache/*.json
+www/public/api_worldweather/cache/*.json
+www/public/api/api_forecast/cache/*.json
 *.DS_Store*
+*.json*
