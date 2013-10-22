@@ -102,8 +102,10 @@
 			$RESULT = json_decode( $this->query($LATLONG, $TIMESTAMP) );
 
 			$RESULTS = array( 
-								'past' => $RESULTPAST, 
-								'current' => $RESULT 
+								'timecompared' => array(
+														'past' => $RESULTPAST, 
+														'present' => $RESULT 
+													)
 							);
 
 			return json_encode( $RESULTS );

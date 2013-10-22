@@ -53,8 +53,10 @@
     
 }
 
--(void)temperatureList:(NSArray *)temps{
+-(void)temperatureLoaded:(NSArray *)temps{
     NSLog(@" TEMPS returned---");
+    NSLog(@" ------ %@", temps);
+    
 }
 
 - (void)displaySettingsView

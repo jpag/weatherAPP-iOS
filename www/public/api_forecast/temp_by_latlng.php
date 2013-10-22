@@ -36,7 +36,7 @@
 		array(
 			"ACCESS_TOKEN"=> $WEATHER_API_AUTH_TOKEN ,
 			"CACHEEXPIRES" => $CACHEEXPIRE_CRON ,
-			"OVERRIDECACHE" => false,
+			"OVERRIDECACHE" => true,
 			"CACHEFOLDER" => $CACHEFOLDER,
 			"PARAMS" => array('exclude'=>'minutely,flags,daily', 'units'=>$UNITOFMEASUREMENT ),
 			"TIME" => $TIMESTAMP,

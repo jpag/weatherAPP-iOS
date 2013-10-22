@@ -111,16 +111,20 @@
     
     
     // FORM PATH URL
-    NSString *path = URL_DOMAIN PATH_API;
+    NSString *path = PATH_API;
     path = [path stringByAppendingString:lat];
     path = [path stringByAppendingString:lng];
     path = [path stringByAppendingString:unit];
     
     NSLog(@" path: %@", path);
-    [self jsonRequest:path];
+    
+    NSString *request = URL_DOMAIN;
+    request = [request stringByAppendingString:path];
+    [self jsonRequest:request];
 }
 
 #pragma mark - JSON REQUEST
+// http://www.raywenderlich.com/5492/
 - (void)jsonRequest:(NSString*)urlPath
 {
     
@@ -141,10 +145,21 @@
 - (void)fetchedData:(NSData *)responseData {
     //parse out the JSON data
     NSError* error;
-    NSDictionary* json = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error ];
+    NSDictionary* json = [NSJSONSerialization
+                          JSONObjectWithData:responseData
+                          options:kNilOptions
+                          error:&error ];
+    
+    NSLog(@" ------ JSON loaded -----");
+    // timecompared the default json request
+    if( [json objectForKey:@"timecompared"] ){
+        NSArray* dataReturned = [json objectForKey:@"timecompared"]; //2
+        [delegate temperatureLoaded: dataReturned];
+
+    }
     
     //do a switch case here to determine which delegate protocol to request:
-    //Is anyone listening
+    /*
     if( [json objectForKey:@"cities"] && [delegate respondsToSelector:@selector(cityList:)] ){
         NSArray* cities = [json objectForKey:@"cities"];
         NSLog(@" cities loaded : %@", cities[0]);
@@ -158,7 +173,7 @@
     }else{
         NSLog(@" API weather fetched Data - NO Key found matches request ");
     }
-    
+    */
 }
 
 
