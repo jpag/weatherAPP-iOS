@@ -9,26 +9,30 @@
 #import <Foundation/Foundation.h>
 #import "../global_constants.h"
 
-//http://timroadley.com/2012/02/12/core-data-basics-part-2-core-data-views/
+// http://timroadley.com/2012/02/12/core-data-basics-part-2-core-data-views/
 //#import "../CoreDataTableViewController/CoreDataTableViewController.h" // so we can fetch
 
 //DATA model header ref:
 #import "../models/Day.h"
 #import "../models/Settings.h"
 
-//Weather Delegate
-@protocol WeatherDelegate <NSObject>
-@optional
-// - (void)temperatureList:(NSArray*)temps;
-// - (void)getTemperature:(NSArray*)temps;
+// these are the functions other views have when assigned as the delegate
+// or make multiple delegates for each view?
+@protocol apiDelegate <NSObject>
+
+-(void)temperatureLoaded:(NSArray*)temps;
+
 @end
 
-
-@interface api_forecast : NSObject{
-	__unsafe_unretained id<WeatherDelegate> delegate;
+@interface api_forecast : NSObject {
+	__unsafe_unretained id<apiDelegate> delegate;
+    
 }
 
+
+// PROPERTIES
 @property(nonatomic,assign)id delegate;
+
 //test item
 //ints are not pointers:
 @property(nonatomic, assign) NSInteger someNum;
@@ -57,7 +61,7 @@
 //define functions it as a singleton:
 +(api_forecast *)apiForecast;
 
-//functions:
+//allow functions to be called from external views:
 - (void)getTemperature;
 
 

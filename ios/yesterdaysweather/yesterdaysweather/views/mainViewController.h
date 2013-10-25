@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "settingsViewController.h"
 
-@class api_forecast;
+//@class api_forecast;
 
 @interface mainViewController : UIViewController{
+    
     api_forecast *weatherAPI;
+    
 }
 
 @property (nonatomic, strong) IBOutlet UILabel * label_lastchecked;
@@ -22,6 +24,6 @@
 
 @property (strong, nonatomic) settingsViewController *settingsController;
 
-//@property (strong, nonatomic) api_forecast *weatherAPI;
+@property (strong, nonatomic) api_forecast *weatherAPI;
 
 @end

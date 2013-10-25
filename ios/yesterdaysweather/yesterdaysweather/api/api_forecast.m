@@ -85,7 +85,7 @@
     //what temperature type?
     
     if( [self useCache] == true ){
-        //return temperature list:
+        //dispatch to delegate temperature list:
         
     }else{
         //NO CACHE:

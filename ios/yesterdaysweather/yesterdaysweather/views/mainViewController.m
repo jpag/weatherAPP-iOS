@@ -18,13 +18,13 @@
 //synthesize here
 @synthesize settingsController;
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     weatherAPI = [api_forecast apiForecast];
 	// Do any additional setup after loading the view, typically from a nib.
+    
     [self update];
     // [self displaySettingsView];
 }
@@ -47,15 +47,13 @@
     //run update
     weatherAPI.delegate = self;
     
-    //determine if there is a city defined from COREDATA:
-    //[weatherAPI isCityDefined];
     [weatherAPI getTemperature];
     
 }
 
 -(void)temperatureLoaded:(NSArray *)temps{
-    NSLog(@" TEMPS returned---");
     NSLog(@" ------ %@", temps);
+    NSLog(@" TEMPS returned to MAIN VIEW! ");
     
 }
 
