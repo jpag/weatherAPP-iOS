@@ -149,13 +149,35 @@
                           JSONObjectWithData:responseData
                           options:kNilOptions
                           error:&error ];
+     if (!json) {
+         /* Handle the error */
+         NSLog(@" ---- JSON ---- ERROR ----");
+     }
     
     NSLog(@" ------ JSON loaded -----");
     // timecompared the default json request
     if( [json objectForKey:@"timecompared"] ){
-        NSArray* dataReturned = [json objectForKey:@"timecompared"]; //2
-        [delegate temperatureLoaded: dataReturned];
-
+        NSDictionary* dataReturned = [json objectForKey:@"timecompared"];
+        
+        // past > currently > temperature
+        // present > currently > temperature
+        
+        NSDictionary* currentPastData = [[dataReturned objectForKey:@"past" ] objectForKey:@"currently"];
+        NSDictionary* currentPresentData = [[dataReturned objectForKey:@"present" ] objectForKey:@"currently"];
+        
+        NSString* pastTemp = [currentPastData objectForKey:@"temperature"];
+        NSString* pastTime = [currentPastData objectForKey:@"time"];
+        
+        NSString* presentTemp = [currentPresentData objectForKey:@"temperature"];
+        NSString* presentTime = [currentPresentData objectForKey:@"time"];
+        
+        NSArray *keys = [NSArray arrayWithObjects:@"pastTime", @"pastTemp", @"presentTime", @"presentTemp", nil];
+        NSArray *objects = [NSArray arrayWithObjects:pastTime, pastTemp, presentTime, presentTemp, nil];
+        
+        NSDictionary *pastAndPresent = [NSDictionary dictionaryWithObjects:objects
+                                                               forKeys:keys];
+        
+        [delegate temperatureLoaded: pastAndPresent];
     }
     
     //do a switch case here to determine which delegate protocol to request:

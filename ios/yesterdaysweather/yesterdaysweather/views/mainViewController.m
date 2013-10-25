@@ -17,6 +17,7 @@
 
 //synthesize here
 @synthesize settingsController;
+@synthesize weatherAPI;
 
 - (void)viewDidLoad
 {
@@ -51,9 +52,13 @@
     
 }
 
--(void)temperatureLoaded:(NSArray *)temps{
+-(void)temperatureLoaded:(NSDictionary *)temps{
     NSLog(@" ------ %@", temps);
-    NSLog(@" TEMPS returned to MAIN VIEW! ");
+    NSLog(@" TEMPS returned to MAIN VIEW! %@" , [temps objectForKey:@"pastTemp"]  );
+    
+
+    _tf_yesterdaysTemp.text = [temps objectForKey:@"pastTemp"];
+    _tf_todaysTemp.text = [temps objectForKey:@"presentTemp"];
     
 }
 

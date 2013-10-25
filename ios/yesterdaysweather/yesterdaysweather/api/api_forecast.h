@@ -6,29 +6,33 @@
 //  Copyright (c) 2013 com.teamradness. All rights reserved.
 //
 
+// API should be the only view/singleton/THING that is pulling and storing into the core data object
+
 #import <Foundation/Foundation.h>
 #import "../global_constants.h"
 
 // http://timroadley.com/2012/02/12/core-data-basics-part-2-core-data-views/
 //#import "../CoreDataTableViewController/CoreDataTableViewController.h" // so we can fetch
 
+
 //DATA model header ref:
 #import "../models/Day.h"
 #import "../models/Settings.h"
 
-// these are the functions other views have when assigned as the delegate
+// Delegate
+// These are the functions other views have when assigned as the delegate
 // or make multiple delegates for each view?
 @protocol apiDelegate <NSObject>
 
--(void)temperatureLoaded:(NSArray*)temps;
+-(void)temperatureLoaded:(NSDictionary*)temps;
 
 @end
+
 
 @interface api_forecast : NSObject {
 	__unsafe_unretained id<apiDelegate> delegate;
     
 }
-
 
 // PROPERTIES
 @property(nonatomic,assign)id delegate;

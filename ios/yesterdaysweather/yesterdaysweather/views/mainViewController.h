@@ -17,10 +17,14 @@
     
 }
 
+// LABELS in the XIB view
 @property (nonatomic, strong) IBOutlet UILabel * label_lastchecked;
 @property (nonatomic, strong) IBOutlet UILabel * label_todaysTemp;
 @property (nonatomic, strong) IBOutlet UILabel * label_yesterdaysTemp;
 @property (nonatomic, strong) IBOutlet UILabel * label_currentLocation;
+
+@property (nonatomic, strong) IBOutlet UITextField * tf_todaysTemp;
+@property (nonatomic, strong) IBOutlet UITextField * tf_yesterdaysTemp;
 
 @property (strong, nonatomic) settingsViewController *settingsController;
 
