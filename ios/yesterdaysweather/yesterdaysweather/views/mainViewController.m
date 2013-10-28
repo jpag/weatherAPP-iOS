@@ -16,6 +16,12 @@
 @implementation mainViewController
 
 //synthesize here
+@synthesize tf_todaysTemp;
+@synthesize tf_yesterdaysTemp;
+@synthesize tf_todaysTime;
+@synthesize tf_yesterdaysTime;
+
+
 @synthesize settingsController;
 @synthesize weatherAPI;
 
@@ -55,11 +61,30 @@
 -(void)temperatureLoaded:(NSDictionary *)temps{
     NSLog(@" ------ %@", temps);
     NSLog(@" TEMPS returned to MAIN VIEW! %@" , [temps objectForKey:@"pastTemp"]  );
-    
 
-    _tf_yesterdaysTemp.text = [temps objectForKey:@"pastTemp"];
-    _tf_todaysTemp.text = [temps objectForKey:@"presentTemp"];
+    tf_yesterdaysTemp.text = [[temps objectForKey:@"pastTemp"]stringValue];
+    tf_todaysTemp.text = [[temps objectForKey:@"presentTemp"]stringValue];
     
+    tf_yesterdaysTime.text = [self renderDate:[[temps objectForKey:@"pastTime"]stringValue]];
+    tf_todaysTime.text = [self renderDate:[[temps objectForKey:@"presentTime"]stringValue]];
+}
+
+-(NSString *)renderDate:(NSString *)strDate{
+    NSTimeInterval _interval=[strDate doubleValue];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
+
+    // http://stackoverflow.com/questions/7507003/objective-c-help-me-convert-a-timestamp-to-a-formatted-date-time
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    //[formatter setDateFormat:@"mm dd yyyy"];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    
+    NSString *dateFormated = [formatter stringFromDate:date];
+    // ARC no longer need this: [formatter release];
+    
+    NSLog(@"%@", dateFormated);
+    
+    return dateFormated;
 }
 
 - (void)displaySettingsView

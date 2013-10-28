@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="mainViewController">
             <connections>
                 <outlet property="label_currentLocation" destination="79" id="89"/>
-                <outlet property="label_lastchecked" destination="46" id="90"/>
-                <outlet property="label_todaysTemp" destination="17" id="91"/>
-                <outlet property="label_yesterdaysTemp" destination="28" id="92"/>
                 <outlet property="tf_todaysTemp" destination="Ahe-cs-J2c" id="ZWV-77-2dG"/>
+                <outlet property="tf_todaysTime" destination="skx-uX-QSb" id="ID4-7e-3xd"/>
                 <outlet property="tf_yesterdaysTemp" destination="dd3-7b-Pp3" id="pFH-JR-dVi"/>
+                <outlet property="tf_yesterdaysTime" destination="q6I-fK-uFT" id="bBi-8f-1Pb"/>
                 <outlet property="view" destination="6" id="8Jr-VM-tXb"/>
             </connections>
         </placeholder>
@@ -20,51 +19,23 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8">
-                    <rect key="frame" x="59" y="370" width="202" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8">
+                    <rect key="frame" x="59" y="369" width="202" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Refresh Location and Results">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Higher / Lower" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="11">
-                    <rect key="frame" x="0.0" y="136" width="320" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="79">
+                    <rect key="frame" x="122" y="10" width="67" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Todays Temp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17">
-                    <rect key="frame" x="0.0" y="200" width="320" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Yesterday's Temp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="28">
-                    <rect key="frame" x="0.0" y="288" width="320" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Last Checked" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="46">
-                    <rect key="frame" x="0.0" y="89" width="320" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="79">
-                    <rect key="frame" x="0.0" y="32" width="320" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="52">
-                    <rect key="frame" x="269" y="495" width="22" height="22"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="52">
+                    <rect key="frame" x="269" y="526" width="22" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal">
                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -74,75 +45,60 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Change Location:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Change Location:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55">
+                    <rect key="frame" x="0.0" y="527" width="261" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="71">
+                    <rect key="frame" x="269" y="496" width="22" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal">
+                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="C or F" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="72">
                     <rect key="frame" x="0.0" y="496" width="261" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="71">
-                    <rect key="frame" x="269" y="465" width="22" height="22"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal">
-                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="highlighted">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="C or F" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="72">
-                    <rect key="frame" x="0.0" y="466" width="261" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ahe-cs-J2c">
-                    <rect key="frame" x="112" y="229" width="97" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Temperature" textAlignment="center" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="Ahe-cs-J2c">
+                    <rect key="frame" x="0.0" y="169" width="320" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dd3-7b-Pp3">
-                    <rect key="frame" x="112" y="317" width="97" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Temperature" textAlignment="center" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="dd3-7b-Pp3">
+                    <rect key="frame" x="0.0" y="293" width="320" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Today" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="skx-uX-QSb">
+                    <rect key="frame" x="0.0" y="131" width="320" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="textColor" red="0.1051482745" green="0.30607578099999999" blue="0.62635869570000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Yesterday" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="q6I-fK-uFT">
+                    <rect key="frame" x="0.0" y="255" width="320" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="textColor" red="0.10514827447748934" green="0.30607578097454263" blue="0.62635869565217384" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
             </subviews>
             <color key="backgroundColor" red="0.97178583559782605" green="0.97178583559782605" blue="0.97178583559782605" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstItem="11" firstAttribute="top" secondItem="6" secondAttribute="top" constant="152" id="27"/>
-                <constraint firstItem="17" firstAttribute="trailing" secondItem="6" secondAttribute="trailing" id="31"/>
-                <constraint firstItem="17" firstAttribute="leading" secondItem="6" secondAttribute="leading" id="34"/>
-                <constraint firstItem="28" firstAttribute="leading" secondItem="6" secondAttribute="leading" id="36"/>
-                <constraint firstItem="28" firstAttribute="trailing" secondItem="6" secondAttribute="trailing" id="38"/>
-                <constraint firstItem="11" firstAttribute="leading" secondItem="6" secondAttribute="leading" id="39"/>
-                <constraint firstItem="11" firstAttribute="trailing" secondItem="6" secondAttribute="trailing" id="41"/>
-                <constraint firstItem="28" firstAttribute="top" secondItem="17" secondAttribute="bottom" constant="8" symbolic="YES" id="42"/>
-                <constraint firstItem="17" firstAttribute="top" secondItem="11" secondAttribute="bottom" constant="8" symbolic="YES" id="43"/>
-                <constraint firstAttribute="bottom" secondItem="8" secondAttribute="bottom" constant="168" id="45"/>
-                <constraint firstItem="46" firstAttribute="trailing" secondItem="6" secondAttribute="trailing" id="49"/>
-                <constraint firstItem="46" firstAttribute="leading" secondItem="6" secondAttribute="leading" id="50"/>
-                <constraint firstItem="46" firstAttribute="top" secondItem="6" secondAttribute="top" constant="89" id="51"/>
-                <constraint firstItem="55" firstAttribute="leading" secondItem="6" secondAttribute="leading" id="56"/>
-                <constraint firstAttribute="bottom" secondItem="55" secondAttribute="bottom" constant="51" id="60"/>
-                <constraint firstItem="52" firstAttribute="bottom" secondItem="55" secondAttribute="bottom" id="61"/>
-                <constraint firstItem="52" firstAttribute="leading" secondItem="55" secondAttribute="trailing" constant="8" symbolic="YES" id="69"/>
-                <constraint firstItem="8" firstAttribute="centerX" secondItem="28" secondAttribute="centerX" id="70"/>
-                <constraint firstItem="71" firstAttribute="leading" secondItem="52" secondAttribute="leading" id="73"/>
-                <constraint firstItem="72" firstAttribute="leading" secondItem="6" secondAttribute="leading" id="74"/>
-                <constraint firstItem="72" firstAttribute="trailing" secondItem="8" secondAttribute="trailing" id="75"/>
-                <constraint firstItem="52" firstAttribute="top" secondItem="71" secondAttribute="bottom" constant="8" symbolic="YES" id="76"/>
-                <constraint firstItem="71" firstAttribute="bottom" secondItem="72" secondAttribute="bottom" id="77"/>
-                <constraint firstItem="71" firstAttribute="leading" secondItem="72" secondAttribute="trailing" constant="8" symbolic="YES" id="78"/>
-                <constraint firstItem="79" firstAttribute="top" secondItem="6" secondAttribute="top" constant="32" id="86"/>
-                <constraint firstItem="79" firstAttribute="leading" secondItem="6" secondAttribute="leading" id="87"/>
-                <constraint firstItem="79" firstAttribute="trailing" secondItem="6" secondAttribute="trailing" id="88"/>
-            </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

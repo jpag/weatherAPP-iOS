@@ -26,6 +26,10 @@
 @property (nonatomic, strong) IBOutlet UITextField * tf_todaysTemp;
 @property (nonatomic, strong) IBOutlet UITextField * tf_yesterdaysTemp;
 
+@property (nonatomic, strong) IBOutlet UITextField * tf_todaysTime;
+@property (nonatomic, strong) IBOutlet UITextField * tf_yesterdaysTime;
+
+
 @property (strong, nonatomic) settingsViewController *settingsController;
 
 @property (strong, nonatomic) api_forecast *weatherAPI;

@@ -7,7 +7,8 @@
 //
 
 // API should be the only view/singleton/THING that is pulling and storing into the core data object
-
+// http://www.appcoda.com/how-to-get-current-location-iphone-user/
+#import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 #import "../global_constants.h"
 
@@ -28,10 +29,8 @@
 
 @end
 
-
 @interface api_forecast : NSObject {
-	__unsafe_unretained id<apiDelegate> delegate;
-    
+	__unsafe_unretained id<apiDelegate> delegate;    
 }
 
 // PROPERTIES
