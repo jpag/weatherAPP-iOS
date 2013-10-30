@@ -23,6 +23,8 @@
 @synthesize tf_lat;
 @synthesize tf_lng;
 
+@synthesize indicator;
+
 @synthesize settingsController;
 @synthesize weatherAPI;
 @synthesize gpsAPI;
@@ -48,6 +50,16 @@
 
 - (IBAction)refreshData:(id)sender {
     NSLog(@"---- REFRESH DATA");
+    
+    tf_yesterdaysTemp.text = @"";
+    tf_todaysTemp.text = @"";
+    
+    tf_yesterdaysTime.text = @"";
+    tf_todaysTime.text = @"";
+    
+    tf_lng.text = @"";
+    tf_lat.text = @"";
+    
     [self update];
 }
 
@@ -56,6 +68,7 @@
 {
     NSLog(@"update()");
     
+    indicator.hidden = false;
     //check if enough time has elapsed to update or to pass?
     //if( ){ }
     gpsAPI.delegate = self;
@@ -87,6 +100,8 @@
     
     tf_yesterdaysTime.text = [self renderDate:[[temps objectForKey:@"pastTime"]stringValue]];
     tf_todaysTime.text = [self renderDate:[[temps objectForKey:@"presentTime"]stringValue]];
+    
+    indicator.hidden = true;
 }
 
 -(NSString *)renderDate:(NSString *)strDate{

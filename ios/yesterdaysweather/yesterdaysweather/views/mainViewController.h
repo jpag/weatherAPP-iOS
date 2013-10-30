@@ -32,7 +32,9 @@
 @property (nonatomic, strong) IBOutlet UITextField * tf_lng;
 @property (nonatomic, strong) IBOutlet UITextField * tf_lat;
 
-//@property (weak, nonatomic) IBOutlet UIButton * refreshButton;
+
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *indicator;
+
 - (IBAction)refreshData:(id)sender;
 
 // VIEWS

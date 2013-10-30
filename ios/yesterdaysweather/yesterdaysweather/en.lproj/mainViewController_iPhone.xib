@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="mainViewController">
             <connections>
+                <outlet property="indicator" destination="wZW-tt-jtb" id="Y6z-Xk-Xre"/>
                 <outlet property="label_currentLocation" destination="79" id="89"/>
                 <outlet property="tf_lat" destination="TEi-9x-7yJ" id="AQH-aO-N3O"/>
                 <outlet property="tf_lng" destination="6hJ-FL-hkn" id="qqY-MA-qvf"/>
@@ -136,6 +137,12 @@
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="wZW-tt-jtb">
+                    <rect key="frame" x="142" y="210" width="37" height="37"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="tintColor" red="1" green="0.00053359762919999996" blue="0.42723053030000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="color" red="1" green="0.0005335976291807043" blue="0.42723053027815261" alpha="1" colorSpace="calibratedRGB"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="0.97178583559782605" green="0.97178583559782605" blue="0.97178583559782605" alpha="1" colorSpace="calibratedRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
