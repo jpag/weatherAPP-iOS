@@ -8,9 +8,9 @@
 
 #import "mainViewController.h"
 #import "api_forecast.h"
+#import "corelocation_gps.h"
 
 @interface mainViewController ()
-
 @end
 
 @implementation mainViewController
@@ -20,16 +20,20 @@
 @synthesize tf_yesterdaysTemp;
 @synthesize tf_todaysTime;
 @synthesize tf_yesterdaysTime;
-
+@synthesize tf_lat;
+@synthesize tf_lng;
 
 @synthesize settingsController;
 @synthesize weatherAPI;
+@synthesize gpsAPI;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     weatherAPI = [api_forecast apiForecast];
+    gpsAPI = [corelocation_gps corelocationGPS];
+    
 	// Do any additional setup after loading the view, typically from a nib.
     
     [self update];
@@ -42,6 +46,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)refreshData:(id)sender {
+    NSLog(@"---- REFRESH DATA");
+    [self update];
+}
 
 
 - (void)update
@@ -50,12 +58,24 @@
     
     //check if enough time has elapsed to update or to pass?
     //if( ){ }
-    
+    gpsAPI.delegate = self;
+    [gpsAPI getGPS];
     //run update
+}
+
+-(void)gpsLoaded:(CLLocation *)gpsCoordinate{
+    
+    weatherAPI.coordinates = gpsCoordinate.coordinate;
+    // round the values to solid numbers:
+    tf_lng.text = [NSString stringWithFormat:@"Longitude %.0f", gpsCoordinate.coordinate.longitude];
+    tf_lat.text = [NSString stringWithFormat:@"Latitude %.0f", gpsCoordinate.coordinate.latitude];
+    
+    [self updateWeather];
+}
+
+-(void)updateWeather{
     weatherAPI.delegate = self;
-    
     [weatherAPI getTemperature];
-    
 }
 
 -(void)temperatureLoaded:(NSDictionary *)temps{

@@ -7,14 +7,9 @@
 //
 
 // API should be the only view/singleton/THING that is pulling and storing into the core data object
-// http://www.appcoda.com/how-to-get-current-location-iphone-user/
-#import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 #import "../global_constants.h"
-
-// http://timroadley.com/2012/02/12/core-data-basics-part-2-core-data-views/
-//#import "../CoreDataTableViewController/CoreDataTableViewController.h" // so we can fetch
-
 
 //DATA model header ref:
 #import "../models/Day.h"
@@ -24,9 +19,7 @@
 // These are the functions other views have when assigned as the delegate
 // or make multiple delegates for each view?
 @protocol apiDelegate <NSObject>
-
 -(void)temperatureLoaded:(NSDictionary*)temps;
-
 @end
 
 @interface api_forecast : NSObject {
@@ -39,7 +32,7 @@
 //test item
 //ints are not pointers:
 @property(nonatomic, assign) NSInteger someNum;
-
+@property(nonatomic, assign) CLLocationCoordinate2D coordinates;
 //dates are pointers
 @property(nonatomic, retain) NSDate *lastPullRequest;
 @property(nonatomic, retain) NSDate *currentTime;
@@ -67,6 +60,5 @@
 //allow functions to be called from external views:
 - (void)getTemperature;
 
-
-
 @end
+

@@ -7,6 +7,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="mainViewController">
             <connections>
                 <outlet property="label_currentLocation" destination="79" id="89"/>
+                <outlet property="tf_lat" destination="TEi-9x-7yJ" id="AQH-aO-N3O"/>
+                <outlet property="tf_lng" destination="6hJ-FL-hkn" id="qqY-MA-qvf"/>
                 <outlet property="tf_todaysTemp" destination="Ahe-cs-J2c" id="ZWV-77-2dG"/>
                 <outlet property="tf_todaysTime" destination="skx-uX-QSb" id="ID4-7e-3xd"/>
                 <outlet property="tf_yesterdaysTemp" destination="dd3-7b-Pp3" id="pFH-JR-dVi"/>
@@ -22,12 +24,19 @@
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8">
                     <rect key="frame" x="59" y="369" width="202" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.97403617527173914" green="0.0" blue="0.40060262366898652" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                    <color key="tintColor" red="0.97403617527173914" green="0.86181240465916487" blue="0.90923259676124801" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" title="Refresh Location and Results">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.97178583559999998" green="0.97178583559999998" blue="0.97178583559999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" red="0.38058338994565222" green="0.38058338994565222" blue="0.38058338994565222" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
+                    <connections>
+                        <action selector="refreshData:" destination="-1" eventType="touchDown" id="fU6-2J-O6f"/>
+                    </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="79">
-                    <rect key="frame" x="122" y="10" width="67" height="21"/>
+                    <rect key="frame" x="0.0" y="10" width="320" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -71,30 +80,60 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Temperature" textAlignment="center" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="Ahe-cs-J2c">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Temperature" textAlignment="center" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="Ahe-cs-J2c">
                     <rect key="frame" x="0.0" y="169" width="320" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                    </accessibility>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Temperature" textAlignment="center" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="dd3-7b-Pp3">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Temperature" textAlignment="center" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="dd3-7b-Pp3">
                     <rect key="frame" x="0.0" y="293" width="320" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                    </accessibility>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Today" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="skx-uX-QSb">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Today" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="skx-uX-QSb">
                     <rect key="frame" x="0.0" y="131" width="320" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                    </accessibility>
                     <color key="textColor" red="0.1051482745" green="0.30607578099999999" blue="0.62635869570000002" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Yesterday" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="q6I-fK-uFT">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Yesterday" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="q6I-fK-uFT">
                     <rect key="frame" x="0.0" y="255" width="320" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                    </accessibility>
                     <color key="textColor" red="0.10514827447748934" green="0.30607578097454263" blue="0.62635869565217384" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Lat" textAlignment="center" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="TEi-9x-7yJ">
+                    <rect key="frame" x="0.0" y="52" width="320" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                    </accessibility>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Lng" textAlignment="center" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="6hJ-FL-hkn">
+                    <rect key="frame" x="0.0" y="77" width="320" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <accessibility key="accessibilityConfiguration">
+                        <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                    </accessibility>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
             </subviews>

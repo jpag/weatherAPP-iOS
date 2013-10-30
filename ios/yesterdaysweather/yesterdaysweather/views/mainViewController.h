@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "settingsViewController.h"
 
-//@class api_forecast;
+@class api_forecast;
+@class corelocation_gps;
 
 @interface mainViewController : UIViewController{
-    
     api_forecast *weatherAPI;
-    
+    corelocation_gps *gpsAPI;
 }
 
 // LABELS in the XIB view
@@ -29,9 +29,17 @@
 @property (nonatomic, strong) IBOutlet UITextField * tf_todaysTime;
 @property (nonatomic, strong) IBOutlet UITextField * tf_yesterdaysTime;
 
+@property (nonatomic, strong) IBOutlet UITextField * tf_lng;
+@property (nonatomic, strong) IBOutlet UITextField * tf_lat;
 
+//@property (weak, nonatomic) IBOutlet UIButton * refreshButton;
+- (IBAction)refreshData:(id)sender;
+
+// VIEWS
 @property (strong, nonatomic) settingsViewController *settingsController;
 
+// SINGLETONS
 @property (strong, nonatomic) api_forecast *weatherAPI;
+@property (strong, nonatomic) corelocation_gps *gpsAPI;
 
 @end

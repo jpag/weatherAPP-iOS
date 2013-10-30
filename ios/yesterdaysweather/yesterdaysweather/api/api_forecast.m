@@ -23,6 +23,7 @@
 
 //test item:
 @synthesize someNum;
+@synthesize coordinates;
 
 @synthesize lastPullRequest; //taken from core if it exists.
 @synthesize currentTime;
@@ -105,6 +106,12 @@
     // GET GPS:
     NSString* lat = [NSString stringWithFormat:@"lat/%d/", 40];
     NSString* lng = [NSString stringWithFormat:@"lng/%d/", -73];
+    
+    if( CLLocationCoordinate2DIsValid(coordinates) ){
+        lat = [NSString stringWithFormat:@"lat/%.0f/", coordinates.latitude];
+        //lng = [NSString stringWithFormat:@"%.8f", coordinates.longitude];
+        lng = [[NSString alloc] initWithFormat:@"lng/%.0f/", coordinates.longitude];
+    }
     
     // GET Unit of Measurement
     NSString* unit = @"u/si/";
