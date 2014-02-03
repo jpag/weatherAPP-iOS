@@ -20,8 +20,8 @@
 @synthesize tf_yesterdaysTemp;
 @synthesize tf_todaysTime;
 @synthesize tf_yesterdaysTime;
-@synthesize tf_lat;
-@synthesize tf_lng;
+@synthesize tf_location;
+
 
 @synthesize indicator;
 
@@ -57,12 +57,20 @@
     tf_yesterdaysTime.text = @"";
     tf_todaysTime.text = @"";
     
-    tf_lng.text = @"";
-    tf_lat.text = @"";
+    tf_location.text = @"";
     
     [self update];
 }
 
+- (IBAction)changeDegrees:(id)sender {
+    if( weatherAPI.isCelsius == true ){
+        weatherAPI.isCelsius = false;
+        NSLog(@"----- change degrees to F.");
+    }else{
+        weatherAPI.isCelsius = true;
+        NSLog(@"----- change degrees to C.");
+    }
+}
 
 - (void)update
 {
@@ -80,8 +88,21 @@
     
     weatherAPI.coordinates = gpsCoordinate.coordinate;
     // round the values to solid numbers:
-    tf_lng.text = [NSString stringWithFormat:@"Longitude %.0f", gpsCoordinate.coordinate.longitude];
-    tf_lat.text = [NSString stringWithFormat:@"Latitude %.0f", gpsCoordinate.coordinate.latitude];
+    // tf_lng.text = [NSString stringWithFormat:@"Longitude %.0f", gpsCoordinate.coordinate.longitude];
+    // tf_lat.text = [NSString stringWithFormat:@"Latitude %.0f", gpsCoordinate.coordinate.latitude];
+    
+    //tf_location.text = [NSString stringWithFormat:@"Lg:%.0f Lt:%.0f", gpsCoordinate.coordinate.longitude, gpsCoordinate.coordinate.latitude];
+
+    
+    CLGeocoder * geoCoder = [[CLGeocoder alloc] init];
+    [geoCoder reverseGeocodeLocation:gpsCoordinate completionHandler:^(NSArray *placemarks, NSError *error) {
+        for (CLPlacemark * placemark in placemarks) {
+            NSString *city = [placemark locality];
+            NSString *country = [placemark administrativeArea];
+            
+            tf_location.text = [NSString stringWithFormat:@"%@, %@ Lg:%.0f Lt:%.0f", city, country, gpsCoordinate.coordinate.longitude, gpsCoordinate.coordinate.latitude];
+        }
+    }];
     
     [self updateWeather];
 }
@@ -98,10 +119,52 @@
     tf_yesterdaysTemp.text = [[temps objectForKey:@"pastTemp"]stringValue];
     tf_todaysTemp.text = [[temps objectForKey:@"presentTemp"]stringValue];
     
+    if(  [temps objectForKey:@"presentTemp"] < [temps objectForKey:@"pastTemp"] ){
+        NSLog(@" colder draw");
+        // colder today
+        [self drawColorBlock:[UIColor blueColor]];
+    }else if( [temps objectForKey:@"presentTemp"] > [temps objectForKey:@"pastTemp"] ) {
+        NSLog(@" warmer draw");
+        // warmer today
+        [self drawColorBlock:[UIColor redColor]];
+    }else {
+        // equal
+        [self drawColorBlock:[UIColor greenColor]];
+    }
+    
     tf_yesterdaysTime.text = [self renderDate:[[temps objectForKey:@"pastTime"]stringValue]];
     tf_todaysTime.text = [self renderDate:[[temps objectForKey:@"presentTime"]stringValue]];
     
     indicator.hidden = true;
+}
+
+-(void)drawColorBlock:(UIColor *)col{
+    //    UIGraphicsGetCurrentContext();
+    UIGraphicsBeginImageContext(self.view.bounds.size);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextMoveToPoint(context, 0, 0);
+//    CGContextAddLineToPoint(context, self.view.frame.size.width, 0);
+//    CGContextAddLineToPoint(context, self.view.frame.size.width, self.view.frame.size.height/2);
+//    CGContextAddLineToPoint(context, 0, self.view.frame.size.height/2);
+    CGContextAddLineToPoint(context, 500, 0);
+    CGContextAddLineToPoint(context, 500,200);
+    CGContextAddLineToPoint(context, 0, 200);
+    CGContextAddLineToPoint(context, 0, 0);
+//    CGContextSetAlpha(context, .5);
+    CGContextSetFillColorWithColor(context,
+                                   col.CGColor);
+    CGContextFillPath(context);
+    
+    UIGraphicsEndImageContext();
+}
+
+-(void)drawWarmer{
+    
+}
+
+-(void)drawEqual{
+    
 }
 
 -(NSString *)renderDate:(NSString *)strDate{

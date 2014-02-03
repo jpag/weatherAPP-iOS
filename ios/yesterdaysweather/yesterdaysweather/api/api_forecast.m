@@ -22,6 +22,7 @@
 @synthesize delegate;
 
 //test item:
+@synthesize isCelsius;
 @synthesize someNum;
 @synthesize coordinates;
 
@@ -109,12 +110,16 @@
     
     if( CLLocationCoordinate2DIsValid(coordinates) ){
         lat = [NSString stringWithFormat:@"lat/%.0f/", coordinates.latitude];
-        //lng = [NSString stringWithFormat:@"%.8f", coordinates.longitude];
         lng = [[NSString alloc] initWithFormat:@"lng/%.0f/", coordinates.longitude];
     }
     
     // GET Unit of Measurement
-    NSString* unit = @"u/si/";
+    NSString* unit;
+    if( isCelsius == true ){
+        unit = @"u/si/";
+    }else{
+        unit = @"u/us";
+    }
     
     
     // FORM PATH URL

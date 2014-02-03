@@ -17,25 +17,25 @@
     corelocation_gps *gpsAPI;
 }
 
-// LABELS in the XIB view
+// LABELS in the XIB view:
 @property (nonatomic, strong) IBOutlet UILabel * label_lastchecked;
-@property (nonatomic, strong) IBOutlet UILabel * label_todaysTemp;
-@property (nonatomic, strong) IBOutlet UILabel * label_yesterdaysTemp;
-@property (nonatomic, strong) IBOutlet UILabel * label_currentLocation;
 
+
+// TEXT FIELDS:
 @property (nonatomic, strong) IBOutlet UITextField * tf_todaysTemp;
 @property (nonatomic, strong) IBOutlet UITextField * tf_yesterdaysTemp;
 
 @property (nonatomic, strong) IBOutlet UITextField * tf_todaysTime;
 @property (nonatomic, strong) IBOutlet UITextField * tf_yesterdaysTime;
 
-@property (nonatomic, strong) IBOutlet UITextField * tf_lng;
-@property (nonatomic, strong) IBOutlet UITextField * tf_lat;
-
+@property (nonatomic, strong) IBOutlet UITextField * tf_location;
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *indicator;
 
+@property (nonatomic, strong) IBOutlet UIButton *celOrFar;
+
 - (IBAction)refreshData:(id)sender;
+- (IBAction)changeDegrees:(id)sender;
 
 // VIEWS
 @property (strong, nonatomic) settingsViewController *settingsController;

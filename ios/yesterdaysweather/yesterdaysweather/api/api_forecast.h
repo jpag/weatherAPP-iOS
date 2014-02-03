@@ -31,6 +31,7 @@
 
 //test item
 //ints are not pointers:
+@property(nonatomic, assign) BOOL isCelsius;
 @property(nonatomic, assign) NSInteger someNum;
 @property(nonatomic, assign) CLLocationCoordinate2D coordinates;
 //dates are pointers
