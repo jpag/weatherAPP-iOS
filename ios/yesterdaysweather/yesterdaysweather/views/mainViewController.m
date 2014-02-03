@@ -9,6 +9,7 @@
 #import "mainViewController.h"
 #import "api_forecast.h"
 #import "corelocation_gps.h"
+#import "bkgdCustomMain.h"
 
 @interface mainViewController ()
 @end
@@ -139,33 +140,16 @@
 }
 
 -(void)drawColorBlock:(UIColor *)col{
-    //    UIGraphicsGetCurrentContext();
-    UIGraphicsBeginImageContext(self.view.bounds.size);
+    // START NEW
+    //if (![self.bkgd isKindOfClass:[bkgdCustomMain class]]) {
     
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextMoveToPoint(context, 0, 0);
-//    CGContextAddLineToPoint(context, self.view.frame.size.width, 0);
-//    CGContextAddLineToPoint(context, self.view.frame.size.width, self.view.frame.size.height/2);
-//    CGContextAddLineToPoint(context, 0, self.view.frame.size.height/2);
-    CGContextAddLineToPoint(context, 500, 0);
-    CGContextAddLineToPoint(context, 500,200);
-    CGContextAddLineToPoint(context, 0, 200);
-    CGContextAddLineToPoint(context, 0, 0);
-//    CGContextSetAlpha(context, .5);
-    CGContextSetFillColorWithColor(context,
-                                   col.CGColor);
-    CGContextFillPath(context);
+    bkgd = [[bkgdCustomMain alloc] init];
     
-    UIGraphicsEndImageContext();
+    //}
+    
+     [self addSubview:bkgd];
 }
 
--(void)drawWarmer{
-    
-}
-
--(void)drawEqual{
-    
-}
 
 -(NSString *)renderDate:(NSString *)strDate{
     NSTimeInterval _interval=[strDate doubleValue];

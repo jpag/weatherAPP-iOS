@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C01E38CB18A0541200BF3B20 /* bkgdCustomMain.m in Sources */ = {isa = PBXBuildFile; fileRef = C01E38CA18A0541200BF3B20 /* bkgdCustomMain.m */; };
 		D164763C18209BE1003CF04E /* corelocation_gps.m in Sources */ = {isa = PBXBuildFile; fileRef = D164763B18209BE1003CF04E /* corelocation_gps.m */; };
 		D1AEBBF31811702D003594E1 /* api_forecast.m in Sources */ = {isa = PBXBuildFile; fileRef = D1AEBBF21811702D003594E1 /* api_forecast.m */; };
 		D1CCC70C181B3C5100836A76 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1CCC70B181B3C5100836A76 /* CoreLocation.framework */; };
@@ -34,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C01E38C918A0541200BF3B20 /* bkgdCustomMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bkgdCustomMain.h; path = views/bkgdCustomMain.h; sourceTree = "<group>"; };
+		C01E38CA18A0541200BF3B20 /* bkgdCustomMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = bkgdCustomMain.m; path = views/bkgdCustomMain.m; sourceTree = "<group>"; };
 		D164763A18209BE1003CF04E /* corelocation_gps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = corelocation_gps.h; path = api/corelocation_gps.h; sourceTree = "<group>"; };
 		D164763B18209BE1003CF04E /* corelocation_gps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = corelocation_gps.m; path = api/corelocation_gps.m; sourceTree = "<group>"; };
 		D1AEBBF11811702D003594E1 /* api_forecast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = api_forecast.h; path = api/api_forecast.h; sourceTree = "<group>"; };
@@ -183,6 +186,8 @@
 				F0F17C24165D766000040356 /* mainViewController.m */,
 				F0FF917316656F8B003AFDFA /* settingsViewController.h */,
 				F0FF917416656F8B003AFDFA /* settingsViewController.m */,
+				C01E38C918A0541200BF3B20 /* bkgdCustomMain.h */,
+				C01E38CA18A0541200BF3B20 /* bkgdCustomMain.m */,
 			);
 			name = views;
 			sourceTree = "<group>";
@@ -271,6 +276,7 @@
 				F0D4ADB316665E4A0042FC68 /* api_data.xcdatamodeld in Sources */,
 				F0DAD1BE168E712800990F14 /* Day.m in Sources */,
 				F0DAD1C1168E713800990F14 /* Settings.m in Sources */,
+				C01E38CB18A0541200BF3B20 /* bkgdCustomMain.m in Sources */,
 				F0D88FD3168FBA0700C7B812 /* City.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
