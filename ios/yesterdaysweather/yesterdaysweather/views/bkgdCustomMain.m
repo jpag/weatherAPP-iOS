@@ -25,6 +25,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
+    [super drawRect:rect];
     //Drawing code
     //UIGraphicsGetCurrentContext();
     //UIGraphicsBeginImageContext(self.view.bounds.size);
@@ -44,11 +45,17 @@
 //    CGContextFillPath(context);
 //    
 //    UIGraphicsEndImageContext();
-
+    
+    NSLog(@"hey draw RECT-----");
+    
+//    CGRect rectangle = CGRectMake(0, 100, 320, 100);
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//    CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 1.0);
+//    CGContextSetRGBStrokeColor(context, 1.0, 0.0, 0.0, 1.0);
+//    CGContextFillRect(context, rectangle);
+    
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
     UIColor * redColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
-    
     CGContextSetFillColorWithColor(context, redColor.CGColor);
     CGContextFillRect(context, self.bounds);
     

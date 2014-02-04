@@ -6,8 +6,10 @@
 //  Copyright (c) 2012 com.teamradness. All rights reserved.
 //
 
+
 #import <UIKit/UIKit.h>
 #import "settingsViewController.h"
+#import "bkgdCustomMain.h"
 
 @class api_forecast;
 @class corelocation_gps;
@@ -43,5 +45,11 @@
 // SINGLETONS
 @property (strong, nonatomic) api_forecast *weatherAPI;
 @property (strong, nonatomic) corelocation_gps *gpsAPI;
+
+// OTHER VARIABLES
+
+// must be a pointer because it is an object type:
+@property(strong, nonatomic) bkgdCustomMain *bkgd;
+
 
 @end

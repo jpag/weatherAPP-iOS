@@ -30,6 +30,8 @@
 @synthesize weatherAPI;
 @synthesize gpsAPI;
 
+@synthesize bkgd;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -116,22 +118,49 @@
 -(void)temperatureLoaded:(NSDictionary *)temps{
     NSLog(@" ------ %@", temps);
     NSLog(@" TEMPS returned to MAIN VIEW! %@" , [temps objectForKey:@"pastTemp"]  );
-
+    
+    // warm or cold ?
+    // STRING TO FLOAT:
+    //float yTemp = [[temps objectForKey:@"pastTemp"] floatValue];
+    float tTemp = [[temps objectForKey:@"presentTemp"] floatValue];
+    UIColor *tempColor = [self colorCold];
+    BOOL drawTop = true;
+    
+    if( weatherAPI.isCelsius == true ){
+        if( tTemp >= 10.0 ){
+            tempColor = [self colorWarm];
+        }
+    }else {
+        // FAREN
+        if( tTemp >= 50 ){
+            tempColor = [self colorWarm];
+        }
+    }
+    
+    
     tf_yesterdaysTemp.text = [[temps objectForKey:@"pastTemp"]stringValue];
     tf_todaysTemp.text = [[temps objectForKey:@"presentTemp"]stringValue];
     
     if(  [temps objectForKey:@"presentTemp"] < [temps objectForKey:@"pastTemp"] ){
-        NSLog(@" colder draw");
-        // colder today
-        [self drawColorBlock:[UIColor blueColor]];
+        NSLog(@" colder today draw");
+        // warmer YESTERDAY
+        
+        tf_todaysTemp.textColor = [self colorWhite];
+        tf_yesterdaysTemp.textColor = [self colorCold];
+        drawTop = false;
+        
     }else if( [temps objectForKey:@"presentTemp"] > [temps objectForKey:@"pastTemp"] ) {
-        NSLog(@" warmer draw");
+        NSLog(@" warmer today draw");
         // warmer today
-        [self drawColorBlock:[UIColor redColor]];
+        
+        tf_todaysTemp.textColor = tempColor;
+        tf_yesterdaysTemp.textColor = [self colorWhite];
+        
     }else {
         // equal
-        [self drawColorBlock:[UIColor greenColor]];
     }
+
+    [self drawColorBlock:tempColor second:drawTop];
     
     tf_yesterdaysTime.text = [self renderDate:[[temps objectForKey:@"pastTime"]stringValue]];
     tf_todaysTime.text = [self renderDate:[[temps objectForKey:@"presentTime"]stringValue]];
@@ -139,15 +168,37 @@
     indicator.hidden = true;
 }
 
--(void)drawColorBlock:(UIColor *)col{
+-(UIColor*)colorCold {
+    return [UIColor colorWithRed:141.0f/255.0f green:211.0f/255.0f blue:244.0f/255.0f alpha:.7];
+}
+
+-(UIColor*)colorWarm {
+    return [UIColor colorWithRed:244.0f/255.0f green:211.0f/255.0f blue:141.0f/255.0f alpha:.7];
+}
+
+-(UIColor*)colorWhite {
+    return [UIColor colorWithRed:1 green:1 blue:1 alpha: .7];
+}
+
+-(void)drawColorBlock:(UIColor *)col second:(BOOL)top{
     // START NEW
-    //if (![self.bkgd isKindOfClass:[bkgdCustomMain class]]) {
     
-    bkgd = [[bkgdCustomMain alloc] init];
+    if( top == true ){
+        // DRAW UP TOP
+    }else{
+        // DRAW BOTTOM
+        
+    }
     
-    //}
+    float x = 0;
+    float y = (top == true)? 0 : self.view.bounds.size.height/2;
+    float w = self.view.bounds.size.width;
+    float h = self.view.bounds.size.height/2;
     
-     [self addSubview:bkgd];
+    self.bkgd = [[bkgdCustomMain alloc] initWithFrame:CGRectMake(x, y, w, h)];
+    
+    [self.view addSubview:bkgd];
+    [self.view sendSubviewToBack:bkgd];
 }
 
 
