@@ -17,8 +17,8 @@
 //#define URL_DOMAIN  [NSString stringWithFormat: @"http://local.weather.com/"];
 //#define PATH_API    [NSString stringWithFormat: @"api/"];
 
-#define URL_DOMAIN  @"http://local.weather.com/";
-// #define URL_DOMAIN @"http://weather.yaapee.com/";
+//#define URL_DOMAIN  @"http://local.weather.com/";
+#define URL_DOMAIN @"http://weather.yaapee.com/";
 #define PATH_API    @"api/";
 
 

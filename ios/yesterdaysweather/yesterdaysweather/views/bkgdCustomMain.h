@@ -10,4 +10,9 @@
 
 @interface bkgdCustomMain : UIView
 
+@property(nonatomic, strong) UIColor *bkgdColor;
+
+//-(id)initWithName:(NSString *) name locaiton:(NSString *)location date:(NSDate *) date;
+-(id)initWithFrame:(CGRect)frame second:(NSDictionary *)params;
+
 @end

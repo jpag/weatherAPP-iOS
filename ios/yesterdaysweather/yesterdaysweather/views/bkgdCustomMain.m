@@ -10,9 +10,19 @@
 
 @implementation bkgdCustomMain
 
-- (id)initWithFrame:(CGRect)frame
+@synthesize bkgdColor;
+
+- (id)initWithFrame:(CGRect)frame second:(NSDictionary*)params
 {
     self = [super initWithFrame:frame];
+    
+    if( [params objectForKey:@"color"] ){
+        bkgdColor = [params objectForKey:@"color"];
+    }else{
+        NSLog(@" NO COLOR DEFINED!!!!");
+        bkgdColor = [UIColor colorWithRed:50 green:50 blue:50 alpha:1];
+    }
+    
     if (self) {
         // Initialization code
     }
@@ -55,8 +65,13 @@
 //    CGContextFillRect(context, rectangle);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-    UIColor * redColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
-    CGContextSetFillColorWithColor(context, redColor.CGColor);
+    
+    //UIColor * redColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
+    
+    UIColor * col = self.bkgdColor;
+    //UIColor * col = [UIColor colorWithRed:.5 green:.5 blue:.5 alpha:1];
+    
+    CGContextSetFillColorWithColor(context, col.CGColor );
     CGContextFillRect(context, self.bounds);
     
 }

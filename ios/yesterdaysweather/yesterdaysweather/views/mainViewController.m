@@ -22,7 +22,7 @@
 @synthesize tf_todaysTime;
 @synthesize tf_yesterdaysTime;
 @synthesize tf_location;
-
+@synthesize celOrFar;
 
 @synthesize indicator;
 
@@ -54,30 +54,38 @@
 - (IBAction)refreshData:(id)sender {
     NSLog(@"---- REFRESH DATA");
     
-    tf_yesterdaysTemp.text = @"";
-    tf_todaysTemp.text = @"";
-    
-    tf_yesterdaysTime.text = @"";
-    tf_todaysTime.text = @"";
-    
-    tf_location.text = @"";
-    
     [self update];
 }
 
 - (IBAction)changeDegrees:(id)sender {
+    NSString *degree = @"C";
     if( weatherAPI.isCelsius == true ){
         weatherAPI.isCelsius = false;
         NSLog(@"----- change degrees to F.");
+        degree = @"F";
     }else{
         weatherAPI.isCelsius = true;
         NSLog(@"----- change degrees to C.");
     }
+    
+    //celOrFar.setTitle = degree;
+    [celOrFar setTitle:degree forState:UIControlStateNormal];
+    
+    //[self update];
 }
 
 - (void)update
 {
     NSLog(@"update()");
+    
+    tf_yesterdaysTemp.text = @" ";
+    tf_todaysTemp.text = @" ";
+    
+    tf_yesterdaysTime.text = @"";
+    tf_todaysTime.text = @"";
+    
+    tf_location.text = @"";
+
     
     indicator.hidden = false;
     //check if enough time has elapsed to update or to pass?
@@ -123,42 +131,66 @@
     // STRING TO FLOAT:
     //float yTemp = [[temps objectForKey:@"pastTemp"] floatValue];
     float tTemp = [[temps objectForKey:@"presentTemp"] floatValue];
+    float yTemp = [[temps objectForKey:@"pastTemp"] floatValue];
     UIColor *tempColor = [self colorCold];
+    UIColor *topColor;
+    UIColor *bottomColor;
     BOOL drawTop = true;
+    BOOL isWarm = false;
     
     if( weatherAPI.isCelsius == true ){
         if( tTemp >= 10.0 ){
             tempColor = [self colorWarm];
+            isWarm = true;
         }
     }else {
         // FAREN
         if( tTemp >= 50 ){
             tempColor = [self colorWarm];
+            isWarm = true;
         }
     }
-    
     
     tf_yesterdaysTemp.text = [[temps objectForKey:@"pastTemp"]stringValue];
     tf_todaysTemp.text = [[temps objectForKey:@"presentTemp"]stringValue];
     
-    if(  [temps objectForKey:@"presentTemp"] < [temps objectForKey:@"pastTemp"] ){
+    if(  tTemp < yTemp ){
         NSLog(@" colder today draw");
-        // warmer YESTERDAY
         
-        tf_todaysTemp.textColor = [self colorWhite];
-        tf_yesterdaysTemp.textColor = [self colorCold];
-        drawTop = false;
+        if( isWarm == false ){
+            // it was colder today...
+            drawTop = true;
+            topColor = [self colorWhite];
+            bottomColor = [self colorCold];
+        }else {
+            // it was warmer yesterday
+            drawTop = false;
+            topColor = [self colorCold];
+            bottomColor = [self colorWhite];
+        }
         
-    }else if( [temps objectForKey:@"presentTemp"] > [temps objectForKey:@"pastTemp"] ) {
+    }else if( tTemp > yTemp ) {
         NSLog(@" warmer today draw");
         // warmer today
         
-        tf_todaysTemp.textColor = tempColor;
-        tf_yesterdaysTemp.textColor = [self colorWhite];
-        
+        if( isWarm == false){
+            // colder today
+            drawTop = false;
+            topColor = tempColor;
+            bottomColor = [self colorWhite];
+        }else {
+            // warmer today
+            drawTop = true;
+            topColor = [self colorWhite];
+            bottomColor = tempColor;
+        }
     }else {
         // equal
     }
+    
+    tf_location.textColor = topColor;
+    tf_todaysTemp.textColor = tf_todaysTime.textColor = topColor;
+    tf_yesterdaysTime.textColor = tf_yesterdaysTemp.textColor = bottomColor;
 
     [self drawColorBlock:tempColor second:drawTop];
     
@@ -169,15 +201,15 @@
 }
 
 -(UIColor*)colorCold {
-    return [UIColor colorWithRed:141.0f/255.0f green:211.0f/255.0f blue:244.0f/255.0f alpha:.7];
+    return [UIColor colorWithRed:141.0f/255.0f green:211.0f/255.0f blue:244.0f/255.0f alpha:.9];
 }
 
 -(UIColor*)colorWarm {
-    return [UIColor colorWithRed:244.0f/255.0f green:211.0f/255.0f blue:141.0f/255.0f alpha:.7];
+    return [UIColor colorWithRed:244.0f/255.0f green:211.0f/255.0f blue:141.0f/255.0f alpha:.9];
 }
 
 -(UIColor*)colorWhite {
-    return [UIColor colorWithRed:1 green:1 blue:1 alpha: .7];
+    return [UIColor colorWithRed:1 green:1 blue:1 alpha: .9];
 }
 
 -(void)drawColorBlock:(UIColor *)col second:(BOOL)top{
@@ -195,7 +227,14 @@
     float w = self.view.bounds.size.width;
     float h = self.view.bounds.size.height/2;
     
-    self.bkgd = [[bkgdCustomMain alloc] initWithFrame:CGRectMake(x, y, w, h)];
+    NSArray *keys = [NSArray arrayWithObjects:@"color", nil];
+    NSArray *objects = [NSArray arrayWithObjects:col, nil];
+    
+    NSDictionary *params = [NSDictionary dictionaryWithObjects:objects
+                                                               forKeys:keys];
+    
+    NSLog(@" IS TOP? %d y %f", top , y);
+    self.bkgd = [[bkgdCustomMain alloc] initWithFrame:CGRectMake(x, y, w, h) second:params];
     
     [self.view addSubview:bkgd];
     [self.view sendSubviewToBack:bkgd];
@@ -210,7 +249,7 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     //[formatter setDateFormat:@"mm dd yyyy"];
     [formatter setDateStyle:NSDateFormatterMediumStyle];
-    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    //[formatter setTimeStyle:NSDateFormatterShortStyle];
     
     NSString *dateFormated = [formatter stringFromDate:date];
     // ARC no longer need this: [formatter release];

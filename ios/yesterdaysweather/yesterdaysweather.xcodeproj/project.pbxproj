@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C01E38CB18A0541200BF3B20 /* bkgdCustomMain.m in Sources */ = {isa = PBXBuildFile; fileRef = C01E38CA18A0541200BF3B20 /* bkgdCustomMain.m */; };
+		D15E1FBF18A1D8D6007A9CDB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D15E1FBE18A1D8D6007A9CDB /* Images.xcassets */; };
 		D164763C18209BE1003CF04E /* corelocation_gps.m in Sources */ = {isa = PBXBuildFile; fileRef = D164763B18209BE1003CF04E /* corelocation_gps.m */; };
 		D1AEBBF31811702D003594E1 /* api_forecast.m in Sources */ = {isa = PBXBuildFile; fileRef = D1AEBBF21811702D003594E1 /* api_forecast.m */; };
 		D1CCC70C181B3C5100836A76 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1CCC70B181B3C5100836A76 /* CoreLocation.framework */; };
@@ -37,6 +38,10 @@
 /* Begin PBXFileReference section */
 		C01E38C918A0541200BF3B20 /* bkgdCustomMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bkgdCustomMain.h; path = views/bkgdCustomMain.h; sourceTree = "<group>"; };
 		C01E38CA18A0541200BF3B20 /* bkgdCustomMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = bkgdCustomMain.m; path = views/bkgdCustomMain.m; sourceTree = "<group>"; };
+		D15E1FBB18A1D3D6007A9CDB /* thumb58x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumb58x58.png; sourceTree = "<group>"; };
+		D15E1FBC18A1D547007A9CDB /* thumb120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = thumb120x120.png; path = yesterdaysweather/graphics/thumb120x120.png; sourceTree = "<group>"; };
+		D15E1FBD18A1D578007A9CDB /* thumb80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = thumb80x80.png; path = yesterdaysweather/graphics/thumb80x80.png; sourceTree = "<group>"; };
+		D15E1FBE18A1D8D6007A9CDB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D164763A18209BE1003CF04E /* corelocation_gps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = corelocation_gps.h; path = api/corelocation_gps.h; sourceTree = "<group>"; };
 		D164763B18209BE1003CF04E /* corelocation_gps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = corelocation_gps.m; path = api/corelocation_gps.m; sourceTree = "<group>"; };
 		D1AEBBF11811702D003594E1 /* api_forecast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = api_forecast.h; path = api/api_forecast.h; sourceTree = "<group>"; };
@@ -92,6 +97,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D15E1FBA18A1D3D6007A9CDB /* graphics */ = {
+			isa = PBXGroup;
+			children = (
+				D15E1FBB18A1D3D6007A9CDB /* thumb58x58.png */,
+			);
+			name = graphics;
+			path = yesterdaysweather/graphics;
+			sourceTree = "<group>";
+		};
 		F0D4ADAF16665E250042FC68 /* models */ = {
 			isa = PBXGroup;
 			children = (
@@ -109,6 +123,9 @@
 		F0F17BFC165D766000040356 = {
 			isa = PBXGroup;
 			children = (
+				D15E1FBD18A1D578007A9CDB /* thumb80x80.png */,
+				D15E1FBC18A1D547007A9CDB /* thumb120x120.png */,
+				D15E1FBA18A1D3D6007A9CDB /* graphics */,
 				F0F5902C172B136C00375D19 /* SystemConfiguration.framework */,
 				F0F17C11165D766000040356 /* yesterdaysweather */,
 				F0F17C0A165D766000040356 /* Frameworks */,
@@ -147,6 +164,7 @@
 				F0F17C1B165D766000040356 /* AppDelegate.m */,
 				F0F17C12165D766000040356 /* Supporting Files */,
 				F0EA4E061688E8FE00420DC1 /* global_constants.h */,
+				D15E1FBE18A1D8D6007A9CDB /* Images.xcassets */,
 			);
 			path = yesterdaysweather;
 			sourceTree = "<group>";
@@ -249,6 +267,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D15E1FBF18A1D8D6007A9CDB /* Images.xcassets in Resources */,
 				F0F17C16165D766000040356 /* InfoPlist.strings in Resources */,
 				F0F17C1E165D766000040356 /* Default.png in Resources */,
 				F0F17C20165D766000040356 /* Default@2x.png in Resources */,
@@ -374,6 +393,8 @@
 		F0F17C2F165D766000040356 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -391,6 +412,8 @@
 		F0F17C30165D766000040356 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
