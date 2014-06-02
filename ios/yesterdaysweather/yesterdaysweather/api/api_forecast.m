@@ -22,12 +22,11 @@
 @synthesize delegate;
 
 //test item:
-@synthesize isCelsius;
-@synthesize someNum;
-@synthesize coordinates;
-
-@synthesize lastPullRequest; //taken from core if it exists.
-@synthesize currentTime;
+//@synthesize isCelsius;
+//@synthesize someNum;
+//@synthesize coordinates;
+//@synthesize lastPullRequest; //taken from core if it exists.
+//@synthesize currentTime;
 
 //@synthesize managedObjectContext = __managedObjectContext;
 //@synthesize managedObjectModel = __managedObjectModel;
@@ -49,8 +48,8 @@
 -(Boolean)useCache
 {
 
-	if(currentTime== nil ){
-		currentTime = [NSDate date];
+	if(self.currentTime== nil ){
+		self.currentTime = [NSDate date];
 	}
 
 	// int expiresIn = CACHE_EXPIRES;
@@ -105,17 +104,19 @@
     // Temperature format: api/lat/[XXX]/lng/[XXX]/u/[xx]
     
     // GET GPS:
+
+    // TODO remove this and put in a catch / notification of what the app is doing.
     NSString* lat = [NSString stringWithFormat:@"lat/%d/", 40];
     NSString* lng = [NSString stringWithFormat:@"lng/%d/", -73];
     
-    if( CLLocationCoordinate2DIsValid(coordinates) ){
-        lat = [NSString stringWithFormat:@"lat/%.0f/", coordinates.latitude];
-        lng = [[NSString alloc] initWithFormat:@"lng/%.0f/", coordinates.longitude];
+    if( CLLocationCoordinate2DIsValid(self.coordinates) ){
+        lat = [NSString stringWithFormat:@"lat/%.0f/", self.coordinates.latitude];
+        lng = [[NSString alloc] initWithFormat:@"lng/%.0f/", self.coordinates.longitude];
     }
     
-    // GET Unit of Measurement
+    // TODO: GET Unit of Measurement (from settings)
     NSString* unit;
-    if( isCelsius == true ){
+    if( self.isCelsius == true ){
         unit = @"u/si/";
     }else{
         unit = @"u/us";

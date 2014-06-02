@@ -17,8 +17,9 @@
 
 
 //SYNTHESIZE HERE:
+//TODO: how do I autosynthezie a delegate?
 @synthesize delegate;
-@synthesize locationManager;
+//@synthesize locationManager;
 
 +(corelocation_gps *)corelocationGPS{
 	static corelocation_gps *corelocationGPSSingleton = nil;
@@ -36,16 +37,16 @@
 
 - (void)getGPS
 {
-    if( locationManager == nil ){
+    if( _locationManager == nil ){
         NSLog(@"--- init locationManager");
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.delegate = self;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     }
     
     NSLog(@"---- start updating location!!!!");
     
-    [locationManager startUpdatingLocation];
+    [_locationManager startUpdatingLocation];
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -57,7 +58,7 @@
     [errorAlert show];
     
     // Stop Location Manager
-    [locationManager stopUpdatingLocation];
+    [_locationManager stopUpdatingLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
@@ -69,12 +70,11 @@
         // longitudeLabel.text = [NSString stringWithFormat:@"%.8f", currentLocation.coordinate.longitude];
         // latitudeLabel.text = [NSString stringWithFormat:@"%.8f", currentLocation.coordinate.latitude];
         
-        [delegate gpsLoaded: currentLocation];
-        
+        [self.delegate gpsLoaded: currentLocation];
     }
     
     // Stop Location Manager
-    [locationManager stopUpdatingLocation];
+    [_locationManager stopUpdatingLocation];
 }
 
 

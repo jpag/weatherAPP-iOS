@@ -10,17 +10,17 @@
 
 @implementation bkgdCustomMain
 
-@synthesize bkgdColor;
+//@synthesize bkgdColor;
 
 - (id)initWithFrame:(CGRect)frame second:(NSDictionary*)params
 {
     self = [super initWithFrame:frame];
     
     if( [params objectForKey:@"color"] ){
-        bkgdColor = [params objectForKey:@"color"];
+        self.bkgdColor = [params objectForKey:@"color"];
     }else{
         NSLog(@" NO COLOR DEFINED!!!!");
-        bkgdColor = [UIColor colorWithRed:50 green:50 blue:50 alpha:1];
+        self.bkgdColor = [UIColor colorWithRed:50 green:50 blue:50 alpha:1];
     }
     
     if (self) {

@@ -100,13 +100,20 @@
 
 			$RESULTPAST = json_decode( $this->query($LATLONG, $FROMTIME) );
 			$RESULT = json_decode( $this->query($LATLONG, $TIMESTAMP) );
+			if( $RESULTPAST && $RESULT ){
 
-			$RESULTS = array( 
+				$RESULTS = array( 
 								'timecompared' => array(
 														'past' => $RESULTPAST, 
 														'present' => $RESULT 
 													)
 							);
+			}else{
+				$RESULTS = array(
+								'error' => '100',
+								'message' => 'Results Compared and/or Result do not exist, May be a faulty connection with the api'
+							);
+			};
 
 			return json_encode( $RESULTS );
 		}
@@ -148,7 +155,9 @@
 			$ARRAY->cacheDate = strtotime($EXPIRES);
 			$JSON_TIMESTAMPED = json_encode($ARRAY);
 			
-			if( $this->CACHE == true ){
+			if( $ARRAY->error ){
+				// Do not cache if there was an error in the JSON request.
+			}else if( $this->CACHE == true ){
 				$CACHEFILE = $this->generateCacheFileName($LATLONG);
 				$fh = fopen($CACHEFILE, 'w') or die(json_encode("error"));
 				fwrite($fh, $JSON_TIMESTAMPED );

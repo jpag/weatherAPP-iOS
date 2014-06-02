@@ -15,25 +15,20 @@
 @class corelocation_gps;
 
 @interface mainViewController : UIViewController{
-    api_forecast *weatherAPI;
-    corelocation_gps *gpsAPI;
+    //api_forecast *weatherAPI;
+    //corelocation_gps *gpsAPI;
 }
 
 // LABELS in the XIB view:
 @property (nonatomic, strong) IBOutlet UILabel * label_lastchecked;
 
-
 // TEXT FIELDS:
 @property (nonatomic, strong) IBOutlet UITextField * tf_todaysTemp;
 @property (nonatomic, strong) IBOutlet UITextField * tf_yesterdaysTemp;
-
 @property (nonatomic, strong) IBOutlet UITextField * tf_todaysTime;
 @property (nonatomic, strong) IBOutlet UITextField * tf_yesterdaysTime;
-
 @property (nonatomic, strong) IBOutlet UITextField * tf_location;
-
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *indicator;
-
 @property (nonatomic, strong) IBOutlet UIButton *celOrFar;
 
 - (IBAction)refreshData:(id)sender;
