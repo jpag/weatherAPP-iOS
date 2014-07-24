@@ -1,0 +1,12 @@
+// Getting a settings view working.
+
+// Core Data
+// store user settings.
+// and establish a cache to hold previous weather.
+
+// Animations (flip cards/tiles)
+// Determine if Block would be a better thing then Delegates
+// better way of calling JSON and catching Error states.
+
+// how do I autosynthezie a delegate? (Corelocation.m)
+
