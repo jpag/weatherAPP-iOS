@@ -17,6 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         // Override point for customization after application launch.
+        
+        UIFont.cycleThroughSysFonts ()
+        
         return true
     }
 
@@ -34,15 +37,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(application: UIApplication!) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        println(" -- application will enter foreground ")
         
+        var vcontroller = self.window!.rootViewController as ViewController
+        vcontroller.updateLocation()
     }
 
     func applicationDidBecomeActive(application: UIApplication!) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
         println(" REFRESH the app core location")
-        var vcontroller = self.window!.rootViewController as ViewController
-        vcontroller.updateLocation()
+
     }
 
     func applicationWillTerminate(application: UIApplication!) {

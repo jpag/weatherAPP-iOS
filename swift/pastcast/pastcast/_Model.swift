@@ -24,7 +24,7 @@ class PastCastModel {
     // location
     var location = CLLocation()
     
-    
+    var locationName = ""
     
     // generate a singleton reference to Model
     class func singleton() -> PastCastModel {

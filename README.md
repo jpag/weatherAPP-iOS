@@ -13,13 +13,14 @@ PASTCAST!
 
 		-on touch convert the degrees to Cel
 
+		
+	COMPLETE :
 		- on refresh of the app (check for set time) update
 
-
-	COMPLETE :
-
 		- setup
-		
+		- get gps
+		- get json response
+		- find location name
 
 
 

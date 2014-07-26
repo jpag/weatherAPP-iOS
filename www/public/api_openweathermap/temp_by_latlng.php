@@ -32,7 +32,7 @@
 		array(
 			"ACCESS_TOKEN"=> $AUTH_TOKEN ,
 			"CACHEEXPIRES" => $CACHEEXPIRE_CRON ,
-			"OVERRIDECACHE" => true,
+			"OVERRIDECACHE" => false,
 			"CACHEFOLDER" => $CACHEFOLDER,
 			"PARAMS" => array('units'=>$UNITOFMEASUREMENT ),
 			//"TIME" => $TIMESTAMP,

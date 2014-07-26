@@ -11,18 +11,22 @@ import CoreLocation
 
 var _notificationCenter = NSNotificationCenter()
 
-
 class Globals {
+    
     // dev
-    // let apiRequests = "http://weather.yaapee.com/"
+    let apiRequests = "http://weather.yaapee.com/api/"
     // local
-    let apiRequests = "http://local.weather.com/api/"
+    //let apiRequests = "http://local.weather.com/api/"
     
     // how many decmial pts do we make this
     // 10 = 73.21203 * 10 / 10 = 73.2
     let gpsdecmialpt = 1000.0
     
     let minUpdateTimeInSeconds = -30.0
+    
+    let halfHeight = CGFloat(0.75)
+    let borderBetweenHalves = CGFloat(5.0)
+    
     
     // does not work...
     func roundCoordinate(coord:CLLocationDegrees) -> Double{
@@ -32,10 +36,11 @@ class Globals {
     }
 }
 
-var globals = Globals()
-
-
-
+class States {
+    let tempStateOpen   = "States.tempblock.open"
+    let tempStateClosed = "States.tempblock.closed"
+    
+}
 
 class NotificationEvents {
     let accel =     "NC.MotionUpdate.accel"
@@ -44,4 +49,7 @@ class NotificationEvents {
     let gyro =      "NC.MotionUpdate.gyro"
 }
 
+
+let globals = Globals()
+let appStates = States()
 let _ncEvents = NotificationEvents()

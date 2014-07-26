@@ -133,10 +133,13 @@
 			if( is_array($queryreturn) && count($queryreturn) > 1 ){
 
 				$result = new stdClass();
-				$result->list = [
-									$this->reformatStationData($queryreturn[0]), 
-									$this->reformatStationData($queryreturn[1]) 
-								];
+				
+				// $result->list = [
+				//  					$this->reformatStationData($queryreturn[0]), 
+				//  					$this->reformatStationData($queryreturn[1]) 
+				//  				];
+
+				$result->temp = $queryreturn[0]->last->main->temp;
 				$result->URL = $queryreturn['URL'];
 			}
 			return $result;
@@ -149,9 +152,8 @@
 			$newstation = $station->last;
 			$newstation->station = $station->station;
 			$newstation->distance = $station->distance;
-
+			
 			return $newstation;
-
 		}
 
 		protected function queryPast($STATIONID, $LATLONG){
@@ -168,13 +170,14 @@
 			$queryreturn = $this->query('history/station', $PARAMS);
 
 			if( is_object($queryreturn) ){
-
 				$list = $queryreturn->list;
-				
 				$result = new stdClass();
-				$result->list = [ $list[0], $list[1] ];
-				$result->URL = $queryreturn->URL;
 
+				// $list[0]->main->temp = $list[0]->main->temp->v;
+				// $list[1]->main->temp = $list[1]->main->temp->v;
+				//$result->list = [ $list[0], $list[1] ];
+				$result->temp = $list[0]->main->temp->v;
+				$result->URL = $queryreturn->URL;
 			}
 
 			return $result;
