@@ -1,3 +1,38 @@
+PASTCAST!
+
+- SWIFT
+
+	TODO :
+		-loader 
+
+		-load json/traverse the data return
+
+		-display
+			(storyboard)
+		-animate the display
+
+		-on touch convert the degrees to Cel
+
+		- on refresh of the app (check for set time) update
+
+
+	COMPLETE :
+
+		- setup
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
 TODO:
 	IOS:
 		make the singleton work as a singleton.. keeps intializing..

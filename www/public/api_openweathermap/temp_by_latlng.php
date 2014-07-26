@@ -25,8 +25,8 @@
 	require_once('config.php');
 	require_once('openweather-api.php');
 	
-	$TIMESTAMP = gmdate( time() );
-	$FROMTIME = gmdate( strtotime('-1 day') );
+	//$TIMESTAMP = gmdate( time() );
+	$FROMTIME = gmdate( strtotime('-1 day -1 hour') );
 	
 	$OPENWEATHER = new openWeather(
 		array(
@@ -34,9 +34,9 @@
 			"CACHEEXPIRES" => $CACHEEXPIRE_CRON ,
 			"OVERRIDECACHE" => true,
 			"CACHEFOLDER" => $CACHEFOLDER,
-			"PARAMS" => array('units'=>$UNITOFMEASUREMENT )
+			"PARAMS" => array('units'=>$UNITOFMEASUREMENT ),
 			//"TIME" => $TIMESTAMP,
-			//"FROMTIME" => $FROMTIME
+			"FROMTIME" => $FROMTIME
 		)
 	);
 

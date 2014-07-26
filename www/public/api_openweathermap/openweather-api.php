@@ -30,7 +30,7 @@
 
 		protected $PARAMS = array(''=>'');
 		//protected $TIME = '';
-		//protected $FROMTIME = '';
+		protected $FROMTIME = '';
 
 		public function __construct($config){
 			
@@ -64,11 +64,11 @@
 			// 	$this->TIME = time();
 			// }
 			
-			// if( isset($config['FROMTIME'])){
-			// 	$this->FROMTIME = $config['FROMTIME'];
-			// }else{
-			// 	$this->FROMTIME = strtotime('-1 day');
-			// }
+			if( isset($config['FROMTIME'])){
+				$this->FROMTIME = $config['FROMTIME'];
+			}else{
+				$this->FROMTIME = strtotime('-1 day');
+			}
 
 		}
 
@@ -93,22 +93,17 @@
 		
 		// All queries are made via lat long :
 		protected function queryBothTimes($LATLONG){
-			// $TIMESTAMP = $this->TIME;
-			// $FROMTIME = $this->FROMTIME;
-
 			$RESULT = $this->querystation($LATLONG);
 
 			//var_dump($RESULT);
 			//die;	
-			if( is_array($RESULT) ){
-				if( count($RESULT) > 0 ){
-					// find ID in result:
-					$STATIONID = $RESULT[0]->station->id;
-					$RESULTPAST = $this->queryPast($STATIONID,$LATLONG);
-				}
+			if( is_object($RESULT) ){
+				// find ID in result:
+				$STATIONID = $RESULT->list[0]->station->id;
+				$RESULTPAST = $this->queryPast($STATIONID,$LATLONG);
 			}
 
-			if( $RESULTPAST && $RESULT ){
+			if( isset($RESULTPAST) && isset($RESULT) ){
 
 				$RESULTS = array( 
 								'timecompared' => array(
@@ -134,7 +129,28 @@
 			// return number of stations:
 			$PARAMS["cnt"] = $this->NUMSTATIONS;
 			
-			return $this->query('station/find', $PARAMS);
+			$queryreturn = $this->query('station/find', $PARAMS);
+			if( is_array($queryreturn) && count($queryreturn) > 1 ){
+
+				$result = new stdClass();
+				$result->list = [
+									$this->reformatStationData($queryreturn[0]), 
+									$this->reformatStationData($queryreturn[1]) 
+								];
+				$result->URL = $queryreturn['URL'];
+			}
+			return $result;
+		}
+
+		protected function reformatStationData($station){
+			// take what is out of the last val.. 
+			// remove it and make it main. to match the history values;
+
+			$newstation = $station->last;
+			$newstation->station = $station->station;
+			$newstation->distance = $station->distance;
+
+			return $newstation;
 
 		}
 
@@ -144,10 +160,24 @@
 			$PARAMS["lon"] = $LATLONG[1];
 			$PARAMS["id"] = $STATIONID;
 			$PARAMS["type"] = "hour";
+			$PARAMS["start"] = $this->FROMTIME;
+
 			//$PARAMS["start"] = $FROMTIME;
 			//$PARAMS["end"] = $TIMESTAMP;
 
-			return $this->query('history/station', $PARAMS);
+			$queryreturn = $this->query('history/station', $PARAMS);
+
+			if( is_object($queryreturn) ){
+
+				$list = $queryreturn->list;
+				
+				$result = new stdClass();
+				$result->list = [ $list[0], $list[1] ];
+				$result->URL = $queryreturn->URL;
+
+			}
+
+			return $result;
 		}
 
 		protected function query($TYPE, $PARAMS){
