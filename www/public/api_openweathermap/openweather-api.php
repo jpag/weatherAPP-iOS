@@ -133,11 +133,12 @@
 			if( is_array($queryreturn) && count($queryreturn) > 1 ){
 
 				$result = new stdClass();
-				
-				// $result->list = [
-				//  					$this->reformatStationData($queryreturn[0]), 
-				//  					$this->reformatStationData($queryreturn[1]) 
-				//  				];
+
+
+				$result->list = array(
+				 					$this->reformatStationData($queryreturn[0]),
+				 					$this->reformatStationData($queryreturn[1]) 
+				 				);
 
 				$result->temp = $queryreturn[0]->last->main->temp;
 				$result->URL = $queryreturn['URL'];

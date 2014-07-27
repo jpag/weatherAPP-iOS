@@ -16,6 +16,7 @@ class ViewTempBlock: UIView {
     var pos:Int!
     var temps:NSArray!
     var state:NSString!
+    var statePercent:CGFloat = 0.00
     
     var padding:CGFloat         = 10.0
     var paddingSide:CGFloat     = 10.0
@@ -35,6 +36,7 @@ class ViewTempBlock: UIView {
     
     var tempLabelHeight:CGFloat = 30.0
     var tempTypeLabelHeight:CGFloat = 18.0
+    
     
     
     // temps[0] is always 'this' temp. temp[1] is the one to compare to.
@@ -103,25 +105,12 @@ class ViewTempBlock: UIView {
         if( pastCastModel.isCelsius ){
             tempType = "C"
         }
-        
         var temp = Int(temps[0] as NSNumber)
-        
         temperatureLabel.text = String(temp) + "°"
         tempTypeLabel.text = tempType
         tempTypeLabel.sizeToFit()
         temperatureLabel.sizeToFit()
         
-        var labelY = frame.height/2
-        if( pos == 1 ){
-            labelY = ( (UIScreen.mainScreen().bounds.height * 0.25) - temperatureLabel.frame.height) / 2
-        }
-        temperatureLabel.center = CGPoint(x: UIScreen.mainScreen().bounds.width/2, y: labelY )
-        tempTypeLabel.frame.origin = CGPoint(x: temperatureLabel.frame.origin.x + temperatureLabel.frame.width, y: labelY - padding)
-        
-        updateTimeLoc()
-    }
-    
-    func updateTimeLoc() {
         // update labels:
         locationLabel.text = pastCastModel.locationName
         var dateStr = "N/A"
@@ -134,30 +123,91 @@ class ViewTempBlock: UIView {
         dateStr = formater.stringFromDate(date)
         timeLabel.text = dateStr
         
+        updatePositions()
+    }
+    
+    func updatePositions() {
+        
+        // temperature / temperature label
+        var labelY = frame.height/2
+        if( pos == 1 ){
+            labelY = ( (UIScreen.mainScreen().bounds.height * 0.25) - temperatureLabel.frame.height) / 2
+        }
+        temperatureLabel.center = CGPoint(x: UIScreen.mainScreen().bounds.width/2, y: labelY )
+        tempTypeLabel.frame.origin = CGPoint(x: temperatureLabel.frame.origin.x + temperatureLabel.frame.width, y: labelY - padding)
         
         
-        // re - position / animate them
-        if pos == 1 {
-            locaTop = -(locationHeight + paddingTop)
-            timeTop = paddingTop
+        // Location and date stamp
+//        if pos == 1 {
+//            locaTop = -(locationHeight + paddingTop)
+//            timeTop = paddingTop
+//        }else{
+//            locaTop = paddingTop
+//            timeTop = (paddingTop*2)+locationHeight
+//        }
+        
+        let locRange = (min:-(locationHeight + paddingTop), med: paddingTop, max: self.bounds.height * 0.6 )
+        let locAlphaRange = (min:CGFloat(0), med:CGFloat(1.0), max:CGFloat(0))
+        let timeRange = (min: paddingTop , med: paddingTop*2 + locationHeight, max: self.bounds.height * 0.6 + (locationHeight + paddingTop * 1.25)   )
+        
+        var locpercent = statePercent
+        if( locpercent < 0.33 && pos == 0 ){
+            locpercent = 0.33
+        }
+        var timeLabelTop = locaTop + locationHeight + padding
+        var locAlpha:CGFloat = 1.0
+        
+        if( locpercent < 0.33 ) {
+            var per = (locpercent / 0.33)
+            locaTop = recalFromRange(locRange.min, max: locRange.med, percent: per )
+            locAlpha = recalFromRange( locAlphaRange.min, max: locAlphaRange.med, percent: per)
+            timeLabelTop = recalFromRange(timeRange.min, max: timeRange.med, percent: per )
+        }else if( locpercent < 0.66 ){
+            var per = ( (locpercent - 0.33) / 0.33)
+            locaTop = recalFromRange(locRange.med, max: locRange.max, percent: per )
+            locAlpha = recalFromRange(locAlphaRange.med, max: locAlphaRange.max, percent: per)
+            timeLabelTop = recalFromRange(timeRange.med, max: timeRange.max, percent: per )
+            
         }else{
-            locaTop = paddingTop
-            timeTop = (paddingTop*2)+locationHeight
+            locaTop     = locRange.max
+            timeLabelTop = timeRange.max
+            locAlpha    = locAlphaRange.max
         }
         
-        timeLabel.frame.origin.x = padding
-        locationLabel.frame.origin.x = padding
-        timeLabel.frame.origin.y = timeTop
+        
+        println(" ------ \( pos) ----- \(locpercent) " )
+        println( locRange )
+        println( locaTop )
+        
         locationLabel.frame.origin.y = locaTop
+        locationLabel.frame.origin.x = padding
+        timeLabel.frame.origin.y = timeLabelTop
+        timeLabel.frame.origin.x = padding
         
+        //locationLabel.alpha = CGFloat(locAlpha)
         
     }
     
     
-    func updateState() {
-        // state has changed animate this differently...
+    func recalFromRange(min:CGFloat,max:CGFloat, percent:CGFloat ) -> CGFloat {
         
+        return min + (abs( min - max) * percent)
     }
+    
+    func updateState(percent:CGFloat) {
+        
+        if( pos == 0 ) {
+            statePercent = (percent * 0.33) + 0.33
+        }else if( pos == 1 ){
+            statePercent = (percent * 0.33)
+        }
+        
+        // this will then force a draw/update position of labels etc.
+        println( " pos \(pos) startpercent \(statePercent) ")
+        
+        updatePositions()
+    }
+    
     
 
 }

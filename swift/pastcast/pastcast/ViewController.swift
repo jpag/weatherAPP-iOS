@@ -16,7 +16,7 @@ import UIKit
 import CoreLocation
 
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewDelegate {
     
     var locationManager = CLLocationManager()
     var locationRecieved:NSDate?
@@ -27,16 +27,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var topHalf:ViewTempBlock?
     var bottomHalf:ViewTempBlock?
     
+    var scrollTop = (current:CGFloat(0.0),previous:CGFloat(0.0))
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         self.view.backgroundColor = UIColor.pastCast.white()
-        self.view.addGestureRecognizer(UISwipeGestureRecognizer(target: self, action:"swipe"))
+        
+        var newFrame = self.view.frame
+            newFrame.size.height = (UIScreen.mainScreen().bounds.height * globals.halfHeight) * 2
+        
+        //self.view.frame = newFrame
+        println(" self.view.frame \(self.view.frame.height) ")
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target:self, action:"tap"))
         
+        var scrollView = self.view as UIScrollView
+        scrollView.scrollEnabled = true
+        scrollView.contentSize = CGSize(width:  UIScreen.mainScreen().bounds.width, height: UIScreen.mainScreen().bounds.height * (globals.halfHeight*2.0) )
+        
+        scrollView.delegate = self
+        scrollView.decelerationRate = 0.0
+        scrollView.showsVerticalScrollIndicator = false
         findLocation()
         
     }
@@ -67,9 +80,101 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         updateTemperature()
     }
     
-    func swipe () {
-        println(" --- SWIPE which direction ---")
-        //findLocation()
+    func scrollViewDidScroll(scrollView:UIScrollView){
+        println(" user scrolling \(scrollView.contentOffset.y)")
+        
+        var maxScrollY = getMaxScroll()
+        
+        scrollTop.previous = scrollTop.current
+        scrollTop.current = scrollView.contentOffset.y
+        
+        if( scrollView.contentOffset.y < 0 ){
+            // pull to refresh!
+            
+        }else if( scrollView.contentOffset.y > maxScrollY ){
+            scrollView.contentOffset.y = maxScrollY
+        }
+        
+        // update the two temperature views:
+        
+        topHalf?.updateState( scrollView.contentOffset.y / maxScrollY )
+        bottomHalf?.updateState( scrollView.contentOffset.y / maxScrollY )
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView!) {
+        println(" scrollViewDidEndDecelerating ")
+        snapTo(scrollView)
+    }
+    
+    func scrollViewWillBeginDecelerating(scrollView: UIScrollView!) {
+        println(" scrollViewWillBeginDecelerating ")
+        
+        if( scrollView.contentOffset.y >= 0 ){
+            scrollView.setContentOffset(scrollView.contentOffset, animated: false)
+        }
+        snapTo(scrollView)
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView!, willDecelerate decelerate: Bool) {
+        snapTo(scrollView)
+    }
+    
+    func snapTo(scrollView:UIScrollView) {
+        println(" snap to ")
+        
+        var maxScrollY          = getMaxScroll()
+        var snapto:CGFloat      = 0
+        var halfwayPt:CGFloat   = maxScrollY * 0.5
+        
+        var direction:NSString  = "up"
+        if( scrollTop.current > scrollTop.previous ){
+            direction = "down"
+        }
+        
+        println( scrollView.contentOffset.y )
+        println(" direction \(direction) scrolltop current \(scrollTop.current) prev \(scrollTop.previous) ---")
+        
+        if( scrollTop.current < 0 ){
+            // let it go back on it's own
+            println( " Do not animate")
+            // scrollView.removeAllAnimations()
+            return
+        }else if( scrollTop.current > (maxScrollY * 0.15) && direction == "down" ){
+            snapto = maxScrollY
+        }else if( scrollTop.current < (maxScrollY * 0.65) && direction == "up" ){
+            snapto = 0
+        }else if( scrollTop.current > halfwayPt ){
+            // stay to where you are closest:
+            snapto = maxScrollY
+        }else if( scrollTop.current < halfwayPt ){
+            // stay to where you are closest:
+            snapto = 0
+        }
+        
+        
+        var distance = Double( abs( scrollView.contentOffset.y - snapto) )
+        var timePerPixel = Double(0.003)
+        var time:Double = distance * timePerPixel
+        
+        UIView.animateWithDuration(
+            time,
+            animations: {
+                scrollView.contentOffset.y = snapto
+            },
+            completion: { (finished:Bool) in
+                if( finished ){
+                    self.updateState()
+                }
+            }
+        )
+    }
+    
+    func getMaxScroll() -> CGFloat {
+        return UIScreen.mainScreen().bounds.height * (globals.halfHeight * 2) - UIScreen.mainScreen().bounds.height
+    }
+    
+    func updateState() {
+        
     }
     
     func findLocation() {
@@ -93,9 +198,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
-        // TODO add FAIL message or do nothing...
         println(" -- FAIL to locate...")
-        
         showWarning("Warning", msg: "Failed to find a location.")
         // TODO add a default location? or a popup/autocomplete of location?
         
@@ -235,10 +338,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         var calculatedTemps = updateTemps()
         
+        if( calculatedTemps.c == globals.tempError || calculatedTemps.p == globals.tempError ){
+            println(" - add views cal time..not valid")
+            return
+        }
+        
         var width = UIScreen.mainScreen().bounds.width
-        var topHeight = UIScreen.mainScreen().bounds.height * globals.halfHeight
+        var halfheight = UIScreen.mainScreen().bounds.height * globals.halfHeight
+        var topHeight = halfheight
         var bottomY = topHeight + globals.borderBetweenHalves
-        var bottomHeight = UIScreen.mainScreen().bounds.height * globals.halfHeight
+        var bottomHeight = halfheight
         
         println( " current \(calculatedTemps.c) vs \(calculatedTemps.p)")
         println( " width \(width) h \(topHeight) \(UIScreen.mainScreen().bounds.height) half height: \(globals.halfHeight)")
@@ -257,9 +366,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             _state: appStates.tempStateClosed
         )
         
+        var maxScrollY = getMaxScroll()
+        var scrollViewY = (self.view as UIScrollView).contentOffset.y
+        
+        topHalf?.updateState( scrollViewY / maxScrollY )
+        bottomHalf?.updateState( scrollViewY / maxScrollY )
         
         self.view.addSubview(topHalf)
         self.view.addSubview(bottomHalf)
+        
         
         println(" added sub views")
         
@@ -273,7 +388,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     func updateTemps() ->(c:CGFloat, p:CGFloat) {
     
         // http://stackoverflow.com/questions/24096293/assign-value-to-optional-dictionary-in-swift
-    
+        
+        if( currentResults? == nil || previousResults? == nil ){
+            return (globals.tempError, globals.tempError)
+        }
+        
         let cdict = currentResults? as NSDictionary
         let pdict = previousResults? as NSDictionary
     
@@ -296,6 +415,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if( topHalf && bottomHalf ){
             
             var calculatedTemps = updateTemps()
+            
+            if( calculatedTemps.c == globals.tempError || calculatedTemps.p == globals.tempError ){
+                print("ERROR could not update")
+                return
+            }
+            
             topHalf?.update([calculatedTemps.c,calculatedTemps.p])
             bottomHalf?.update([calculatedTemps.p,calculatedTemps.c])
             

@@ -3,26 +3,27 @@ PASTCAST!
 - SWIFT
 
 	TODO :
+		- swipe up down update state
+
 		-loader 
 
-		-load json/traverse the data return
-
-		-display
-			(storyboard)
 		-animate the display
-
-		-on touch convert the degrees to Cel
 
 		
 	COMPLETE :
+		-on touch convert the degrees to Cel
+		- snapping / scrollview added
 		- on refresh of the app (check for set time) update
-
 		- setup
 		- get gps
 		- get json response
 		- find location name
 
+		-load json/traverse the data return
 
+		-display
+			(storyboard)
+		
 
 
 
