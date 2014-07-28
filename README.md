@@ -24,6 +24,7 @@ PASTCAST!
 		-display
 			(storyboard)
 		
+		- tap on specific block to get that one on focus
 
 
 

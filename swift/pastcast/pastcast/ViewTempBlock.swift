@@ -31,12 +31,17 @@ class ViewTempBlock: UIView {
     var locationLabel:UILabel!
     var timeLabel:UILabel!
     
+    
+    // container to hold temperature, icon, and temp type
+    var tempContainer:UIView!
+    
     var temperatureLabel:UILabel!
     var tempTypeLabel:UILabel!
     
     var tempLabelHeight:CGFloat = 30.0
     var tempTypeLabelHeight:CGFloat = 18.0
     
+    var iconBlock:UIView!
     
     
     // temps[0] is always 'this' temp. temp[1] is the one to compare to.
@@ -55,7 +60,21 @@ class ViewTempBlock: UIView {
         temperatureLabel = UILabel( frame: CGRect(x: 0, y: 0, width: w, height: tempLabelHeight))
         tempTypeLabel   = UILabel(frame: CGRect(x: 0, y: 0, width: w, height: tempTypeLabelHeight))
         
+        
+        tempContainer = UIView(frame: CGRect(x:0, y:0, width:w, height: (tempLabelHeight + tempTypeLabelHeight) ) )
+        
+        
         super.init(frame:frame)
+        
+        var iconWH:CGFloat = iconHeight()
+        iconBlock = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
+        iconBlock.backgroundColor = UIColor.pastCast.white()
+        
+        var iconMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
+        iconMaskLayer.backgroundColor = UIColor.blackColor()
+        iconBlock.maskView = iconMaskLayer
+        
+        
         
         // println( " pos \(pos) frame \(frame)")
         
@@ -78,8 +97,12 @@ class ViewTempBlock: UIView {
         
         self.addSubview( locationLabel )
         self.addSubview( timeLabel )
-        self.addSubview( temperatureLabel )
-        self.addSubview( tempTypeLabel )
+        
+        tempContainer.addSubview( temperatureLabel )
+        tempContainer.addSubview( tempTypeLabel )
+        tempContainer.addSubview( iconBlock )
+        self.addSubview(tempContainer)
+        
         
         update(_temps)
     }
@@ -129,69 +152,162 @@ class ViewTempBlock: UIView {
     func updatePositions() {
         
         // temperature / temperature label
-        var labelY = frame.height/2
-        if( pos == 1 ){
-            labelY = ( (UIScreen.mainScreen().bounds.height * 0.25) - temperatureLabel.frame.height) / 2
-        }
-        temperatureLabel.center = CGPoint(x: UIScreen.mainScreen().bounds.width/2, y: labelY )
-        tempTypeLabel.frame.origin = CGPoint(x: temperatureLabel.frame.origin.x + temperatureLabel.frame.width, y: labelY - padding)
+        let third:CGFloat = 0.33
+        let twoThirds:CGFloat = 0.66
         
-        
-        // Location and date stamp
-//        if pos == 1 {
-//            locaTop = -(locationHeight + paddingTop)
-//            timeTop = paddingTop
-//        }else{
-//            locaTop = paddingTop
-//            timeTop = (paddingTop*2)+locationHeight
-//        }
-        
-        let locRange = (min:-(locationHeight + paddingTop), med: paddingTop, max: self.bounds.height * 0.6 )
-        let locAlphaRange = (min:CGFloat(0), med:CGFloat(1.0), max:CGFloat(0))
-        let timeRange = (min: paddingTop , med: paddingTop*2 + locationHeight, max: self.bounds.height * 0.6 + (locationHeight + paddingTop * 1.25)   )
+        // 49.5 ? // for use on icon collapsing before opening on side.
+        // two step effect between one state.
+        let midWayBetweenThirds:CGFloat = (third + (third/2))
         
         var locpercent = statePercent
-        if( locpercent < 0.33 && pos == 0 ){
-            locpercent = 0.33
+        if( locpercent < third && pos == 0 ){
+            // make sure the first block does not look funny on pull to refresh:
+            locpercent = third
         }
-        var timeLabelTop = locaTop + locationHeight + padding
-        var locAlpha:CGFloat = 1.0
         
-        if( locpercent < 0.33 ) {
-            var per = (locpercent / 0.33)
+        let tempYRange = (
+            min : CGFloat( ((UIScreen.mainScreen().bounds.height * 0.25) - temperatureLabel.frame.height) / 2 ),
+            med : CGFloat( frame.height / 2 ),
+            max : CGFloat( frame.height * 0.80)
+        )
+        
+        let iconRangeY = (
+            min : CGFloat( paddingTop + locationHeight ),
+            med : CGFloat( paddingTop + locationHeight ),
+            max : CGFloat( 0 )
+        )
+        
+        let iconRangeHW = (
+            zero    : CGFloat( 0 ),
+            third   : CGFloat( self.iconHeight() ),
+            half    : CGFloat(0),
+            twoThirds : CGFloat( self.iconHeight() )
+        )
+        
+        let iconRangeX = (
+            min : CGFloat(),
+            med : CGFloat(),
+            max : CGFloat()
+        )
+        
+        let locRange = (
+            min:-(locationHeight + paddingTop),
+            med: paddingTop,
+            max: self.bounds.height * 0.6
+        )
+        
+        let timeRange = (
+            min: paddingTop ,
+            med: paddingTop*2 + locationHeight,
+            max: self.bounds.height * 0.6 + (locationHeight + paddingTop * 1.25)
+        )
+        var per:CGFloat!
+        var tempYPos:CGFloat!
+        var iconY: CGFloat!
+        var newiconHeight:CGFloat!
+        var newiconWidth:CGFloat!
+        var tempContainerX:CGFloat = UIScreen.mainScreen().bounds.width/2
+        var timeLabelTop = locaTop + locationHeight + padding
+
+        
+        if( locpercent < third ) {
+            per = (locpercent / third)
             locaTop = recalFromRange(locRange.min, max: locRange.med, percent: per )
-            locAlpha = recalFromRange( locAlphaRange.min, max: locAlphaRange.med, percent: per)
             timeLabelTop = recalFromRange(timeRange.min, max: timeRange.med, percent: per )
-        }else if( locpercent < 0.66 ){
-            var per = ( (locpercent - 0.33) / 0.33)
+            tempYPos = recalFromRange(tempYRange.min, max: tempYRange.med, percent: per)
+            
+            
+        }else if( locpercent < twoThirds ){
+            per = ( (locpercent - third) / third)
             locaTop = recalFromRange(locRange.med, max: locRange.max, percent: per )
-            locAlpha = recalFromRange(locAlphaRange.med, max: locAlphaRange.max, percent: per)
             timeLabelTop = recalFromRange(timeRange.med, max: timeRange.max, percent: per )
+            
+            tempYPos = recalFromRange(tempYRange.med, max:tempYRange.max, percent: per)
+            
             
         }else{
             locaTop     = locRange.max
             timeLabelTop = timeRange.max
-            locAlpha    = locAlphaRange.max
+            tempYPos = tempYRange.max
+            
         }
-        
-        
-        println(" ------ \( pos) ----- \(locpercent) " )
-        println( locRange )
-        println( locaTop )
         
         locationLabel.frame.origin.y = locaTop
         locationLabel.frame.origin.x = padding
         timeLabel.frame.origin.y = timeLabelTop
         timeLabel.frame.origin.x = padding
         
-        //locationLabel.alpha = CGFloat(locAlpha)
+        var iconX:CGFloat!
+        
+        if( locpercent < third ){
+            per = (locpercent) / third
+            
+            newiconHeight = recalFromRange(iconRangeHW.zero, max: iconRangeHW.third, percent: per)
+            newiconWidth = iconRangeHW.third
+            iconY = recalFromRange(iconRangeY.min, max: iconRangeY.med, percent: per)
+            iconX = temperatureLabel.frame.origin.x
+            
+        }else if( locpercent < midWayBetweenThirds ){
+            // close the icon up
+            per = (locpercent - third) / (midWayBetweenThirds - third)
+            //println(" percent \(per) ----- ")
+            newiconHeight = recalFromRange(iconRangeHW.third, max: iconRangeHW.half, percent: per)
+            newiconWidth = iconRangeHW.third
+            iconX = temperatureLabel.frame.origin.x
+            iconY = iconRangeY.min
+            
+        }else if( locpercent < twoThirds ) {
+            // open the icon on the side and shift the container over left
+            per = (locpercent - midWayBetweenThirds) / (midWayBetweenThirds - third)
+            
+            newiconHeight = iconRangeHW.twoThirds
+            newiconWidth = recalFromRange(iconRangeHW.half, max: iconRangeHW.twoThirds, percent: per)
+            
+            iconY = iconRangeY.max
+            iconX = tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width + padding
+            
+            //recalFromRange(temperatureLabel.frame.origin.x , max: tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width + padding, percent: per)
+            
+            tempContainerX = recalFromRange(
+                tempContainerX,
+                max: UIScreen.mainScreen().bounds.width/2 - (tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width ),
+                percent: per
+            )
+            
+        }else {
+            // hitting max
+            newiconHeight = iconRangeHW.twoThirds
+            newiconWidth = iconRangeHW.twoThirds
+            
+            iconX = tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width + padding
+            iconY = iconRangeY.max
+            
+            tempContainerX = (UIScreen.mainScreen().bounds.width/2 - (tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width) )
+        }
+        
+        tempContainer.frame.origin = CGPoint(x: tempContainerX, y: tempYPos)
+        temperatureLabel.frame.origin = CGPoint(x: -(temperatureLabel.frame.width/2), y: 0 )
+        tempTypeLabel.frame.origin = CGPoint(x: temperatureLabel.frame.width/2, y: 0)
+        
+        iconBlock.frame.origin.y = iconY
+        iconBlock.frame.origin.x = iconX
+        iconBlock.maskView.frame = CGRect(x: 0, y: 0, width: newiconWidth, height: newiconHeight)
+        
         
     }
     
+    func iconHeight() -> CGFloat {
+        
+        return UIScreen.mainScreen().bounds.width * 0.15
+        
+    }
     
     func recalFromRange(min:CGFloat,max:CGFloat, percent:CGFloat ) -> CGFloat {
-        
-        return min + (abs( min - max) * percent)
+        if( max < min){
+            return min - (abs( max - min) * percent)
+        }else{
+            return min + (abs( min - max) * percent)
+        }
     }
     
     func updateState(percent:CGFloat) {
@@ -203,7 +319,7 @@ class ViewTempBlock: UIView {
         }
         
         // this will then force a draw/update position of labels etc.
-        println( " pos \(pos) startpercent \(statePercent) ")
+        //println( " pos \(pos) startpercent \(statePercent) ")
         
         updatePositions()
     }

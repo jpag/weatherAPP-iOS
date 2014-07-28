@@ -14,9 +14,9 @@ var _notificationCenter = NSNotificationCenter()
 class Globals {
     
     // dev
-    //let apiRequests = "http://weather.yaapee.com/api/"
+    let apiRequests = "http://weather.yaapee.com/api/"
     // local
-    let apiRequests = "http://local.weather.com/api/"
+    //let apiRequests = "http://local.weather.com/api/"
     
     // how many decmial pts do we make this
     // 10 = 73.21203 * 10 / 10 = 73.2

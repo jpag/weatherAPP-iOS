@@ -29,6 +29,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     var scrollTop = (current:CGFloat(0.0),previous:CGFloat(0.0))
     
+    var scrollTimer:NSTimer?
+    var scrollViewDestination:CGFloat?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -43,12 +46,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target:self, action:"tap"))
         
+        
         var scrollView = self.view as UIScrollView
         scrollView.scrollEnabled = true
         scrollView.contentSize = CGSize(width:  UIScreen.mainScreen().bounds.width, height: UIScreen.mainScreen().bounds.height * (globals.halfHeight*2.0) )
         
         scrollView.delegate = self
-        scrollView.decelerationRate = 0.0
+        scrollView.decelerationRate = 0.75
         scrollView.showsVerticalScrollIndicator = false
         findLocation()
         
@@ -96,7 +100,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         }
         
         // update the two temperature views:
-        
         topHalf?.updateState( scrollView.contentOffset.y / maxScrollY )
         bottomHalf?.updateState( scrollView.contentOffset.y / maxScrollY )
     }
@@ -104,19 +107,27 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     func scrollViewDidEndDecelerating(scrollView: UIScrollView!) {
         println(" scrollViewDidEndDecelerating ")
         snapTo(scrollView)
+//        var maxScrollY = getMaxScroll()
+//        topHalf?.updateState( scrollView.contentOffset.y / maxScrollY )
+//        bottomHalf?.updateState( scrollView.contentOffset.y / maxScrollY )
     }
     
     func scrollViewWillBeginDecelerating(scrollView: UIScrollView!) {
         println(" scrollViewWillBeginDecelerating ")
         
         if( scrollView.contentOffset.y >= 0 ){
-            scrollView.setContentOffset(scrollView.contentOffset, animated: false)
+            // scrollView.setContentOffset(scrollView.contentOffset, animated: true)
         }
-        snapTo(scrollView)
+        
+        //snapTo(scrollView)
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView!, willDecelerate decelerate: Bool) {
-        snapTo(scrollView)
+        println( " Scroll view did end dragging decelerate: \(decelerate)")
+        if( !decelerate){
+            snapTo(scrollView)
+        }
+        
     }
     
     func snapTo(scrollView:UIScrollView) {
@@ -131,12 +142,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             direction = "down"
         }
         
-        println( scrollView.contentOffset.y )
-        println(" direction \(direction) scrolltop current \(scrollTop.current) prev \(scrollTop.previous) ---")
+        //println( scrollView.contentOffset.y )
+        //println(" direction \(direction) scrolltop current \(scrollTop.current) prev \(scrollTop.previous) ---")
         
         if( scrollTop.current < 0 ){
             // let it go back on it's own
-            println( " Do not animate")
+            // println( " Do not animate")
             // scrollView.removeAllAnimations()
             return
         }else if( scrollTop.current > (maxScrollY * 0.15) && direction == "down" ){
@@ -153,20 +164,58 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         
         var distance = Double( abs( scrollView.contentOffset.y - snapto) )
-        var timePerPixel = Double(0.003)
+        var timePerPixel = Double(0.0025)
         var time:Double = distance * timePerPixel
         
-        UIView.animateWithDuration(
-            time,
-            animations: {
-                scrollView.contentOffset.y = snapto
-            },
-            completion: { (finished:Bool) in
-                if( finished ){
-                    self.updateState()
-                }
-            }
-        )
+//        UIView.animateWithDuration(
+//            time,
+//            animations: {
+//                scrollView.contentOffset.y = snapto
+//            },
+//            completion: { (finished:Bool) in
+//                if( finished ){
+//                    self.updateState()
+//                }
+//            }
+//        )
+        
+        if( scrollTimer? ){
+            scrollTimer?.invalidate()
+        }
+        scrollViewDestination = snapto
+        scrollTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("stepAnimate"), userInfo: nil, repeats: true)
+        scrollTimer?.fire()
+    }
+    
+    func stepAnimate() {
+        println(" ---- step animate ---")
+        
+        if( !scrollViewDestination ){
+            println(" did not find a ST destination so cancel the animation timer")
+            println(" ---- Invalidate ---- ")
+            scrollTimer?.invalidate()
+            return
+        }
+        var maxScrollY          = getMaxScroll()
+        var scrollView = self.view as UIScrollView
+        
+        var newST:CGFloat = scrollView.contentOffset.y - ((scrollView.contentOffset.y - scrollViewDestination!) * 0.05)
+        var difST:CGFloat = abs(scrollView.contentOffset.y - newST)
+        if( difST < 0.5 ){
+            println(" ---- Invalidate ---- ")
+            // close enough stop the animation
+            scrollTimer?.invalidate()
+            newST = scrollViewDestination!
+        }
+        
+        println( "scrollViewDestination: \(scrollViewDestination) ----- | scrollView.contentOffset.y \(scrollView.contentOffset.y) = newST \(newST) " )
+        println( " difffffst \(difST) ")
+        
+        scrollView.contentOffset.y = newST
+        
+        // update the two temperature views:
+        topHalf?.updateState( scrollView.contentOffset.y / maxScrollY )
+        bottomHalf?.updateState( scrollView.contentOffset.y / maxScrollY )
     }
     
     func getMaxScroll() -> CGFloat {
