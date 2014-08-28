@@ -5,6 +5,11 @@
 	if( !isset( $_REQUEST['lat'] ) || !isset( $_REQUEST['lng'] ) ){
 		echo json_encode(array('error' => 'latitude and longitude not defined' ));
 		die;
+	}	
+
+	$disableCache = false;
+	if($_SERVER["HTTP_HOST"] == 'local.weather.com' ){
+		//$disableCache = true;
 	}
 
 	if( !isset( $_REQUEST['unit'] ) ){
@@ -32,9 +37,10 @@
 		array(
 			"ACCESS_TOKEN"=> $AUTH_TOKEN ,
 			"CACHEEXPIRES" => $CACHEEXPIRE_CRON ,
-			"OVERRIDECACHE" => false,
+			"OVERRIDECACHE" => $disableCache,
 			"CACHEFOLDER" => $CACHEFOLDER,
-			"PARAMS" => array('units'=>$UNITOFMEASUREMENT ),
+			//"PARAMS" => array('units'=>$UNITOFMEASUREMENT ),
+			"PARAMS" => array(""=>""),
 			//"TIME" => $TIMESTAMP,
 			"FROMTIME" => $FROMTIME
 		)
@@ -45,8 +51,11 @@
 	// currently, minutely, hourly, daily, alerts, flags.
 	
 	// ROUND the LATs and LONGs
-	$LAT = round($_REQUEST['lat']);
-	$LNG = round($_REQUEST['lng']);
+	// $LAT = round($_REQUEST['lat']);
+	// $LNG = round($_REQUEST['lng']);
+
+	$LAT = $_REQUEST['lat'];
+	$LNG = $_REQUEST['lng'];
 	
 	$RESULT = $OPENWEATHER->queryGPS( array($LAT, $LNG) );
 	echo $RESULT;

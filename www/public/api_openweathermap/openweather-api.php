@@ -4,6 +4,9 @@
 	WARNING
 	THIS DOES NOT TAKE INTO ACCOUNT YET
 	IF A USER HAS BEEN ONLINE FOR OVER 2 HOURS 
+
+	http://openweathermap.org/weather-conditions
+
 	*/
 	
 	if (!function_exists('curl_init')) {
@@ -28,7 +31,7 @@
 		
 		protected $NUMSTATIONS = 2;
 
-		protected $PARAMS = array(''=>'');
+		protected $PARAMS = array();
 		//protected $TIME = '';
 		protected $FROMTIME = '';
 
@@ -93,14 +96,19 @@
 		
 		// All queries are made via lat long :
 		protected function queryBothTimes($LATLONG){
-			$RESULT = $this->querystation($LATLONG);
+			//$RESULT = $this->querystation($LATLONG);
+			
+			$RESULT = $this->queryWeather($LATLONG);
 
-			//var_dump($RESULT);
-			//die;	
 			if( is_object($RESULT) ){
+
 				// find ID in result:
-				$STATIONID = $RESULT->list[0]->station->id;
-				$RESULTPAST = $this->queryPast($STATIONID,$LATLONG);
+				// $STATIONID = $RESULT->list[0]->station->id;
+				// $RESULTPAST = $this->queryPast($STATIONID,$LATLONG);
+
+				$CITYID = $RESULT->weather->id;
+				$RESULTPAST = $this->queryPastCity($CITYID,$LATLONG);
+
 			}
 
 			if( isset($RESULTPAST) && isset($RESULT) ){
@@ -146,6 +154,32 @@
 			return $result;
 		}
 
+
+		protected function queryWeather($LATLONG){
+			$PARAMS = $this->PARAMS;
+			$PARAMS["lat"] = $LATLONG[0];
+			$PARAMS["lon"] = $LATLONG[1];
+			
+			$queryreturn = $this->query('weather', $PARAMS);
+
+			// echo gettype($queryreturn);
+			// var_dump( $queryreturn );
+
+			$main = $queryreturn->main;
+			$temp = $main->temp;
+
+			// echo '----- ' .$temp;
+			
+			$result = new stdClass();
+
+			$result->weather = $queryreturn;
+			$result->weathercode = $queryreturn->weather[0]->id;
+			$result->temp = $temp;
+			$result->URL = $queryreturn->URL;
+
+			return $result;
+		}
+
 		protected function reformatStationData($station){
 			// take what is out of the last val.. 
 			// remove it and make it main. to match the history values;
@@ -155,6 +189,43 @@
 			$newstation->distance = $station->distance;
 			
 			return $newstation;
+		}
+
+		protected function queryPastCity($CITYID, $LATLONG){
+			$PARAMS = $this->PARAMS;
+			$PARAMS["id"] = $CITYID;
+			$PARAMS["type"] = "hour";
+			$PARAMS["start"] = $this->FROMTIME;
+
+			//$PARAMS["start"] = $FROMTIME;
+			//$PARAMS["end"] = $TIMESTAMP;
+
+			$queryreturn = $this->query('history/city', $PARAMS);
+
+			if( is_object($queryreturn) ){
+				$list = $queryreturn->list;
+				$result = new stdClass();
+
+				// $list[0]->main->temp = $list[0]->main->temp->v;
+				// $list[1]->main->temp = $list[1]->main->temp->v;
+				//$result->list = [ $list[0], $list[1] ];
+				
+				$result->cityid = $queryreturn->city_id;
+
+				if( count($list) > 0 ){
+
+					$result->weather = $list[0];
+					$result->weathercode = $list[0]->weather[0]->id;
+					$result->temp = $list[0]->main->temp;
+				}else{
+					$result->weather = null;
+					$result->weathercode = null;
+					$result->temp = null;
+				}
+				$result->URL = $queryreturn->URL;
+			}
+
+			return $result;
 		}
 
 		protected function queryPast($STATIONID, $LATLONG){
@@ -177,6 +248,7 @@
 				// $list[0]->main->temp = $list[0]->main->temp->v;
 				// $list[1]->main->temp = $list[1]->main->temp->v;
 				//$result->list = [ $list[0], $list[1] ];
+				
 				$result->temp = $list[0]->main->temp->v;
 				$result->URL = $queryreturn->URL;
 			}
@@ -192,6 +264,9 @@
 			$PARAMS["APPID"] = $this->ACCESS_TOKEN;
 			if( isset( $PARAMS ) ){
 				foreach ($PARAMS as $key => $value) {
+					if( count($key) == 0 || count($value) == 0 ){
+						continue;
+					}
 					$PARAMSFORMATTED .= $key.'='.$value.'&';
 				}
 			}
@@ -216,7 +291,7 @@
 
 			//echo $QUERY_RESULT;
 			//die;
-			$DECODED = json_decode( $QUERY_RESULT );
+			$DECODED = json_decode( $QUERY_RESULT);
 			
 			if( $GLOBALS['STATE'] == 'dev' ){
 				if( !isset($DECODED )){
@@ -263,6 +338,7 @@
 			$CACHEFILE = $this->generateCacheFileName($LATLONG);
 			
 			if( file_exists($CACHEFILE) && $this->OVERRIDECACHE == false ){
+				
 				$cachefileJSON = file_get_contents($CACHEFILE);
 				$decodedCache = json_decode($cachefileJSON, true);
 
@@ -272,9 +348,11 @@
 			  	if( $decodedCache != null && 
 			  		$decodedCache['cacheDate'] > time('now') ){	
 			  		
-			  		//echo ' cache file '. time('now') ;
+
+			  		// echo ' cache file '. time('now') . ' vs cache file ' . $decodedCache['cacheDate'] ;
 
 			  		return $cachefileJSON;
+
 			  	}else{
 			  		//out of date
 			  		return false;

@@ -14,18 +14,19 @@ var _notificationCenter = NSNotificationCenter()
 class Globals {
     
     // dev
-    let apiRequests = "http://weather.yaapee.com/api/"
+    // let apiRequests = "http://weather.yaapee.com/api/"
     // local
-    //let apiRequests = "http://local.weather.com/api/"
+    let apiRequests = "http://local.weather.com/api/"
     
     // how many decmial pts do we make this
     // 10 = 73.21203 * 10 / 10 = 73.2
-    let gpsdecmialpt = 1000.0
+    let gpsdecmialpt = 10000.0
     
     let minUpdateTimeInSeconds = -30.0
     
     let halfHeight = CGFloat(0.75)
-    let borderBetweenHalves = CGFloat(5.0)
+    
+    let borderBetweenHalves = CGFloat(1.0)
     
     let tempError:CGFloat = -270.0
     
@@ -51,6 +52,78 @@ class NotificationEvents {
 }
 
 
+class WeatherCodes {
+    
+    func getCode(val:Int) -> NSString {
+
+        var clear = "weather-sunny"
+        var storm = "weather-tstorm"
+        var rain = "weather-rain"
+        var snow = "weather-snow"
+        var atmosphere = "weather-clouds"
+        var clouds = "weather-clouds"
+        var extreme = "weather-tstorm"
+        
+        var tornado = "weather-tstorm"
+        var hurricane = "weather-tstorm"
+        
+        if( val == 781 || val == 900 ){
+            // tornado
+            return tornado
+        }
+        if( val == 901 || val == 901 || val == 962 ){
+            return hurricane
+        }
+        
+        if( val < 100 ){
+            return clear
+        }else if( val < 200 ){
+            return clear
+        }else if( val < 300 ){
+            // thunderstorm
+            return storm
+        }else if( val < 400 ){
+            // drizzle
+            return rain
+            
+        // }else if( val < 500 ){
+            // EH?
+
+        }else if( val < 600 ){
+            // rain
+            return rain
+        }else if( val < 600 ){
+            // snow
+            return snow
+        }else if( val < 800 ){
+            // atmosphere
+            // mist,smoke,haze,sand,dust,volcanic ash, squalls, tornado
+            return atmosphere
+        }else if( val < 900 ){
+            // clouds
+            return clouds
+        }else if( val < 950 ){
+            // extreme
+            return extreme
+        }else if( val < 959 ){
+            // additional
+            // setting, calm, light breeze, gentle breeze, moderate breeze, fresh breeze, strong breeze, high wind,
+            // gale
+            return atmosphere
+        }else if( val < 959 ){
+            // severe gale, storm, violent storm,
+            // hurricane
+            return storm
+        }
+        
+        return clear
+    }
+
+    
+}
+
+
 let globals = Globals()
 let appStates = States()
+let weatherCodes = WeatherCodes()
 let _ncEvents = NotificationEvents()

@@ -16,14 +16,13 @@ class ViewTempBlock: UIView {
     var pos:Int!
     var temps:NSArray!
     var state:NSString!
-    var statePercent:CGFloat = 0.00
+    var statePercent:CGFloat    = 0.00
     
     var padding:CGFloat         = 10.0
     var paddingSide:CGFloat     = 10.0
     var paddingTop:CGFloat      = 10.0
     var locationHeight:CGFloat  = 28.0
     var timeHeight:CGFloat      = 20.0
-    
     
     var timeTop:CGFloat         = 0
     var locaTop:CGFloat         = 0
@@ -34,18 +33,22 @@ class ViewTempBlock: UIView {
     
     // container to hold temperature, icon, and temp type
     var tempContainer:UIView!
-    
     var temperatureLabel:UILabel!
     var tempTypeLabel:UILabel!
-    
-    var tempLabelHeight:CGFloat = 30.0
+    var tempLabelHeight:CGFloat     = 30.0
     var tempTypeLabelHeight:CGFloat = 18.0
-    
     var iconBlock:UIView!
     
+    var weatherCode:Int = 0;
+    
+    
+    required init(coder aDecoder: NSCoder!)
+    {
+        super.init(coder: aDecoder)
+    }
     
     // temps[0] is always 'this' temp. temp[1] is the one to compare to.
-    init(frame: CGRect, _temps:NSArray, _pos:Int, _state:NSString) {
+    init(frame: CGRect, _temps:NSArray,_weathercode:Int, _pos:Int, _state:NSString) {
         println("\n\n")
         
         temps = _temps
@@ -60,15 +63,25 @@ class ViewTempBlock: UIView {
         temperatureLabel = UILabel( frame: CGRect(x: 0, y: 0, width: w, height: tempLabelHeight))
         tempTypeLabel   = UILabel(frame: CGRect(x: 0, y: 0, width: w, height: tempTypeLabelHeight))
         
-        
         tempContainer = UIView(frame: CGRect(x:0, y:0, width:w, height: (tempLabelHeight + tempTypeLabelHeight) ) )
         
         
         super.init(frame:frame)
         
+        
+        // type of weather :
         var iconWH:CGFloat = iconHeight()
+        
+        weatherCode = _weathercode
+        
+        var weatherIcon = UIImage(named: weatherCodes.getCode(weatherCode) )
+        var weatherIconView = UIImageView(image: weatherIcon )
+        weatherIconView.contentMode = UIViewContentMode.ScaleAspectFit
+        weatherIconView.frame = CGRect(x: 0, y: 0, width: iconWH, height: iconWH)
+        
         iconBlock = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
-        iconBlock.backgroundColor = UIColor.pastCast.white()
+        iconBlock.addSubview(weatherIconView)
+        // iconBlock.backgroundColor = UIColor.pastCast.white(alpha: 0.25)
         
         var iconMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
         iconMaskLayer.backgroundColor = UIColor.blackColor()
@@ -102,7 +115,6 @@ class ViewTempBlock: UIView {
         tempContainer.addSubview( tempTypeLabel )
         tempContainer.addSubview( iconBlock )
         self.addSubview(tempContainer)
-        
         
         update(_temps)
     }
@@ -291,7 +303,8 @@ class ViewTempBlock: UIView {
         
         iconBlock.frame.origin.y = iconY
         iconBlock.frame.origin.x = iconX
-        iconBlock.maskView.frame = CGRect(x: 0, y: 0, width: newiconWidth, height: newiconHeight)
+        
+        iconBlock.maskView?.frame = CGRect(x: 0, y: 0, width: newiconWidth, height: newiconHeight)
         
         
     }

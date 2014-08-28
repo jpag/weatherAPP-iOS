@@ -64,6 +64,7 @@
 		C0E520101982F168006C0DBA /* _Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _Model.swift; sourceTree = "<group>"; };
 		C0E520131983053C006C0DBA /* FreightBigBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FreightBigBlack.ttf; sourceTree = "<group>"; };
 		C0E520141983053C006C0DBA /* FreightBigBookItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FreightBigBookItalic.ttf; sourceTree = "<group>"; };
+		C0F39D8119AF969800C8B4D8 /* playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = playground.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				C0E520021982E1DA006C0DBA /* pastcastTests.swift */,
+				C0F39D8119AF969800C8B4D8 /* playground.playground */,
 				C0E520001982E1DA006C0DBA /* Supporting Files */,
 			);
 			path = pastcastTests;

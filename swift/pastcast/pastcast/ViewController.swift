@@ -162,7 +162,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             snapto = 0
         }
         
-        
         var distance = Double( abs( scrollView.contentOffset.y - snapto) )
         var timePerPixel = Double(0.0025)
         var time:Double = distance * timePerPixel
@@ -179,7 +178,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
 //            }
 //        )
         
-        if( scrollTimer? ){
+        if( scrollTimer? != nil ){
             scrollTimer?.invalidate()
         }
         scrollViewDestination = snapto
@@ -190,7 +189,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     func stepAnimate() {
         println(" ---- step animate ---")
         
-        if( !scrollViewDestination ){
+        if( scrollViewDestination == nil ){
             println(" did not find a ST destination so cancel the animation timer")
             println(" ---- Invalidate ---- ")
             scrollTimer?.invalidate()
@@ -281,7 +280,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         geocoder.reverseGeocodeLocation(
             pastCastModel.location,
             completionHandler: {(placemarks, error) in
-                if error {
+                if (error != nil) {
                     println("reverse geodcode fail: \(error.localizedDescription)")
                     
                     self.showWarning("Unable to find your location", msg: "sorry")
@@ -299,11 +298,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     func locationNameFound(place:CLPlacemark) {
 
-        if( place.locality ){
+        if(( place.locality ) != nil){
             pastCastModel.locationName = place.locality + ", " + place.administrativeArea
-        }else if( place.subAdministrativeArea ){
+        }else if(( place.subAdministrativeArea ) != nil){
             pastCastModel.locationName = place.subAdministrativeArea
-        }else if( place.administrativeArea ){
+        }else if(( place.administrativeArea ) != nil){
             pastCastModel.locationName = place.administrativeArea
         }
         
@@ -336,11 +335,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             
             if( statusCode == 404 ){
                 println("Could not find server")
-                
                 return
             }
             
-            if(error) {
+            if((error) != nil) {
                 // If there is an error in the web request, print it to the console
                 println(error.localizedDescription)
                 return
@@ -349,17 +347,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             
             var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
             
-            if(err?) {
+            if((err?) != nil) {
                 // If there is an error parsing JSON, print it to the console
                 println("JSON Error (err!.localizedDescription)")
                 return
             }
             
             var results = jsonResult["timecompared"] as NSDictionary
-            
             self.displayData(results)
-            // Now send the JSON result to our delegate object
-            // self.delegate?.didReceiveAPIResults(jsonResult)
         
             })
         
@@ -398,12 +393,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         var bottomY = topHeight + globals.borderBetweenHalves
         var bottomHeight = halfheight
         
+        var _weatherCodes: (present:Int,past:Int) = self.getWeatherCodes()
+        
         println( " current \(calculatedTemps.c) vs \(calculatedTemps.p)")
         println( " width \(width) h \(topHeight) \(UIScreen.mainScreen().bounds.height) half height: \(globals.halfHeight)")
+        println( " past weather code \(_weatherCodes.past) present \(_weatherCodes.present) " )
         
         topHalf = ViewTempBlock(
             frame: CGRect(x: 0, y: 0, width: width, height: topHeight ),
             _temps: [calculatedTemps.c,calculatedTemps.p],
+            _weathercode : _weatherCodes.present,
             _pos: 0,
             _state:appStates.tempStateOpen
         )
@@ -411,6 +410,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         bottomHalf = ViewTempBlock(
             frame: CGRect(x:0, y:bottomY, width: width, height: bottomHeight),
             _temps: [calculatedTemps.p,calculatedTemps.c],
+            _weathercode : _weatherCodes.past,
             _pos: 1,
             _state: appStates.tempStateClosed
         )
@@ -421,8 +421,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         topHalf?.updateState( scrollViewY / maxScrollY )
         bottomHalf?.updateState( scrollViewY / maxScrollY )
         
-        self.view.addSubview(topHalf)
-        self.view.addSubview(bottomHalf)
+        self.view.addSubview(topHalf!)
+        self.view.addSubview(bottomHalf!)
         
         
         println(" added sub views")
@@ -442,8 +442,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             return (globals.tempError, globals.tempError)
         }
         
-        let cdict = currentResults? as NSDictionary
-        let pdict = previousResults? as NSDictionary
+        let cdict = currentResults! as NSDictionary
+        let pdict = previousResults! as NSDictionary
     
         var ct: CGFloat? = cdict["temp"] as AnyObject? as? CGFloat
         var pt: CGFloat? = pdict["temp"] as AnyObject? as? CGFloat
@@ -456,12 +456,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         return (currentTemp, prevTemp)
     }
     
+    func getWeatherCodes()->(present:Int,past:Int) {
+        let cdict = currentResults! as NSDictionary
+        let pdict = previousResults! as NSDictionary
+        
+        var present:Int? = cdict["weathercode"] as AnyObject? as? Int
+        var past:Int? = pdict["weathercode"] as AnyObject? as? Int
+        
+        var results: (present: Int, past: Int) = (present!,past!)
+        return results
+    }
+    
     func updateTemperature() {
         
 //        var currentTemp = convertTemperature(currentResults?["temp"] as NSNumber)
 //        var prevTemp = convertTemperature(previousResults?["temp"] as NSNumber)
         
-        if( topHalf && bottomHalf ){
+        if( topHalf != nil && bottomHalf != nil){
             
             var calculatedTemps = updateTemps()
             
@@ -524,7 +535,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     func showWarning(title:String, msg:String){
         var message = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.Alert)
-            message.addAction(UIAlertAction(title: "K", style: UIAlertActionStyle.Default, handler: nil))
+            message.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         
         self.presentViewController(message, animated: true, completion: nil)
         
