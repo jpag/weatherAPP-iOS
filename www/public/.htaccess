@@ -10,6 +10,8 @@ RewriteEngine On
 #RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$ index.php?x=$1&y=$2
 #RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/$ index.php?x=$1&y=$2
 
-RewriteRule ^api/lat/(.*)/lng/(.*)/$ api_openweathermap/temp_by_latlng.php?lat=$1&lng=$2
-#RewriteRule ^api/lat/(.*)/lng/(.*)/u/(.*)$ api_forecast/temp_by_latlng.php?lat=$1&lng=$2&unit=$3
+#RewriteRule ^api/lat/(.*)/lng/(.*)/$ api_openweathermap/temp_by_latlng.php?lat=$1&lng=$2
 #RewriteRule ^api/lat/(.*)/lng/(.*)/u/(.*)/$ api_forecast/temp_by_latlng.php?lat=$1&lng=$2&unit=$3
+
+# ignore unit of measurement on the server side.
+RewriteRule ^api/lat/(.*)/lng/(.*)/$ api_forecast/temp_by_latlng.php?lat=$1&lng=$2

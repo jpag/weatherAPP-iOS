@@ -39,16 +39,16 @@ class ViewTempBlock: UIView {
     var tempTypeLabelHeight:CGFloat = 18.0
     var iconBlock:UIView!
     
-    var weatherCode:Int = 0;
+    var weatherCode:NSString = "sunny";
     
     
-    required init(coder aDecoder: NSCoder!)
+    required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
     
     // temps[0] is always 'this' temp. temp[1] is the one to compare to.
-    init(frame: CGRect, _temps:NSArray,_weathercode:Int, _pos:Int, _state:NSString) {
+    init(frame: CGRect, _temps:NSArray,_weathercode:NSString, _pos:Int, _state:NSString) {
         println("\n\n")
         
         temps = _temps
@@ -74,7 +74,10 @@ class ViewTempBlock: UIView {
         
         weatherCode = _weathercode
         
-        var weatherIcon = UIImage(named: weatherCodes.getCode(weatherCode) )
+        
+        //var weatherIcon = UIImage(named: weatherCodes.getCode(weatherCode) )
+        var weatherIcon = UIImage(named: weatherCodes.getCodeFromString(weatherCode))
+        
         var weatherIconView = UIImageView(image: weatherIcon )
         weatherIconView.contentMode = UIViewContentMode.ScaleAspectFit
         weatherIconView.frame = CGRect(x: 0, y: 0, width: iconWH, height: iconWH)

@@ -387,13 +387,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             return
         }
         
-        var width = UIScreen.mainScreen().bounds.width
+        var width = UIScreen.mainScreen().bounds.width as CGFloat
         var halfheight = UIScreen.mainScreen().bounds.height * globals.halfHeight
         var topHeight = halfheight
         var bottomY = topHeight + globals.borderBetweenHalves
         var bottomHeight = halfheight
         
-        var _weatherCodes: (present:Int,past:Int) = self.getWeatherCodes()
+        var _weatherCodes: (present:NSString,past:NSString) = self.getWeatherCodes()
         
         println( " current \(calculatedTemps.c) vs \(calculatedTemps.p)")
         println( " width \(width) h \(topHeight) \(UIScreen.mainScreen().bounds.height) half height: \(globals.halfHeight)")
@@ -408,7 +408,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         )
         
         bottomHalf = ViewTempBlock(
-            frame: CGRect(x:0, y:bottomY, width: width, height: bottomHeight),
+            frame: CGRect(x: 0, y:bottomY, width: width, height: bottomHeight),
             _temps: [calculatedTemps.p,calculatedTemps.c],
             _weathercode : _weatherCodes.past,
             _pos: 1,
@@ -456,14 +456,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         return (currentTemp, prevTemp)
     }
     
-    func getWeatherCodes()->(present:Int,past:Int) {
+    func getWeatherCodes()->(present:NSString,past:NSString) {
         let cdict = currentResults! as NSDictionary
         let pdict = previousResults! as NSDictionary
         
-        var present:Int? = cdict["weathercode"] as AnyObject? as? Int
-        var past:Int? = pdict["weathercode"] as AnyObject? as? Int
+        var present:NSString? = cdict["weathercode"] as AnyObject? as? NSString
+        var past:NSString? = pdict["weathercode"] as AnyObject? as? NSString
         
-        var results: (present: Int, past: Int) = (present!,past!)
+        var results: (present: NSString, past: NSString) = (present!,past!)
         return results
     }
     

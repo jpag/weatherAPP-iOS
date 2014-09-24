@@ -54,6 +54,62 @@ class NotificationEvents {
 
 class WeatherCodes {
     
+    // used with dark sky.
+    func getCodeFromString(val:NSString) ->NSString {
+        var clear = "weather-sunny"
+        var storm = "weather-tstorm"
+        var rain = "weather-rain"
+        var snow = "weather-snow"
+        var atmosphere = "weather-clouds"
+        var clouds = "weather-clouds"
+        var extreme = "weather-tstorm"
+        
+        var tornado = "weather-tstorm"
+        var hurricane = "weather-tstorm"
+        
+        if( val == "clear-day" ){
+            return clear
+        }
+        
+        if( val == "clear-night" ){
+            return clear
+        }
+        
+        if( val == "rain" ){
+            return rain
+        }
+        
+        if( val == "snow" ){
+            return snow
+        }
+        
+        if( val == "sleet" ){
+            return snow
+        }
+        
+        if( val == "wind" ){
+            return clouds
+        }
+        
+        if( val == "fog" ){
+            return clouds
+        }
+        
+        if( val == "cloudy" ){
+            return clouds
+        }
+        
+        if( val == "partly-cloudy-day" ){
+            return clouds
+        }
+        if( val == "partly-cloudy-night" ){
+            return clouds
+        }
+        
+        return clear
+        
+    }
+    
     func getCode(val:Int) -> NSString {
 
         var clear = "weather-sunny"

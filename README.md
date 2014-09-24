@@ -28,7 +28,17 @@ PASTCAST!
 
 
 
-
+clear-day, 
+clear-night, 
+rain, 
+snow, 
+sleet, 
+wind, 
+fog, 
+cloudy, 
+partly-cloudy-day,
+partly-cloudy-night
+(Developers should ensure that a sensible default is defined, as additional values, such as hail, thunderstorm, or tornado, may be defined in the future.)
 
 
 
