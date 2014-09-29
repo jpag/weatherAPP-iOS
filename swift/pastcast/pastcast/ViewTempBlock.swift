@@ -19,8 +19,9 @@ class ViewTempBlock: UIView {
     var statePercent:CGFloat    = 0.00
     
     var padding:CGFloat         = 10.0
-    var paddingSide:CGFloat     = 10.0
-    var paddingTop:CGFloat      = 10.0
+    var paddingSide:CGFloat     = 20.0
+    var paddingTop:CGFloat      = 20.0
+    var paddingTopTime:CGFloat  = 19.0
     var locationHeight:CGFloat  = 28.0
     var timeHeight:CGFloat      = 20.0
     
@@ -109,6 +110,7 @@ class ViewTempBlock: UIView {
         temperatureLabel.textColor = UIColor.pastCast.white()
         
         tempTypeLabel.font = UIFont.futuraBook(fontsize: tempTypeLabelHeight)
+        //tempTypeLabel.font = UIFont.freightBoldItalic(fontsize: tempTypeLabelHeight)
         tempTypeLabel.textColor = UIColor.pastCast.white()
         
         self.addSubview( locationLabel )
@@ -134,9 +136,12 @@ class ViewTempBlock: UIView {
             println( " it is warmer")
             self.backgroundColor = UIColor.pastCast.red(alpha: 1.0)
             
-        }else{
+        }else if( Int(temps[0] as NSNumber) < Int(temps[1] as NSNumber) ){
             println( " it is colder" )
             self.backgroundColor = UIColor.pastCast.blue(alpha: 1.0)
+        }else {
+            println(" same temps")
+            self.backgroundColor = UIColor.pastCast.purple(alpha: 1.0)
         }
         
         var tempType = "F"
@@ -181,9 +186,9 @@ class ViewTempBlock: UIView {
         }
         
         let tempYRange = (
-            min : CGFloat( ((UIScreen.mainScreen().bounds.height * 0.25) - temperatureLabel.frame.height) / 2 ),
+            min : CGFloat( ((UIScreen.mainScreen().bounds.height * 0.3) - temperatureLabel.frame.height) / 2 ),
             med : CGFloat( frame.height / 2 ),
-            max : CGFloat( frame.height * 0.80)
+            max : CGFloat( frame.height * 0.83)
         )
         
         let iconRangeY = (
@@ -212,10 +217,11 @@ class ViewTempBlock: UIView {
         )
         
         let timeRange = (
-            min: paddingTop ,
-            med: paddingTop*2 + locationHeight,
-            max: self.bounds.height * 0.6 + (locationHeight + paddingTop * 1.25)
+            min: paddingTopTime * 1.25,
+            med: paddingTopTime + locationHeight,
+            max: self.bounds.height * 0.6 + (locationHeight + paddingTopTime)
         )
+        
         var per:CGFloat!
         var tempYPos:CGFloat!
         var iconY: CGFloat!
@@ -236,21 +242,23 @@ class ViewTempBlock: UIView {
             per = ( (locpercent - third) / third)
             locaTop = recalFromRange(locRange.med, max: locRange.max, percent: per )
             timeLabelTop = recalFromRange(timeRange.med, max: timeRange.max, percent: per )
-            
             tempYPos = recalFromRange(tempYRange.med, max:tempYRange.max, percent: per)
-            
             
         }else{
             locaTop     = locRange.max
             timeLabelTop = timeRange.max
             tempYPos = tempYRange.max
-            
+        }
+        
+        var tempContMinY = timeLabelTop + locationHeight
+        if( tempYPos <= tempContMinY ){
+            tempYPos = tempContMinY
         }
         
         locationLabel.frame.origin.y = locaTop
-        locationLabel.frame.origin.x = padding
+        locationLabel.frame.origin.x = paddingSide
         timeLabel.frame.origin.y = timeLabelTop
-        timeLabel.frame.origin.x = padding
+        timeLabel.frame.origin.x = paddingSide
         
         var iconX:CGFloat!
         
@@ -302,7 +310,7 @@ class ViewTempBlock: UIView {
         
         tempContainer.frame.origin = CGPoint(x: tempContainerX, y: tempYPos)
         temperatureLabel.frame.origin = CGPoint(x: -(temperatureLabel.frame.width/2), y: 0 )
-        tempTypeLabel.frame.origin = CGPoint(x: temperatureLabel.frame.width/2, y: 0)
+        tempTypeLabel.frame.origin = CGPoint(x: temperatureLabel.frame.width/2, y: 10.0)
         
         iconBlock.frame.origin.y = iconY
         iconBlock.frame.origin.x = iconX

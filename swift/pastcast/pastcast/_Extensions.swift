@@ -25,6 +25,10 @@ extension UIColor {
         class func blue(alpha:CGFloat = 1.0 ) -> UIColor {
             return UIColor(red: 0.7176470588, green: 0.8941176471,  blue: 0.9294117647, alpha: alpha)
         }
+        // neutral color
+        class func purple(alpha:CGFloat = 1.0) -> UIColor {
+            return UIColor( red:0.9294117647, green: 0.662745098, blue: 0.968627451, alpha: alpha)
+        }
     }
     
     

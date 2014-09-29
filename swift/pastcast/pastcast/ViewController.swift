@@ -31,12 +31,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     var scrollTimer:NSTimer?
     var scrollViewDestination:CGFloat?
+    var imageList = weatherCodes.loadlist
+    var nextImageIcon = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
         self.view.backgroundColor = UIColor.pastCast.white()
+        
+        imageList = globals.shuffle(imageList)
+        println(imageList)
+        animateInNextLogo()
         
         var newFrame = self.view.frame
             newFrame.size.height = (UIScreen.mainScreen().bounds.height * globals.halfHeight) * 2
@@ -50,16 +55,40 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         var scrollView = self.view as UIScrollView
         scrollView.scrollEnabled = true
         scrollView.contentSize = CGSize(width:  UIScreen.mainScreen().bounds.width, height: UIScreen.mainScreen().bounds.height * (globals.halfHeight*2.0) )
-        
         scrollView.delegate = self
         scrollView.decelerationRate = 0.75
         scrollView.showsVerticalScrollIndicator = false
+        
         findLocation()
         
     }
     
-    func displayLoader() {
+    func iconHeight() -> CGFloat {
         
+        return UIScreen.mainScreen().bounds.width * 0.15
+        
+    }
+    
+    func animateInNextLogo() {
+        // next load icon:
+        // println(imageList)
+        
+        // animate current off screen
+        
+        // remove it?
+        
+        var iconWH = self.iconHeight()
+        var weatherIcon = imageList[nextImageIcon]
+        var weatherIconView = UIImageView(image: UIImage(named:weatherIcon) )
+        weatherIconView.contentMode = UIViewContentMode.ScaleAspectFit
+        weatherIconView.frame = CGRect(x: 0, y: 0, width: iconWH, height: iconWH)
+        
+        // add and animate
+        
+        nextImageIcon++
+        //set timer:
+        
+
     }
     
     func removeLoader() {
@@ -85,7 +114,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     }
     
     func scrollViewDidScroll(scrollView:UIScrollView){
-        println(" user scrolling \(scrollView.contentOffset.y)")
+        // println(" user scrolling \(scrollView.contentOffset.y)")
         
         var maxScrollY = getMaxScroll()
         
@@ -229,9 +258,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         println("\n\n Find location ----- ")
         
         if( timeExpired() ){
-        
-            displayLoader()
-        
             locationManager.requestWhenInUseAuthorization()
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -379,6 +405,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     func addViews() {
         println(" add Views - DISPLAY DATA")
+        removeLoader()
         
         var calculatedTemps = updateTemps()
         
@@ -423,7 +450,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         self.view.addSubview(topHalf!)
         self.view.addSubview(bottomHalf!)
-        
         
         println(" added sub views")
         
@@ -530,7 +556,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     func stopUpdatingLocation() {
         locationManager.stopUpdatingLocation()
         println(" Stop updating location")
-        removeLoader()
     }
     
     func showWarning(title:String, msg:String){

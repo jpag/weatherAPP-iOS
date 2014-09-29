@@ -36,6 +36,16 @@ class Globals {
         let result = Double(rounded) / globals.gpsdecmialpt
         return result
     }
+    
+    // shuffle an array
+    // http://stackoverflow.com/questions/24026510/how-do-i-shuffle-an-array-in-swift
+    func shuffle<T>(var list: Array<T>) -> Array<T> {
+        for i in 0..<list.count {
+            let j = Int(arc4random_uniform(UInt32(list.count - i))) + i
+            list.insert(list.removeAtIndex(j), atIndex: i)
+        }
+        return list
+    }
 }
 
 class States {
@@ -53,6 +63,11 @@ class NotificationEvents {
 
 
 class WeatherCodes {
+    
+    let loadlist =  [
+                    "load-blue-clouds","load-blue-rain","load-blue-snow","load-blue-sunny","load-blue-tstorm",
+                    "load-red-clouds","load-red-rain","load-red-snow","load-red-sunny","load-red-tstorm"
+                    ]
     
     // used with dark sky.
     func getCodeFromString(val:NSString) ->NSString {
@@ -174,8 +189,6 @@ class WeatherCodes {
         
         return clear
     }
-
-    
 }
 
 
