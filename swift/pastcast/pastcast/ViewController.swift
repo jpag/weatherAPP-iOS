@@ -19,7 +19,7 @@ import CoreLocation
 class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewDelegate {
     
     var locationManager = CLLocationManager()
-    var locationRecieved:NSDate?
+    var dataRecieved:NSDate?
     
     var currentResults:NSDictionary?
     var previousResults:NSDictionary?
@@ -27,21 +27,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     var topHalf:ViewTempBlock?
     var bottomHalf:ViewTempBlock?
     
+    // scroll
     var scrollTop = (current:CGFloat(0.0),previous:CGFloat(0.0))
-    
     var scrollTimer:NSTimer?
     var scrollViewDestination:CGFloat?
-    var imageList = weatherCodes.loadlist
-    var nextImageIcon = 0
+    
+    // loader
+    var loaderView:ViewLoading?
+    
+    // error stuff
+    var errorMsg:ViewError?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.view.backgroundColor = UIColor.pastCast.white()
-        
-        imageList = globals.shuffle(imageList)
-        println(imageList)
-        animateInNextLogo()
         
         var newFrame = self.view.frame
             newFrame.size.height = (UIScreen.mainScreen().bounds.height * globals.halfHeight) * 2
@@ -51,53 +51,61 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target:self, action:"tap"))
         
-        
         var scrollView = self.view as UIScrollView
         scrollView.scrollEnabled = true
-        scrollView.contentSize = CGSize(width:  UIScreen.mainScreen().bounds.width, height: UIScreen.mainScreen().bounds.height * (globals.halfHeight*2.0) )
         scrollView.delegate = self
         scrollView.decelerationRate = 0.75
         scrollView.showsVerticalScrollIndicator = false
         
+        _notificationCenter.addObserverForName(_ncEvents.loaderDoneAnimating, object: nil, queue: nil, usingBlock: loaderDoneAnimating )
+        
         findLocation()
-        
     }
     
-    func iconHeight() -> CGFloat {
-        
-        return UIScreen.mainScreen().bounds.width * 0.15
-        
-    }
-    
-    func animateInNextLogo() {
-        // next load icon:
-        // println(imageList)
-        
-        // animate current off screen
-        
-        // remove it?
-        
-        var iconWH = self.iconHeight()
-        var weatherIcon = imageList[nextImageIcon]
-        var weatherIconView = UIImageView(image: UIImage(named:weatherIcon) )
-        weatherIconView.contentMode = UIViewContentMode.ScaleAspectFit
-        weatherIconView.frame = CGRect(x: 0, y: 0, width: iconWH, height: iconWH)
-        
-        // add and animate
-        
-        nextImageIcon++
-        //set timer:
-        
-
-    }
-    
-    func removeLoader() {
-        
+    func setScrollViewHeight(newH:CGFloat) {
+        println(" Set scroll view \(newH)")
+        var scrollView = self.view as UIScrollView
+        scrollView.contentSize = CGSize(width:  UIScreen.mainScreen().bounds.width, height: newH )
     }
     
     func tap () {
+        if( errorMsg != nil ){
+            removeWarning()
+        }else{
+            toggleDegrees()
+        }
+    }
+    
+    
+    func showLoader(){
+        setScrollViewHeight(UIScreen.mainScreen().bounds.height);
         
-        toggleDegrees()
+        var width = UIScreen.mainScreen().bounds.width
+        var height = UIScreen.mainScreen().bounds.height
+        
+        loaderView = ViewLoading( frame: CGRect(x: 0, y:0, width: width, height: height))
+        self.view.addSubview(loaderView!)
+        
+        loaderView?.startLoader()
+    }
+    
+    func removeLoader(type:NSString) {
+        if( loaderView != nil ){
+            loaderView!.stopAndCollapse(type)
+        }
+    }
+    
+    func loaderDoneAnimating(obj:NSNotification!){
+        var vals = obj.object as NSDictionary
+        var type = vals["type"] as NSString
+        
+        println( " TYPE for loader being done \(type)" )
+        
+        if( type == "ADDVIEWS"){
+            readyToAddViews()
+        }else{
+            
+        }
     }
     
     func toggleDegrees() {
@@ -110,7 +118,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         // update display:
         println(" -- update degrees is C = \(pastCastModel.isCelsius) ")
-        updateTemperature()
+        updateDisplay()
     }
     
     func scrollViewDidScroll(scrollView:UIScrollView){
@@ -136,9 +144,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     func scrollViewDidEndDecelerating(scrollView: UIScrollView!) {
         println(" scrollViewDidEndDecelerating ")
         snapTo(scrollView)
-//        var maxScrollY = getMaxScroll()
-//        topHalf?.updateState( scrollView.contentOffset.y / maxScrollY )
-//        bottomHalf?.updateState( scrollView.contentOffset.y / maxScrollY )
     }
     
     func scrollViewWillBeginDecelerating(scrollView: UIScrollView!) {
@@ -156,7 +161,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         if( !decelerate){
             snapTo(scrollView)
         }
-        
     }
     
     func snapTo(scrollView:UIScrollView) {
@@ -194,18 +198,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         var distance = Double( abs( scrollView.contentOffset.y - snapto) )
         var timePerPixel = Double(0.0025)
         var time:Double = distance * timePerPixel
-        
-//        UIView.animateWithDuration(
-//            time,
-//            animations: {
-//                scrollView.contentOffset.y = snapto
-//            },
-//            completion: { (finished:Bool) in
-//                if( finished ){
-//                    self.updateState()
-//                }
-//            }
-//        )
         
         if( scrollTimer? != nil ){
             scrollTimer?.invalidate()
@@ -250,12 +242,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         return UIScreen.mainScreen().bounds.height * (globals.halfHeight * 2) - UIScreen.mainScreen().bounds.height
     }
     
-    func updateState() {
-        
+    // user has resumed app status
+    func updateLocation() {
+        // only update after X time since the last update...?
+        findLocation()
     }
     
     func findLocation() {
+        
         println("\n\n Find location ----- ")
+        showLoader()
         
         if( timeExpired() ){
             locationManager.requestWhenInUseAuthorization()
@@ -265,58 +261,43 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         }
     }
     
-    // user has resumed app status
-    func updateLocation() {
-        // only update after X time since the last update...?
-        findLocation()
-    }
-    
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
         println(" -- FAIL to locate...")
-        showWarning("Warning", msg: "Failed to find a location.")
+        
+        stopUpdatingLocation()
+        showWarning("Failed to find a location.")
+        
         // TODO add a default location? or a popup/autocomplete of location?
+        
         
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        
         // println("locations = \(locations)")
-        
         if( locations.count > 0 ){
-            
             stopUpdatingLocation()
-            //println( pastCastModel.location )
             pastCastModel.location = locations[0] as CLLocation
-            //println( pastCastModel.location )
-            
-            if( timeExpired() ){
-                locationRecieved = NSDate()
-                findLocationName()
-            }else{
-                println( " location received has happened recently so no need to force another update yet...")
-            }
-            
+            findLocationName()
+        }else{
+            showWarning("Unable to find your location")
         }
     }
     
-    
     func findLocationName() {
         var geocoder = CLGeocoder()
-        
         geocoder.reverseGeocodeLocation(
             pastCastModel.location,
             completionHandler: {(placemarks, error) in
                 if (error != nil) {
                     println("reverse geodcode fail: \(error.localizedDescription)")
-                    
-                    self.showWarning("Unable to find your location", msg: "sorry")
-                    
-                    self.get()
+                    self.showWarning("Unable to find your location")
                 }
                 
                 let pm = placemarks as [CLPlacemark]
                 if pm.count > 0 {
                     self.locationNameFound(placemarks[0] as CLPlacemark)
+                }else{
+                   self.showWarning("Unable to find your location")
                 }
             }
         )
@@ -333,7 +314,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         }
         
         println( pastCastModel.locationName )
-        get()
+        getJSON()
         
     }
     
@@ -341,8 +322,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     // borrowed from: https://github.com/jquave/Swift-Tutorial/tree/Part7
     // http://ios-blog.co.uk/swift-tutorials/beginners-guide/developing-ios8-apps-using-swift-part-7-animations-audio-and-custom-table-view-cells/
     
-    func get() {
-        
+    func getJSON() {
+        let webErrorStr = "We were unable to connect to weather data"
         let long = roundCoordinate(pastCastModel.location.coordinate.longitude)
         let lat = roundCoordinate(pastCastModel.location.coordinate.latitude)
         let path = globals.apiRequests + "lat/\(lat)/lng/\(long)/"
@@ -356,16 +337,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             
             println("Task completed")
             
+            if( response == nil ){
+                self.showWarning(webErrorStr)
+                return
+            }
+            
             var statusCode = (response as NSHTTPURLResponse).statusCode
             println( statusCode )
             
             if( statusCode == 404 ){
                 println("Could not find server")
+                self.showWarning(webErrorStr)
                 return
             }
             
             if((error) != nil) {
                 // If there is an error in the web request, print it to the console
+                self.showWarning(webErrorStr)
                 println(error.localizedDescription)
                 return
             }
@@ -375,14 +363,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             
             if((err?) != nil) {
                 // If there is an error parsing JSON, print it to the console
-                println("JSON Error (err!.localizedDescription)")
+                self.showWarning(webErrorStr)
                 return
             }
             
             var results = jsonResult["timecompared"] as NSDictionary
+            self.dataRecieved = NSDate()
+            
+            self.removeLoader("ADDVIEWS")
             self.displayData(results)
-        
-            })
+        })
         
         task.resume()
     }
@@ -391,6 +381,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         currentResults = dataResults["present"] as? NSDictionary
         previousResults = dataResults["past"] as? NSDictionary
         
+        // readyToAddViews()
+    }
+    
+    // we wait for the loader to be done in a sequence before displaying the views.
+    func readyToAddViews() {
         // make sure this is on main thread or else it will break:
         if NSThread.isMainThread()
         {
@@ -400,12 +395,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         {
             dispatch_sync(dispatch_get_main_queue(), { self.addViews() });
         }
-        
     }
     
     func addViews() {
         println(" add Views - DISPLAY DATA")
-        removeLoader()
+        
+        setScrollViewHeight(UIScreen.mainScreen().bounds.height * (globals.halfHeight*2.0));
+        
         
         var calculatedTemps = updateTemps()
         
@@ -493,11 +489,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         return results
     }
     
-    func updateTemperature() {
-        
-//        var currentTemp = convertTemperature(currentResults?["temp"] as NSNumber)
-//        var prevTemp = convertTemperature(previousResults?["temp"] as NSNumber)
-        
+    func updateDisplay() {
         if( topHalf != nil && bottomHalf != nil){
             
             var calculatedTemps = updateTemps()
@@ -511,11 +503,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             bottomHalf?.update([calculatedTemps.p,calculatedTemps.c])
             
         }else{
-            
             addViews()
         }
-        
-        
     }
     
     func convertTemperature( kelvin:CGFloat ) -> CGFloat {
@@ -532,13 +521,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     
     func timeExpired() ->Bool {
+        // dataRecieved is updated once JSON request is made and successful
         
         println(" - check has time gone long enough to run again?")
-        println(" -location received \( locationRecieved ) interval since now \(locationRecieved?.timeIntervalSinceNow) --- ")
+        //println(" -Data Received \( dataRecieved ) interval since now \(dataRecieved?.timeIntervalSinceNow) --- ")
         
-        if( locationRecieved == nil || locationRecieved?.timeIntervalSinceNow < globals.minUpdateTimeInSeconds ){
+        if( dataRecieved == nil || dataRecieved?.timeIntervalSinceNow < globals.minUpdateTimeInSeconds ){
             // go ahead do another update
-            println(" YES\n")
+            println("  YES\n")
             return true
         }else{
             println(" NO\n")
@@ -552,18 +542,76 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         return result
     }
     
-    
     func stopUpdatingLocation() {
         locationManager.stopUpdatingLocation()
         println(" Stop updating location")
     }
     
-    func showWarning(title:String, msg:String){
-        var message = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.Alert)
-            message.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+    func showWarning(msg:String){
+        //var message = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.Alert)
+        //    message.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        //self.presentViewController(message, animated: true, completion: nil)
         
-        self.presentViewController(message, animated: true, completion: nil)
         
+        if NSThread.isMainThread()
+        {
+            showWarningMainThread(msg);
+        }
+        else
+        {
+            dispatch_sync(dispatch_get_main_queue(), { self.showWarningMainThread(msg) });
+        }
+    }
+    
+    func showWarningMainThread(msg:String){
+        
+        removeLoader("NA")
+        setScrollViewHeight(UIScreen.mainScreen().bounds.height);
+        
+        var width = UIScreen.mainScreen().bounds.width
+        var height = UIScreen.mainScreen().bounds.height
+        
+        println(" SHOW error view")
+        if( errorMsg == nil ){
+            println(" error msg was nil")
+            errorMsg = ViewError( frame: CGRect(x: 0, y:0, width: width, height: height), errorMsg: msg )
+        }else{
+            // remove the existing error and show this one ?
+            println(" error msg already exists")
+            // update the error msg :
+            errorMsg?.updateError(msg)
+        }
+        
+        errorMsg?.frame.origin.y = 0    //height
+        errorMsg?.alpha = 0
+        self.view.addSubview(errorMsg!)
+        
+        UIView.animateWithDuration(0.35,
+            animations: {
+                self.errorMsg!.alpha = 1.0
+                //self.errorMsg!.frame.origin.y = 0
+            },
+            completion: { (finished:Bool) in
+                if( finished ){
+                    
+                }
+            }
+        )
+        
+    }
+    
+    func removeWarning() {
+        
+        if( errorMsg != nil ){
+            self.errorMsg?.removeFromSuperview()
+            self.errorMsg = nil
+        }
+        // reset dataRecieved resets timeexpired range
+        dataRecieved = nil
+        
+        println("Start over again:")
+        // start over again:
+        findLocation()
     }
     
     override func didReceiveMemoryWarning() {

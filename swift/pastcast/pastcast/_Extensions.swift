@@ -85,5 +85,9 @@ extension UIFont {
         return UIFont(name: "Futura-Book", size: fontsize)
     }
     
+    class func futuraBold(fontsize:CGFloat = 20) -> UIFont {
+        return UIFont(name: "FuturaStd-Bold", size: fontsize)
+    }
+    
     
 }

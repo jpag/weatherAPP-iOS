@@ -16,7 +16,7 @@ class Globals {
     // dev
     let apiRequests = "http://weather.yaapee.com/api/"
     // local
-    // let apiRequests = "http://local.weather.com/api/"
+    //let apiRequests = "http://local.weather.com/api/"
     
     // how many decmial pts do we make this
     // 10 = 73.21203 * 10 / 10 = 73.2
@@ -46,6 +46,10 @@ class Globals {
         }
         return list
     }
+    
+    func iconWH()-> CGFloat {
+        return UIScreen.mainScreen().bounds.width * 0.15
+    }
 }
 
 class States {
@@ -55,10 +59,7 @@ class States {
 }
 
 class NotificationEvents {
-    let accel =     "NC.MotionUpdate.accel"
-    let magnet =    "NC.MotionUpdate.magnet"
-    let steps =     "NC.MotionUpdate.steps"
-    let gyro =      "NC.MotionUpdate.gyro"
+    let loaderDoneAnimating =     "NC.loaderDoneAnimating"
 }
 
 

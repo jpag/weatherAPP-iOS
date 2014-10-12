@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		C089571619842C57007B851A /* ViewTempBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C089571519842C57007B851A /* ViewTempBlock.swift */; };
 		C0915B2119845377003CD271 /* Futura-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = C0915B2019845325003CD271 /* Futura-Book.otf */; };
+		C095C1DE19E9E487004C9C61 /* FuturaStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C095C1DD19E9E480004C9C61 /* FuturaStd-Bold.otf */; };
+		C095C1E019E9F116004C9C61 /* ViewLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = C095C1DF19E9F116004C9C61 /* ViewLoading.swift */; };
 		C0E51FED1982E1DA006C0DBA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E51FEC1982E1DA006C0DBA /* AppDelegate.swift */; };
 		C0E51FF01982E1DA006C0DBA /* pastcast.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C0E51FEE1982E1DA006C0DBA /* pastcast.xcdatamodeld */; };
 		C0E51FF21982E1DA006C0DBA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E51FF11982E1DA006C0DBA /* ViewController.swift */; };
@@ -20,6 +22,7 @@
 		C0E520111982F168006C0DBA /* _Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E520101982F168006C0DBA /* _Model.swift */; };
 		C0E520151983053C006C0DBA /* FreightBigBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0E520131983053C006C0DBA /* FreightBigBlack.ttf */; };
 		C0E520161983053C006C0DBA /* FreightBigBookItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0E520141983053C006C0DBA /* FreightBigBookItalic.ttf */; };
+		C0F87EE919E9D0EE00AA40CA /* ViewError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F87EE819E9D0EE00AA40CA /* ViewError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,8 @@
 /* Begin PBXFileReference section */
 		C089571519842C57007B851A /* ViewTempBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewTempBlock.swift; sourceTree = "<group>"; };
 		C0915B2019845325003CD271 /* Futura-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Futura-Book.otf"; sourceTree = "<group>"; };
+		C095C1DD19E9E480004C9C61 /* FuturaStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FuturaStd-Bold.otf"; sourceTree = "<group>"; };
+		C095C1DF19E9F116004C9C61 /* ViewLoading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewLoading.swift; sourceTree = "<group>"; };
 		C0E51FE71982E1DA006C0DBA /* pastcast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pastcast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0E51FEB1982E1DA006C0DBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0E51FEC1982E1DA006C0DBA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +70,7 @@
 		C0E520131983053C006C0DBA /* FreightBigBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FreightBigBlack.ttf; sourceTree = "<group>"; };
 		C0E520141983053C006C0DBA /* FreightBigBookItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FreightBigBookItalic.ttf; sourceTree = "<group>"; };
 		C0F39D8119AF969800C8B4D8 /* playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = playground.playground; sourceTree = "<group>"; };
+		C0F87EE819E9D0EE00AA40CA /* ViewError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +116,9 @@
 				C0E51FEC1982E1DA006C0DBA /* AppDelegate.swift */,
 				C0E520101982F168006C0DBA /* _Model.swift */,
 				C0E51FF11982E1DA006C0DBA /* ViewController.swift */,
+				C095C1DF19E9F116004C9C61 /* ViewLoading.swift */,
 				C089571519842C57007B851A /* ViewTempBlock.swift */,
+				C0F87EE819E9D0EE00AA40CA /* ViewError.swift */,
 				C0E51FF31982E1DA006C0DBA /* Main.storyboard */,
 				C0E5200C1982F0BE006C0DBA /* _Globals.swift */,
 				C0E5200E1982F0FE006C0DBA /* _Extensions.swift */,
@@ -150,6 +158,7 @@
 		C0E520121983053C006C0DBA /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				C095C1DD19E9E480004C9C61 /* FuturaStd-Bold.otf */,
 				C0915B2019845325003CD271 /* Futura-Book.otf */,
 				C0E520131983053C006C0DBA /* FreightBigBlack.ttf */,
 				C0E520141983053C006C0DBA /* FreightBigBookItalic.ttf */,
@@ -239,6 +248,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C095C1DE19E9E487004C9C61 /* FuturaStd-Bold.otf in Resources */,
 				C0915B2119845377003CD271 /* Futura-Book.otf in Resources */,
 				C0E520161983053C006C0DBA /* FreightBigBookItalic.ttf in Resources */,
 				C0E51FF51982E1DA006C0DBA /* Main.storyboard in Resources */,
@@ -263,11 +273,13 @@
 			files = (
 				C0E51FF21982E1DA006C0DBA /* ViewController.swift in Sources */,
 				C0E51FF01982E1DA006C0DBA /* pastcast.xcdatamodeld in Sources */,
+				C095C1E019E9F116004C9C61 /* ViewLoading.swift in Sources */,
 				C089571619842C57007B851A /* ViewTempBlock.swift in Sources */,
 				C0E51FED1982E1DA006C0DBA /* AppDelegate.swift in Sources */,
 				C0E520111982F168006C0DBA /* _Model.swift in Sources */,
 				C0E5200F1982F0FE006C0DBA /* _Extensions.swift in Sources */,
 				C0E5200D1982F0BE006C0DBA /* _Globals.swift in Sources */,
+				C0F87EE919E9D0EE00AA40CA /* ViewError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
