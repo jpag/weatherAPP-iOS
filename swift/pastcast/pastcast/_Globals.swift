@@ -59,7 +59,9 @@ class States {
 }
 
 class NotificationEvents {
-    let loaderDoneAnimating =     "NC.loaderDoneAnimating"
+    let loaderDoneAnimating = "NC.loaderDoneAnimating"
+    let showPoweredBy       = "NC.showPoweredBy"
+    let hidePoweredBy       = "NC.hidePoweredBy"
 }
 
 

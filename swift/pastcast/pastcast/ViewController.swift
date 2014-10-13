@@ -41,7 +41,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.view.backgroundColor = UIColor.pastCast.white()
+        
+        self.view.backgroundColor = UIColor.clearColor()
         
         var newFrame = self.view.frame
             newFrame.size.height = (UIScreen.mainScreen().bounds.height * globals.halfHeight) * 2
@@ -60,6 +61,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         _notificationCenter.addObserverForName(_ncEvents.loaderDoneAnimating, object: nil, queue: nil, usingBlock: loaderDoneAnimating )
         
         findLocation()
+        
     }
     
     func setScrollViewHeight(newH:CGFloat) {
@@ -79,9 +81,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     func showLoader(){
         setScrollViewHeight(UIScreen.mainScreen().bounds.height);
+        _notificationCenter.postNotificationName(_ncEvents.hidePoweredBy, object: nil)
         
         var width = UIScreen.mainScreen().bounds.width
         var height = UIScreen.mainScreen().bounds.height
+        
+        if( topHalf? != nil ){
+            topHalf?.removeFromSuperview()
+        }
+        if( bottomHalf? != nil ){
+            bottomHalf?.removeFromSuperview()
+        }
+        
         
         loaderView = ViewLoading( frame: CGRect(x: 0, y:0, width: width, height: height))
         self.view.addSubview(loaderView!)
@@ -244,16 +255,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     // user has resumed app status
     func updateLocation() {
-        // only update after X time since the last update...?
+        // clear the existing views:
         findLocation()
     }
     
     func findLocation() {
         
         println("\n\n Find location ----- ")
-        showLoader()
-        
         if( timeExpired() ){
+            showLoader()
+            
             locationManager.requestWhenInUseAuthorization()
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -401,7 +412,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         println(" add Views - DISPLAY DATA")
         
         setScrollViewHeight(UIScreen.mainScreen().bounds.height * (globals.halfHeight*2.0));
-        
+        _notificationCenter.postNotificationName(_ncEvents.showPoweredBy, object: nil)
         
         var calculatedTemps = updateTemps()
         
@@ -567,6 +578,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         removeLoader("NA")
         setScrollViewHeight(UIScreen.mainScreen().bounds.height);
+        _notificationCenter.postNotificationName(_ncEvents.hidePoweredBy, object: nil)
         
         var width = UIScreen.mainScreen().bounds.width
         var height = UIScreen.mainScreen().bounds.height

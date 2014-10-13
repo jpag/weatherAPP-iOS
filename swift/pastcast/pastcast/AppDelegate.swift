@@ -18,7 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         // Override point for customization after application launch.
         
-        //UIFont.cycleThroughSysFonts ()
+        println("RUN!")
+        var poweredBy = ViewPoweredBy()
+        self.window!.addSubview(poweredBy)
         
         return true
     }
@@ -41,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var vcontroller = self.window!.rootViewController as ViewController
         vcontroller.updateLocation()
+        
     }
 
     func applicationDidBecomeActive(application: UIApplication!) {
