@@ -86,13 +86,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         var width = UIScreen.mainScreen().bounds.width
         var height = UIScreen.mainScreen().bounds.height
         
-        if( topHalf? != nil ){
-            topHalf?.removeFromSuperview()
+        if( self.topHalf? != nil ){
+            println(" top half exists remove it.")
+            self.topHalf?.removeFromSuperview()
         }
-        if( bottomHalf? != nil ){
-            bottomHalf?.removeFromSuperview()
+        if( self.bottomHalf? != nil ){
+            println(" bottom half half exists remove it.")
+            self.bottomHalf?.removeFromSuperview()
         }
-        
         
         loaderView = ViewLoading( frame: CGRect(x: 0, y:0, width: width, height: height))
         self.view.addSubview(loaderView!)
@@ -274,12 +275,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
         println(" -- FAIL to locate...")
-        
         stopUpdatingLocation()
         showWarning("Failed to find a location.")
-        
         // TODO add a default location? or a popup/autocomplete of location?
-        
         
     }
     
