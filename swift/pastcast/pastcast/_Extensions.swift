@@ -74,19 +74,19 @@ extension UIFont {
 //    }
     
     class func freightBigBlack(fontsize:CGFloat = 20) -> UIFont {
-        return UIFont(name: "FreightBigBlack", size: fontsize)
+        return UIFont(name: "FreightBigBlack", size: fontsize)!
     }
     
     class func freightBoldItalic(fontsize:CGFloat = 20) -> UIFont {
-        return UIFont(name: "FreightBigBookItalic", size: fontsize)
+        return UIFont(name: "FreightBigBookItalic", size: fontsize)!
     }
     
     class func futuraBook(fontsize:CGFloat = 20) -> UIFont {
-        return UIFont(name: "Futura-Book", size: fontsize)
+        return UIFont(name: "Futura-Book", size: fontsize)!
     }
     
     class func futuraBold(fontsize:CGFloat = 20) -> UIFont {
-        return UIFont(name: "FuturaStd-Bold", size: fontsize)
+        return UIFont(name: "FuturaStd-Bold", size: fontsize)!
     }
     
     
