@@ -17,27 +17,24 @@
 @implementation mainViewController
 
 //synthesize here
-@synthesize tf_todaysTemp;
-@synthesize tf_yesterdaysTemp;
-@synthesize tf_todaysTime;
-@synthesize tf_yesterdaysTime;
-@synthesize tf_location;
-@synthesize celOrFar;
-
-@synthesize indicator;
-
-@synthesize settingsController;
-@synthesize weatherAPI;
-@synthesize gpsAPI;
-
-@synthesize bkgd;
+//@synthesize tf_todaysTemp;
+//@synthesize tf_yesterdaysTemp;
+//@synthesize tf_todaysTime;
+//@synthesize tf_yesterdaysTime;
+//@synthesize tf_location;
+//@synthesize celOrFar;
+//@synthesize indicator;
+//@synthesize settingsController;
+//@synthesize weatherAPI;
+//@synthesize gpsAPI;
+//@synthesize bkgd;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    weatherAPI = [api_forecast apiForecast];
-    gpsAPI = [corelocation_gps corelocationGPS];
+    _weatherAPI = [api_forecast apiForecast];
+    _gpsAPI = [corelocation_gps corelocationGPS];
     
 	// Do any additional setup after loading the view, typically from a nib.
     
@@ -59,17 +56,17 @@
 
 - (IBAction)changeDegrees:(id)sender {
     NSString *degree = @"C";
-    if( weatherAPI.isCelsius == true ){
-        weatherAPI.isCelsius = false;
+    if( _weatherAPI.isCelsius == true ){
+        _weatherAPI.isCelsius = false;
         NSLog(@"----- change degrees to F.");
         degree = @"F";
     }else{
-        weatherAPI.isCelsius = true;
+        _weatherAPI.isCelsius = true;
         NSLog(@"----- change degrees to C.");
     }
     
     //celOrFar.setTitle = degree;
-    [celOrFar setTitle:degree forState:UIControlStateNormal];
+    [_celOrFar setTitle:degree forState:UIControlStateNormal];
     
     //[self update];
 }
@@ -78,26 +75,25 @@
 {
     NSLog(@"update()");
     
-    tf_yesterdaysTemp.text = @" ";
-    tf_todaysTemp.text = @" ";
+    _tf_yesterdaysTemp.text = @" ";
+    _tf_todaysTemp.text = @" ";
     
-    tf_yesterdaysTime.text = @"";
-    tf_todaysTime.text = @"";
+    _tf_yesterdaysTime.text = @"";
+    _tf_todaysTime.text = @"";
     
-    tf_location.text = @"";
-
+    _tf_location.text = @"";
     
-    indicator.hidden = false;
+    _indicator.hidden = false;
     //check if enough time has elapsed to update or to pass?
     //if( ){ }
-    gpsAPI.delegate = self;
-    [gpsAPI getGPS];
+    _gpsAPI.delegate = self;
+    [_gpsAPI getGPS];
     //run update
 }
 
 -(void)gpsLoaded:(CLLocation *)gpsCoordinate{
     
-    weatherAPI.coordinates = gpsCoordinate.coordinate;
+    _weatherAPI.coordinates = gpsCoordinate.coordinate;
     // round the values to solid numbers:
     // tf_lng.text = [NSString stringWithFormat:@"Longitude %.0f", gpsCoordinate.coordinate.longitude];
     // tf_lat.text = [NSString stringWithFormat:@"Latitude %.0f", gpsCoordinate.coordinate.latitude];
@@ -111,7 +107,7 @@
             NSString *city = [placemark locality];
             NSString *country = [placemark administrativeArea];
             
-            tf_location.text = [NSString stringWithFormat:@"%@, %@ Lg:%.0f Lt:%.0f", city, country, gpsCoordinate.coordinate.longitude, gpsCoordinate.coordinate.latitude];
+            _tf_location.text = [NSString stringWithFormat:@"%@, %@ Lg:%.0f Lt:%.0f", city, country, gpsCoordinate.coordinate.longitude, gpsCoordinate.coordinate.latitude];
         }
     }];
     
@@ -119,8 +115,8 @@
 }
 
 -(void)updateWeather{
-    weatherAPI.delegate = self;
-    [weatherAPI getTemperature];
+    _weatherAPI.delegate = self;
+    [_weatherAPI getTemperature];
 }
 
 -(void)temperatureLoaded:(NSDictionary *)temps{
@@ -138,7 +134,7 @@
     BOOL drawTop = true;
     BOOL isWarm = false;
     
-    if( weatherAPI.isCelsius == true ){
+    if( _weatherAPI.isCelsius == true ){
         if( tTemp >= 10.0 ){
             tempColor = [self colorWarm];
             isWarm = true;
@@ -151,8 +147,8 @@
         }
     }
     
-    tf_yesterdaysTemp.text = [[temps objectForKey:@"pastTemp"]stringValue];
-    tf_todaysTemp.text = [[temps objectForKey:@"presentTemp"]stringValue];
+    _tf_yesterdaysTemp.text = [[temps objectForKey:@"pastTemp"]stringValue];
+    _tf_todaysTemp.text = [[temps objectForKey:@"presentTemp"]stringValue];
     
     if(  tTemp < yTemp ){
         NSLog(@" colder today draw");
@@ -188,16 +184,16 @@
         // equal
     }
     
-    tf_location.textColor = topColor;
-    tf_todaysTemp.textColor = tf_todaysTime.textColor = topColor;
-    tf_yesterdaysTime.textColor = tf_yesterdaysTemp.textColor = bottomColor;
+    _tf_location.textColor = topColor;
+    _tf_todaysTemp.textColor = _tf_todaysTime.textColor = topColor;
+    _tf_yesterdaysTime.textColor = _tf_yesterdaysTemp.textColor = bottomColor;
 
     [self drawColorBlock:tempColor second:drawTop];
     
-    tf_yesterdaysTime.text = [self renderDate:[[temps objectForKey:@"pastTime"]stringValue]];
-    tf_todaysTime.text = [self renderDate:[[temps objectForKey:@"presentTime"]stringValue]];
+    _tf_yesterdaysTime.text = [self renderDate:[[temps objectForKey:@"pastTime"]stringValue]];
+    _tf_todaysTime.text = [self renderDate:[[temps objectForKey:@"presentTime"]stringValue]];
     
-    indicator.hidden = true;
+    _indicator.hidden = true;
 }
 
 -(UIColor*)colorCold {
@@ -236,8 +232,8 @@
     NSLog(@" IS TOP? %d y %f", top , y);
     self.bkgd = [[bkgdCustomMain alloc] initWithFrame:CGRectMake(x, y, w, h) second:params];
     
-    [self.view addSubview:bkgd];
-    [self.view sendSubviewToBack:bkgd];
+    [self.view addSubview:_bkgd];
+    [self.view sendSubviewToBack:_bkgd];
 }
 
 
@@ -262,7 +258,7 @@
 - (void)displaySettingsView
 {
     //test passing of the singleton object information from one view to another.
-    weatherAPI.someNum = 5;
+    _weatherAPI.someNum = 5;
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         self.settingsController = [[settingsViewController alloc] initWithNibName:@"settingsViewController_iPhone" bundle:nil];
@@ -272,7 +268,7 @@
     }
 
     //add to view:
-    [self.view addSubview:settingsController.view];
+    [self.view addSubview:_settingsController.view];
     
 }
 

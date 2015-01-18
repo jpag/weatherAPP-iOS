@@ -1,10 +1,44 @@
-Weather App
-compares today's temperature to yesterdays
+PASTCAST!
+
+- SWIFT
+
+	TODO :
+		-loader 
+		-animate the display
+
+	COMPLETE :
+		-on touch convert the degrees to Cel
+		- snapping / scrollview added
+		- on refresh of the app (check for set time) update
+		- setup
+		- get gps
+		- get json response
+		- find location name
+
+		-load json/traverse the data return
+
+		-display
+			(storyboard)
+		
+		- tap on specific block to get that one on focus
+
+
+
+clear-day, 
+clear-night, 
+rain, 
+snow, 
+sleet, 
+wind, 
+fog, 
+cloudy, 
+partly-cloudy-day,
+partly-cloudy-night
+(Developers should ensure that a sensible default is defined, as additional values, such as hail, thunderstorm, or tornado, may be defined in the future.)
+
 
 
 API:
-
-
 
 all weather measured in C (and converted as needed)
 	C to F
@@ -36,9 +70,6 @@ http://worldweatheronline.com/free-weather-feed.aspx
 // get GPS points via:
 http://itouchmap.com/latlong.html
 
-
-//GIT search for conflicts on merges with:
-"<<<<<<< HEAD"
 
 //servers:
 connect via ssh:

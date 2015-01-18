@@ -20,7 +20,8 @@
 		protected $ACCESS_TOKEN;
 
 		//CONFIG SETTINGS
-		
+		protected $DEV_STATE = "live";
+
 		protected $CACHE = true;
 		protected $OVERRIDECACHE = false;
 		protected $CACHEEXPIRES = '3 hours';
@@ -50,6 +51,10 @@
 			
 			if( isset($config['CACHEFOLDER'])){
 				$this->CACHEFOLDER = $config['CACHEFOLDER'];
+			}
+
+			if( isset($config['DEV_STATE'])){
+				$this->DEV_STATE = $config['DEV_STATE'];
 			}
 
 			if( isset($config['PARAMS'])){
@@ -98,17 +103,68 @@
 			$TIMESTAMP = $this->TIME;
 			$FROMTIME = $this->FROMTIME;
 
-			$RESULTPAST = json_decode( $this->query($LATLONG, $FROMTIME) );
-			$RESULT = json_decode( $this->query($LATLONG, $TIMESTAMP) );
+			$RESULTPAST = json_decode($this->query($LATLONG, $FROMTIME));
+			$RESULT = json_decode($this->query($LATLONG, $TIMESTAMP));
 
-			$RESULTS = array( 
-								'timecompared' => array(
-														'past' => $RESULTPAST, 
-														'present' => $RESULT 
-													)
+			if( $RESULTPAST && $RESULT ){
+
+				//var_dump($RESULTPAST->currently->temperature);
+
+				if( isset( $RESULTPAST->currently) && isset( $RESULT->currently) ){
+
+					$PAST = $RESULTPAST->currently;
+					$CURRENT = $RESULT->currently;
+
+					$RESULTPAST_FORMATTED = new stdClass();
+					$RESULT_FORMATTED = new stdClass();
+
+
+					$RESULTPAST_FORMATTED->temp = $this->convertTemp( $PAST->temperature );
+					$RESULTPAST_FORMATTED->weathercode = $PAST->icon; 
+					$RESULTPAST_FORMATTED->rain = $PAST->precipIntensity;
+					$RESULTPAST_FORMATTED->rainchance = $PAST->precipProbability;
+					$RESULTPAST_FORMATTED->summary = $PAST->summary;
+
+					$RESULT_FORMATTED->temp = $this->convertTemp( $CURRENT->temperature );
+					$RESULT_FORMATTED->weathercode = $CURRENT->icon;
+					$RESULT_FORMATTED->rain = $CURRENT->precipIntensity;
+					$RESULT_FORMATTED->rainchance = $CURRENT->precipProbability;
+					$RESULT_FORMATTED->summary = $CURRENT->summary;
+
+					if( $this->DEV_STATE == 'dev' ){
+						$RESULTPAST_FORMATTED->dev = $RESULTPAST;
+						$RESULT_FORMATTED->dev = $RESULT;
+					}
+
+					$RESULTS = array( 
+									'timecompared' => array(
+															'past' => $RESULTPAST_FORMATTED, 
+															'present' => $RESULT_FORMATTED 
+														)
+									);
+
+
+
+				}else{
+					$RESULTS = array(
+								'error' => '101',
+								'message' => 'Results no current found.'
 							);
+				}
+
+			}else{
+				$RESULTS = array(
+								'error' => '100',
+								'message' => 'Results Compared and/or Result do not exist, May be a faulty connection with the api'
+							);
+			};
 
 			return json_encode( $RESULTS );
+		}
+
+
+		protected function convertTemp($temp){
+			return $temp + 274.15;
 		}
 
 		protected function query($LATLONG, $TIME){
@@ -148,7 +204,10 @@
 			$ARRAY->cacheDate = strtotime($EXPIRES);
 			$JSON_TIMESTAMPED = json_encode($ARRAY);
 			
-			if( $this->CACHE == true ){
+			if( isset($ARRAY->error) ){
+				// Do not cache if there was an error in the JSON request.
+
+			}else if( $this->CACHE == true ){
 				$CACHEFILE = $this->generateCacheFileName($LATLONG);
 				$fh = fopen($CACHEFILE, 'w') or die(json_encode("error"));
 				fwrite($fh, $JSON_TIMESTAMPED );

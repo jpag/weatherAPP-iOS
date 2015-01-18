@@ -7,6 +7,16 @@
 		die;
 	}
 
+	$disableCache = false;
+	if($_SERVER["HTTP_HOST"] == 'local.weather.com' ){
+		$disableCache = true;
+	}
+
+	// set a default to convert from (don't rely on the API for conversion)
+	$UNITOFMEASUREMENT = 'si';
+	// we will return in KELVIN 1C = 274.15K
+
+	/*
 	if( !isset( $_REQUEST['unit'] ) ){
 		// auto = Selects the relevant units automatically, based on geographic location.
 		$UNITOFMEASUREMENT = 'auto';
@@ -18,12 +28,11 @@
 			$UNITOFMEASUREMENT = 'us';
 		}
 	}
+	*/
 
-	// set a default to convert from (don't rely on the API for conversion)
-	$UNITOFMEASUREMENT = 'si';
-
+	
 	/* Example of call
-	* https://api.forecast.io/forecast/135a9db207f662dfed4d028f503b562e/40,-73,1381948190?exclude=minutely
+	* 	https://api.forecast.io/forecast/135a9db207f662dfed4d028f503b562e/40,-73,1381948190?exclude=minutely
 	*/
 
 	require_once('config.php');
@@ -36,11 +45,12 @@
 		array(
 			"ACCESS_TOKEN"=> $WEATHER_API_AUTH_TOKEN ,
 			"CACHEEXPIRES" => $CACHEEXPIRE_CRON ,
-			"OVERRIDECACHE" => true,
+			"OVERRIDECACHE" => $disableCache,
 			"CACHEFOLDER" => $CACHEFOLDER,
 			"PARAMS" => array('exclude'=>'minutely,flags,daily', 'units'=>$UNITOFMEASUREMENT ),
 			"TIME" => $TIMESTAMP,
-			"FROMTIME" => $FROMTIME
+			"FROMTIME" => $FROMTIME,
+			"DEV_STATE" => 'live'
 		)
 	);
 	// exclude=[blocks]: Exclude some number of data blocks from the API response. 
