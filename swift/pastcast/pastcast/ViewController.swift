@@ -80,30 +80,46 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     
     func showLoader(){
+        
         setScrollViewHeight(UIScreen.mainScreen().bounds.height);
         _notificationCenter.postNotificationName(_ncEvents.hidePoweredBy, object: nil)
         
         var width = UIScreen.mainScreen().bounds.width
         var height = UIScreen.mainScreen().bounds.height
         
-        if( self.topHalf? != nil ){
-            println(" top half exists remove it.")
-            self.topHalf?.removeFromSuperview()
-        }
-        if( self.bottomHalf? != nil ){
-            println(" bottom half half exists remove it.")
-            self.bottomHalf?.removeFromSuperview()
-        }
         
-        loaderView = ViewLoading( frame: CGRect(x: 0, y:0, width: width, height: height))
-        self.view.addSubview(loaderView!)
+        /*
+        for view in self.view.subviews {
+            println(" removing view ")
+            view.removeFromSuperview();
+        }
+        */
         
-        loaderView?.startLoader()
+        if( self.topHalf? != nil && self.bottomHalf? != nil ){
+            println(" top and bottom half exists.")
+            // add the bottom loader display:
+            
+            var bottomHeight = UIScreen.mainScreen().bounds.height * (1.0 - globals.halfHeight)
+            var y = UIScreen.mainScreen().bounds.height
+            loaderView = ViewLoading( frame: CGRect(x: 0, y:y, width: width, height: bottomHeight), loaderType: globals.loaderSmall)
+            self.view.addSubview(loaderView!)
+        }else{
+            loaderView = ViewLoading( frame: CGRect(x: 0, y:0, width: width, height: height), loaderType: globals.loaderLarge)
+            self.view.addSubview(loaderView!)
+
+        }
     }
     
     func removeLoader(type:NSString) {
+        println(" --- view controller removeLoader() ")
         if( loaderView != nil ){
-            loaderView!.stopAndCollapse(type)
+            loaderView!.removeLoader(type)
+        }else{
+            // no loader.. skip to adding views
+            // self.loaderDoneAnimating(nil)
+            if( type == "ADDVIEWS"){
+                self.readyToAddViews()
+            }
         }
     }
     
@@ -220,7 +236,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     }
     
     func stepAnimate() {
-        println(" ---- step animate ---")
+        //println(" ---- step animate ---")
         
         if( scrollViewDestination == nil ){
             println(" did not find a ST destination so cancel the animation timer")
@@ -230,8 +246,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         }
         var maxScrollY          = getMaxScroll()
         var scrollView = self.view as UIScrollView
+        var increment:CGFloat = 0.1 //0.05
         
-        var newST:CGFloat = scrollView.contentOffset.y - ((scrollView.contentOffset.y - scrollViewDestination!) * 0.05)
+        var newST:CGFloat = scrollView.contentOffset.y - ((scrollView.contentOffset.y - scrollViewDestination!) * increment)
         var difST:CGFloat = abs(scrollView.contentOffset.y - newST)
         if( difST < 0.5 ){
             println(" ---- Invalidate ---- ")
@@ -240,8 +257,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             newST = scrollViewDestination!
         }
         
-        println( "scrollViewDestination: \(scrollViewDestination) ----- | scrollView.contentOffset.y \(scrollView.contentOffset.y) = newST \(newST) " )
-        println( " difffffst \(difST) ")
+        //println( "scrollViewDestination: \(scrollViewDestination) ----- | scrollView.contentOffset.y \(scrollView.contentOffset.y) = newST \(newST) " )
+        //println( " difffffst \(difST) ")
         
         scrollView.contentOffset.y = newST
         
@@ -346,8 +363,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         let task = session.dataTaskWithURL(url!, completionHandler: { data, response, error -> Void in
             
-            println("Task completed")
-            
             if( response == nil ){
                 self.showWarning(webErrorStr)
                 return
@@ -355,13 +370,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             
             if((error) != nil) {
                 // If there is an error in the web request, print it to the console
-                self.showWarning(webErrorStr)
                 println(error.localizedDescription)
+                self.showWarning(webErrorStr)
                 return
             }
             
             var statusCode = (response as NSHTTPURLResponse).statusCode
-            println( statusCode )
+            println("--- JSON loaded --- http status code \(statusCode)")
             
             if( statusCode == 404 ){
                 println("Could not find server")
@@ -369,9 +384,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
                 return
             }
 
-
             var err: NSError?
-            
             var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
             
             if((err?) != nil) {
@@ -382,9 +395,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             
             var results = jsonResult["timecompared"] as NSDictionary
             self.dataRecieved = NSDate()
-            
-            self.removeLoader("ADDVIEWS")
             self.displayData(results)
+            // once the loader is removed the views will be added.
+            self.removeLoader("ADDVIEWS")
+            
         })
         
         task.resume()
@@ -393,8 +407,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     func displayData(dataResults:NSDictionary) {
         currentResults = dataResults["present"] as? NSDictionary
         previousResults = dataResults["past"] as? NSDictionary
-        
-        // readyToAddViews()
     }
     
     // we wait for the loader to be done in a sequence before displaying the views.
@@ -419,7 +431,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         var calculatedTemps = updateTemps()
         
         if( calculatedTemps.c == globals.tempError || calculatedTemps.p == globals.tempError ){
-            println(" - add views cal time..not valid")
+            println(" - warning views cal time..not valid \(globals.tempError) ")
             return
         }
         
@@ -432,8 +444,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         var _weatherCodes: (present:NSString,past:NSString) = self.getWeatherCodes()
         
         println( " current \(calculatedTemps.c) vs \(calculatedTemps.p)")
-        println( " width \(width) h \(topHeight) \(UIScreen.mainScreen().bounds.height) half height: \(globals.halfHeight)")
-        println( " past weather code \(_weatherCodes.past) present \(_weatherCodes.present) " )
+        //println( " width \(width) h \(topHeight) \(UIScreen.mainScreen().bounds.height) half height: \(globals.halfHeight)")
+        
+        println( "Weather codes Past:\(_weatherCodes.past) & Present:\(_weatherCodes.present)" )
         
         topHalf = ViewTempBlock(
             frame: CGRect(x: 0, y: 0, width: width, height: topHeight ),
@@ -471,8 +484,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     func updateTemps() ->(c:CGFloat, p:CGFloat) {
     
-        // http://stackoverflow.com/questions/24096293/assign-value-to-optional-dictionary-in-swift
-        
         if( currentResults? == nil || previousResults? == nil ){
             return (globals.tempError, globals.tempError)
         }
@@ -537,8 +548,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         // dataRecieved is updated once JSON request is made and successful
         
         println(" - check has time gone long enough to run again?")
-        //println(" -Data Received \( dataRecieved ) interval since now \(dataRecieved?.timeIntervalSinceNow) --- ")
         
+        return true
+        
+        /*
         if( dataRecieved == nil || dataRecieved?.timeIntervalSinceNow < globals.minUpdateTimeInSeconds ){
             // go ahead do another update
             println("  YES\n")
@@ -547,6 +560,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             println(" NO\n")
             return false
         }
+        */
+        
     }
     
     func roundCoordinate(coord:CLLocationDegrees) -> Double{
@@ -565,7 +580,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         //    message.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         //self.presentViewController(message, animated: true, completion: nil)
         
-        
         if NSThread.isMainThread()
         {
             showWarningMainThread(msg);
@@ -583,12 +597,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         _notificationCenter.postNotificationName(_ncEvents.hidePoweredBy, object: nil)
         
         var width = UIScreen.mainScreen().bounds.width
-        var height = UIScreen.mainScreen().bounds.height
+        var height = UIScreen.mainScreen().bounds.height * (1.0 - globals.halfHeight)
+        var y = UIScreen.mainScreen().bounds.height
+        var finalY = UIScreen.mainScreen().bounds.height * globals.halfHeight
         
         println(" SHOW error view")
         if( errorMsg == nil ){
             println(" error msg was nil")
-            errorMsg = ViewError( frame: CGRect(x: 0, y:0, width: width, height: height), errorMsg: msg )
+            errorMsg = ViewError( frame: CGRect(x: 0, y:y, width: width, height: height), errorMsg: msg )
         }else{
             // remove the existing error and show this one ?
             println(" error msg already exists")
@@ -596,14 +612,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             errorMsg?.updateError(msg)
         }
         
-        errorMsg?.frame.origin.y = 0    //height
-        errorMsg?.alpha = 0
         self.view.addSubview(errorMsg!)
         
         UIView.animateWithDuration(0.35,
             animations: {
-                self.errorMsg!.alpha = 1.0
-                //self.errorMsg!.frame.origin.y = 0
+                //self.errorMsg!.alpha = 1.0
+                self.errorMsg!.frame.origin.y = finalY
             },
             completion: { (finished:Bool) in
                 if( finished ){

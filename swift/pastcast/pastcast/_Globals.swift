@@ -18,6 +18,9 @@ class Globals {
     // local
     //let apiRequests = "http://local.weather.com/api/"
     
+    let loaderLarge = "State.Loader.Full.onStart"
+    let loaderSmall = "State.Loader.Small"
+    
     // how many decmial pts do we make this
     // 10 = 73.21203 * 10 / 10 = 73.2
     let gpsdecmialpt = 10000.0

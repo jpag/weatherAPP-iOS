@@ -14,7 +14,11 @@ class ViewLoading: UIView {
     var imageList = weatherCodes.loadlist
     var nextImageIcon = 0
     var keepAnimating = true
+    // once the view is done animating in
+    var doneAnimatingIn = false
     var loaderDoneReason = "NA"
+    var type = ""
+    var iconView:UIImageView!
     
     required init(coder aDecoder: NSCoder)
     {
@@ -22,29 +26,145 @@ class ViewLoading: UIView {
     }
     
     // temps[0] is always 'this' temp. temp[1] is the one to compare to.
-    override init(frame: CGRect) {
+    init(frame: CGRect, loaderType:NSString) {
         
         imageList = globals.shuffle(imageList)
-        println(imageList)
+        type = loaderType
+        
         super.init(frame:frame)
+        
+        // insert loader icon here:
+        var loaderIcon = UIImage(named: "temp-icon")
+        var iconWH = 50 as CGFloat
+        var iconx = (UIScreen.mainScreen().bounds.width - iconWH) / 2
+        var icony = (self.frame.height - iconWH ) / 2
+        
+        if( type == globals.loaderSmall ){
+            // slightly different design
+            // icony = (self.frame.height - iconWH )/2
+        }
+        
+        iconView = UIImageView(image: loaderIcon )
+        iconView.contentMode = UIViewContentMode.ScaleAspectFit
+        iconView.frame = CGRect(x: iconx, y: icony, width: iconWH, height: iconWH)
+        
+        self.addSubview(iconView)
+        
+        if( type == globals.loaderSmall ){
+            self.backgroundColor = UIColor.pastCast.white()
+            
+            let time:NSTimeInterval = 0.75
+            let delay:NSTimeInterval = 0.0
+            let options = UIViewAnimationOptions.CurveEaseOut
+            var destinationY = UIScreen.mainScreen().bounds.height * globals.halfHeight
+            
+            UIView.animateWithDuration(
+                time,
+                delay: delay,
+                options: options,
+                animations: {
+                    self.frame.origin.y = destinationY
+                },
+                completion: { (finished:Bool) in
+                    if( finished ){
+                        self.doneAnimatingIn = true
+                        if( self.keepAnimating == false ){
+                            // no longer needed:
+                            self.animateOut(1.0)
+                        }
+                    }
+                }
+            )
+        }else{
+            self.doneAnimatingIn = true
+        }
+        
+        startLoader()
     }
     
     func startLoader(){
-        animateInNextLogo()
+        
+        if( type == globals.loaderSmall ){
+            
+        }else{
+        
+        }
+        startSpinning()
     }
     
-    func stopAndCollapse(type:NSString) {
-        loaderDoneReason = type
+    func startSpinning () {
+        spin()
+    }
+    
+    func spin() {
+        // this loops indefintely
+        let fullRotation = CGFloat(M_PI * 2)
+        let duration:NSTimeInterval = 0.75
+        let delay:NSTimeInterval = 0.0
+        //let options = UIViewKeyframeAnimationOptions.CalculationModePaced | UIViewKeyframeAnimationOptions.Repeat | UIViewAnimationOptions.CurveLinear
+        
+        let options = UIViewAnimationOptions.CurveLinear
+        //animateKeyframesWithDuration
+        
+        UIView.animateWithDuration(
+            duration,
+            delay: delay,
+            options: options,
+            animations: {
+                var rotateBy = CGFloat(M_PI / 2)
+                self.iconView.transform = CGAffineTransformRotate(self.iconView.transform, rotateBy)
+            },
+            completion: {(finished:Bool) in
+                if( finished ){
+                    self.spin()
+                }
+            }
+        )
+    }
+    
+    func removeLoader(_type:NSString) {
+        println(" ----- stop and collapse loader \(self.type)")
+        loaderDoneReason = _type
         keepAnimating = false
+        animateOut(0.0)
+    }
+    
+    func animateOut(delay:NSTimeInterval) {
+        // animate out the view first!
+        if( !self.doneAnimatingIn ){
+            println(" we cant animate OUT the loader until it is done animating IN!")
+            
+        }else if( self.type == globals.loaderSmall ){
+            var time = 0.35
+            var destinationY = UIScreen.mainScreen().bounds.height
+            
+            UIView.animateWithDuration(time,
+                delay : delay,
+                options : UIViewAnimationOptions.CurveEaseIn,
+                animations: {
+                    self.frame.origin.y = destinationY
+                },
+                completion: { (finished:Bool) in
+                    if( finished ){
+                        println(" stop and collapse animation FINISHED: \(self.frame.origin.y) ")
+                        self.loaderDone()
+                    }
+                }
+            )
+        }else{
+            loaderDone()
+        }
     }
     
     func loaderDone() {
+        println("------- LOADER is done dispatch event")
         var obj = [
             "type" : loaderDoneReason
         ]
         _notificationCenter.postNotificationName(_ncEvents.loaderDoneAnimating, object: obj)
     }
     
+    /*
     func animateInNextLogo() {
         // next load icon:
         // println(imageList)
@@ -104,11 +224,7 @@ class ViewLoading: UIView {
                     
                 }
         })
-        
     }
+    */
     
-    func removeLoader() {
-        keepAnimating = false
-    }
-
 }

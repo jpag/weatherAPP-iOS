@@ -50,7 +50,7 @@ class ViewTempBlock: UIView {
     
     // temps[0] is always 'this' temp. temp[1] is the one to compare to.
     init(frame: CGRect, _temps:NSArray,_weathercode:NSString, _pos:Int, _state:NSString) {
-        println("\n\n")
+        // println("\n\n")
         
         temps = _temps
         pos = _pos
@@ -73,9 +73,6 @@ class ViewTempBlock: UIView {
         var iconWH:CGFloat = globals.iconWH()
         
         weatherCode = _weathercode
-        
-        
-        //var weatherIcon = UIImage(named: weatherCodes.getCode(weatherCode) )
         var weatherIcon = UIImage(named: weatherCodes.getCodeFromString(weatherCode))
         
         var weatherIconView = UIImageView(image: weatherIcon )
@@ -84,15 +81,10 @@ class ViewTempBlock: UIView {
         
         iconBlock = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
         iconBlock.addSubview(weatherIconView)
-        // iconBlock.backgroundColor = UIColor.pastCast.white(alpha: 0.25)
         
         var iconMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
         iconMaskLayer.backgroundColor = UIColor.blackColor()
         iconBlock.maskView = iconMaskLayer
-        
-        
-        
-        // println( " pos \(pos) frame \(frame)")
         
         var maskLayer = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
         maskLayer.backgroundColor = UIColor.blackColor()
@@ -126,7 +118,7 @@ class ViewTempBlock: UIView {
     
     func update(tempBlock:NSArray) {
         // update 
-        println( "\n---- Temp block update ---- \(tempBlock[0])")
+        // println( "\n---- Temp block update ---- \(tempBlock[0])")
         
         temps = tempBlock
         
