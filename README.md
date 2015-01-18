@@ -1,36 +1,8 @@
-TODO:
-	IOS:
-		make the singleton work as a singleton.. keeps intializing..
-		store local storage properly (test with settings)
-		expand settings view (for testing local storage etc)
-		custom animations
-		build front end / design
-
-	WEB:
-		build front end / teaser site
-		extend api and error checking
-		add more cities
-
-COMPLETE:
-
-	IOS:
-		created a delegate/protocol to dispatch events from the API back to views 
-		share singletons to multiple views
-		open a view inside of the main view
-		load JSON into IOS
-		create constants HEADER
-
-	WEB:
-		build out api (draft)
-
-
-
 Weather App
 compares today's temperature to yesterdays
 
 
 API:
-
 
 
 
