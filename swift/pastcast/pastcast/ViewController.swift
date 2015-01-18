@@ -300,6 +300,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
                 if (error != nil) {
                     println("reverse geodcode fail: \(error.localizedDescription)")
                     self.showWarning("Unable to find your location")
+                    return;
                 }
                 
                 let pm = placemarks as [CLPlacemark]
@@ -342,7 +343,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         let url = NSURL(string: path)
         let session = NSURLSession.sharedSession()
         
-        let task = session.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+        let task = session.dataTaskWithURL(url!, completionHandler: { data, response, error -> Void in
             
             println("Task completed")
             
