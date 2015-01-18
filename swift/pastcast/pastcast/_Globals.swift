@@ -65,8 +65,10 @@ class NotificationEvents {
 class WeatherCodes {
     
     let loadlist =  [
-                    "load-blue-clouds","load-blue-rain","load-blue-snow","load-blue-sunny","load-blue-tstorm",
-                    "load-red-clouds","load-red-rain","load-red-snow","load-red-sunny","load-red-tstorm"
+                    "load-blue-clouds","load-blue-rain","load-blue-snow",
+                    "load-blue-sunny","load-blue-tstorm",
+                    "load-red-clouds","load-red-rain","load-red-snow",
+                    "load-red-sunny","load-red-tstorm"
                     ]
     
     // used with dark sky.
@@ -134,7 +136,6 @@ class WeatherCodes {
         var atmosphere = "weather-clouds"
         var clouds = "weather-clouds"
         var extreme = "weather-tstorm"
-        
         var tornado = "weather-tstorm"
         var hurricane = "weather-tstorm"
         

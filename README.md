@@ -3,9 +3,7 @@ PASTCAST!
 - SWIFT
 
 	TODO :
-		-loader 
-		-animate the display
-
+		
 	COMPLETE :
 		-on touch convert the degrees to Cel
 		- snapping / scrollview added
@@ -23,6 +21,7 @@ PASTCAST!
 		- tap on specific block to get that one on focus
 
 
+https://developer.forecast.io/docs/v2
 
 clear-day, 
 clear-night, 

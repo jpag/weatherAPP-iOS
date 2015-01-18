@@ -263,6 +263,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
         }
+        
     }
     
     // user has resumed app status
@@ -275,7 +276,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         println(" -- FAIL to locate...")
         showWarning("Warning", msg: "Failed to find a location.")
         // TODO add a default location? or a popup/autocomplete of location?
-        
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
@@ -310,8 +310,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
                     println("reverse geodcode fail: \(error.localizedDescription)")
                     
                     self.showWarning("Unable to find your location", msg: "sorry")
-                    
                     self.get()
+                    return;
                 }
                 
                 let pm = placemarks as [CLPlacemark]
@@ -352,9 +352,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         let url = NSURL(string: path)
         let session = NSURLSession.sharedSession()
         
-        let task = session.dataTaskWithURL(url, completionHandler: { data, response, error -> Void in
+        let task = session.dataTaskWithURL(url!, completionHandler: { data, response, error -> Void in
             
             println("Task completed")
+            if((error) != nil) {
+                // If there is an error in the web request, print it to the console
+                println(error.localizedDescription)
+                return
+            }
             
             var statusCode = (response as NSHTTPURLResponse).statusCode
             println( statusCode )
@@ -364,11 +369,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
                 return
             }
             
-            if((error) != nil) {
-                // If there is an error in the web request, print it to the console
-                println(error.localizedDescription)
-                return
-            }
+            
             var err: NSError?
             
             var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
