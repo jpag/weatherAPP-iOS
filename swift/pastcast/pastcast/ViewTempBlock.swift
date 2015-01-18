@@ -69,9 +69,8 @@ class ViewTempBlock: UIView {
         
         super.init(frame:frame)
         
-        
         // type of weather :
-        var iconWH:CGFloat = iconHeight()
+        var iconWH:CGFloat = globals.iconWH()
         
         weatherCode = _weathercode
         
@@ -199,9 +198,9 @@ class ViewTempBlock: UIView {
         
         let iconRangeHW = (
             zero    : CGFloat( 0 ),
-            third   : CGFloat( self.iconHeight() ),
+            third   : CGFloat( globals.iconWH() ),
             half    : CGFloat(0),
-            twoThirds : CGFloat( self.iconHeight() )
+            twoThirds : CGFloat( globals.iconWH() )
         )
         
         let iconRangeX = (
@@ -316,14 +315,7 @@ class ViewTempBlock: UIView {
         iconBlock.frame.origin.x = iconX
         
         iconBlock.maskView?.frame = CGRect(x: 0, y: 0, width: newiconWidth, height: newiconHeight)
-        
-        
-    }
-    
-    func iconHeight() -> CGFloat {
-        
-        return UIScreen.mainScreen().bounds.width * 0.15
-        
+
     }
     
     func recalFromRange(min:CGFloat,max:CGFloat, percent:CGFloat ) -> CGFloat {

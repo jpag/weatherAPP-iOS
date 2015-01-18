@@ -26,6 +26,7 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>FuturaStd-Bold.otf</string>
 		<string>Futura-Book.otf</string>
 		<string>FreightBigBookItalic.ttf</string>
 		<string>FreightBigBlack.ttf</string>
