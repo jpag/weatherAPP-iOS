@@ -13,19 +13,26 @@ class ViewLoading: UIView {
     // loader stuff
     var imageList = weatherCodes.loadlist
     var nextImageIcon = 0
-    var keepAnimating = true
+    var removingLoader = false
     // once the view is done animating in
     var doneAnimatingIn = false
+    var stopSpinning:Bool = false
     var loaderDoneReason = "NA"
     var type = ""
-    var iconView:UIImageView!
+    var iconView:ViewLoaderIcon!
+    var iconyOffset:CGFloat = 30.0
+    
+    let durationIn:NSTimeInterval = 0.5
+    let durationOut:NSTimeInterval = 1.5
+    
+    let iconWH = 50 as CGFloat
+    var icony:CGFloat!
     
     required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
     
-    // temps[0] is always 'this' temp. temp[1] is the one to compare to.
     init(frame: CGRect, loaderType:NSString) {
         
         imageList = globals.shuffle(imageList)
@@ -34,200 +41,101 @@ class ViewLoading: UIView {
         super.init(frame:frame)
         
         // insert loader icon here:
-        var iconWH = 50 as CGFloat
         var iconx = (UIScreen.mainScreen().bounds.width - iconWH) / 2
-        var icony = (self.frame.height - iconWH ) / 2
         
-        if( type == globals.loaderSmall ){
-            // slightly different design
-            // icony = (self.frame.height - iconWH )/2
-        }
-        var loaderIcon = UIImage(named: "loading")
+        icony = (self.frame.height - iconWH ) / 2
         
-        iconView = UIImageView(image: loaderIcon )
-        iconView.contentMode = UIViewContentMode.ScaleAspectFit
-        iconView.frame = CGRect(x: iconx, y: icony, width: iconWH, height: iconWH)
-        
+        iconView = ViewLoaderIcon(frame:CGRect(x: iconx, y: icony, width: iconWH, height: iconWH))
+        iconView.alpha = 1.0
         self.addSubview(iconView)
+        
+        UIView.setAnimationBeginsFromCurrentState(true)
         
         if( type == globals.loaderSmall ){
             self.backgroundColor = UIColor.pastCast.white()
-            
-            let time:NSTimeInterval = 0.35
-            let delay:NSTimeInterval = 0.0
-            let options = UIViewAnimationOptions.CurveEaseOut
-            var destinationY = UIScreen.mainScreen().bounds.height * globals.halfHeight
-            
-            UIView.animateWithDuration(
-                time,
-                delay: delay,
-                options: options,
-                animations: {
-                    self.frame.origin.y = destinationY
-                },
-                completion: { (finished:Bool) in
-                    if( finished ){
-                        self.doneAnimatingIn = true
-                        if( self.keepAnimating == false ){
-                            // no longer needed:
-                            self.animateOut(1.0)
-                        }
-                    }
-                }
-            )
-        }else{
-            self.doneAnimatingIn = true
+            animateInOnSmall()
         }
-        
-        startLoader()
     }
     
-    func startLoader(){
+    func animateInOnSmall() {
         
-        if( type == globals.loaderSmall ){
-            
-        }else{
-        
-        }
-        startSpinning()
-    }
-    
-    func startSpinning () {
-        spin()
-    }
-    
-    func spin() {
-        // this loops indefintely
-        let fullRotation = CGFloat(M_PI * 2)
-        let duration:NSTimeInterval = 0.25
         let delay:NSTimeInterval = 0.0
-        //let options = UIViewKeyframeAnimationOptions.CalculationModePaced | UIViewKeyframeAnimationOptions.Repeat | UIViewAnimationOptions.CurveLinear
+        let options = UIViewAnimationOptions.CurveEaseOut
+        var destinationY:CGFloat = UIScreen.mainScreen().bounds.height * globals.halfHeight
         
-        let options = UIViewAnimationOptions.CurveLinear
-        //animateKeyframesWithDuration
         
         UIView.animateWithDuration(
-            duration,
-            delay: delay,
+            durationIn,
+            delay: 0.0,
             options: options,
             animations: {
-                var rotateBy = CGFloat(M_PI / 2)
-                self.iconView.transform = CGAffineTransformRotate(self.iconView.transform, rotateBy)
+                self.frame.origin.y = destinationY
             },
-            completion: {(finished:Bool) in
-                if( finished ){
-                    self.spin()
-                }
-            }
+            completion: nil
         )
     }
     
     func removeLoader(_type:NSString) {
         println(" ----- stop and collapse loader \(self.type)")
-        loaderDoneReason = _type
-        keepAnimating = false
-        animateOut(0.0)
+        self.loaderDoneReason = _type
+        self.removingLoader = true
+        self.animateOut(0.0)
     }
     
     func animateOut(delay:NSTimeInterval) {
         // animate out the view first!
-        if( !self.doneAnimatingIn ){
-            println(" we cant animate OUT the loader until it is done animating IN!")
+        
+        self.iconView.animateOut = true
+        
+        if( self.type == globals.loaderSmall ){
             
-        }else if( self.type == globals.loaderSmall ){
+            var destinationY = self.frame.origin.y
+            
             println(" animateout() animate out now... \(delay)")
-            var time = 0.35
-            var destinationY = UIScreen.mainScreen().bounds.height
             
-            UIView.animateWithDuration(time,
-                delay : delay,
-                options : nil, // UIViewAnimationOptions.CurveEaseIn,
+            UIView.animateWithDuration(durationOut,
+                //delay : delay,
+                //options : nil,
                 animations: {
+                    self.alpha = 0.0
                     self.frame.origin.y = destinationY
                 },
                 completion: { (finished:Bool) in
+                    println(" completion .... ")
                     if( finished ){
                         println(" stop and collapse animation FINISHED: \(self.frame.origin.y) ")
                         self.loaderDone()
                     }
                 }
             )
-        }else{
-            loaderDone()
+            
+        } else {
+            // set a timer to give the loader icon a headstart...
+            println(" - set TIMER for loaderDone() -")
+            
+            // .75 seconds
+            let delay = 0.75 * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                //call the method which have the steps after delay.
+                self.loaderDone()
+            }
+            
+            //self.loaderDone()
         }
+
     }
     
     func loaderDone() {
         println("------- LOADER is done dispatch event")
+        self.stopSpinning = true
+        
         var obj = [
             "type" : loaderDoneReason
         ]
         _notificationCenter.postNotificationName(_ncEvents.loaderDoneAnimating, object: obj)
-        
+        // self.iconView.removeFromSuperview()
         self.removeFromSuperview();
     }
-    
-    /*
-    func animateInNextLogo() {
-        // next load icon:
-        // println(imageList)
-        
-        // animate current off screen
-        
-        // remove it?
-        
-        var iconWH = globals.iconWH()
-        var weatherIcon = imageList[nextImageIcon]
-        var weatherIconView = UIImageView(image: UIImage(named:weatherIcon) )
-        var xpt = (UIScreen.mainScreen().bounds.width - iconWH)/2
-        weatherIconView.contentMode = UIViewContentMode.ScaleAspectFit
-        weatherIconView.frame = CGRect(x: xpt, y: (-1 * iconWH), width: iconWH, height: iconWH)
-        
-        self.addSubview(weatherIconView)
-        
-        // add and animate
-        
-        nextImageIcon++
-        if( nextImageIcon >= imageList.count ){
-            println("reset image list!")
-            // reshuffle them?
-            imageList = globals.shuffle(imageList)
-            nextImageIcon = 0
-        }
-        
-        var offScreenY = UIScreen.mainScreen().bounds.height
-        var midY = (offScreenY * 0.5) - (iconWH * 0.5)
-        var time = 1.0
-        
-        UIView.animateWithDuration(time, delay: 0.0, options: .CurveEaseOut,
-            animations: {
-                weatherIconView.frame.origin.y = midY
-            },
-            completion: { (finished:Bool) in
-                if( finished ){
-                    if( self.keepAnimating ){
-                        self.animateInNextLogo()
-                    }
-                    UIView.animateWithDuration(time, delay: 0.0, options: .CurveEaseIn,
-                        animations: {
-                            weatherIconView.frame.origin.y = offScreenY
-                        },
-                        completion: {
-                            (done:Bool) in
-                            if( done ){
-                                weatherIconView.removeFromSuperview()
-                                if( self.keepAnimating ){
-                                    
-                                }else{
-                                    self.loaderDone()
-                                }
-                            }
-                        }
-                    )
-                    
-                }
-        })
-    }
-    */
     
 }

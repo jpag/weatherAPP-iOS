@@ -132,7 +132,7 @@ class ViewTempBlock: UIView {
             self.backgroundColor = UIColor.pastCast.blue(alpha: 1.0)
         }else {
             println(" same temps")
-            self.backgroundColor = UIColor.pastCast.purple(alpha: 1.0)
+            self.backgroundColor = UIColor.pastCast.red(alpha: 1.0)
         }
         
         var tempType = "F"

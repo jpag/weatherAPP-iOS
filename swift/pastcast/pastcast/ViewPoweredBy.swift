@@ -27,7 +27,7 @@ class ViewPoweredBy: UIView {
         
         super.init(frame:frame)
         
-        txtVw = UITextView( frame: CGRect(x: 0, y: (h * 0.07) , width: w, height: 25.0) )
+        txtVw = UITextView( frame: CGRect(x: 0, y: 15 , width: w, height: 25.0) )
         txtVw.font = UIFont.freightBigBlack(fontsize: 16.0)
         txtVw.textColor = UIColor.darkGray(alpha: 0.5)
         txtVw.backgroundColor = UIColor.clearColor()

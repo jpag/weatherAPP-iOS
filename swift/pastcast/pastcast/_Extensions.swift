@@ -19,16 +19,21 @@ extension UIColor {
         }
         
         class func red(alpha:CGFloat = 1.0 ) -> UIColor {
-            return UIColor(red: 1.0, green: 0.2862745,  blue: 0.2862745, alpha: alpha)
+            //return UIColor(red: 1.0, green: 0.2862745,  blue: 0.2862745, alpha: alpha)
+            return UIColor(red: 0.937254902, green: 0.2980392157,  blue: 0.3058823529, alpha: alpha)
         }
         
         class func blue(alpha:CGFloat = 1.0 ) -> UIColor {
-            return UIColor(red: 0.7176470588, green: 0.8941176471,  blue: 0.9294117647, alpha: alpha)
+            //return UIColor(red: 0.7176470588, green: 0.8941176471,  blue: 0.9294117647, alpha: alpha)
+            return UIColor(red: 0.3843137255, green: 0.7803921569,  blue: 0.768627451, alpha: alpha)
         }
+        
         // neutral color
+        /*
         class func purple(alpha:CGFloat = 1.0) -> UIColor {
             return UIColor( red:0.9294117647, green: 0.662745098, blue: 0.968627451, alpha: alpha)
         }
+        */
     }
     
     

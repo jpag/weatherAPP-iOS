@@ -49,9 +49,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         var newFrame = self.view.frame
             newFrame.size.height = (UIScreen.mainScreen().bounds.height * globals.halfHeight) * 2
         
-        //self.view.frame = newFrame
-        println(" self.view.frame \(self.view.frame.height) ")
-        
         self.view.addGestureRecognizer(UITapGestureRecognizer(target:self, action:"tap"))
         
         var scrollView = self.view as UIScrollView
@@ -63,8 +60,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         _notificationCenter.addObserverForName(_ncEvents.loaderDoneAnimating, object: nil, queue: nil, usingBlock: loaderDoneAnimating )
         
         findLocation()
-        
-        
+    
     }
     
     func setScrollViewHeight(newH:CGFloat) {
@@ -132,6 +128,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         var type = vals["type"] as NSString
         
         println( " TYPE for loader being done \(type)" )
+        
+        loaderView?.removeFromSuperview()
+        loaderView = nil
         
         if( type == "ADDVIEWS"){
             readyToAddViews()
@@ -236,6 +235,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         }
         scrollViewDestination = snapto
         scrollTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("stepAnimate"), userInfo: nil, repeats: true)
+        
+        // TODO should we disable fire()
         scrollTimer?.fire()
     }
     
@@ -320,11 +321,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             completionHandler: {(placemarks, error) in
                 if (error != nil) {
                     println("reverse geodcode fail: \(error.localizedDescription)")
-                    
                     self.showWarning("Unable to find your location")
                     return;
                 }
-                
                 let pm = placemarks as [CLPlacemark]
                 if pm.count > 0 {
                     self.locationNameFound(placemarks[0] as CLPlacemark)
@@ -347,7 +346,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         println( pastCastModel.locationName )
         getJSON()
-        
     }
     
     // JSON request

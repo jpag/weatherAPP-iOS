@@ -10,12 +10,12 @@
 
 import UIKit
 
-class ViewError: UIView {
+class ViewError: ViewBottomNotification {
     
     var errorLabel:UITextView!
     var ctaLabel:UILabel!
     
-    var panel:UIView!
+//    var panel:UIView!
     
     required init(coder aDecoder: NSCoder)
     {
@@ -26,70 +26,39 @@ class ViewError: UIView {
     init(frame: CGRect, errorMsg:NSString) {
         
         super.init(frame:frame)
-        
-        self.backgroundColor = UIColor.darkGray(alpha: 0.1)
-        
-        var time = 0.25
-        
-        var w:CGFloat = UIScreen.mainScreen().bounds.width
-        var h:CGFloat = UIScreen.mainScreen().bounds.height
-        
-        // has icon?
-        
-        var pheight = UIScreen.mainScreen().bounds.height * (1.0 - globals.halfHeight)
-        var py = UIScreen.mainScreen().bounds.height
-        
-        var labelTop = pheight * 0.2
-        var labelh:CGFloat = 50.0
-        
-        panel = UIView(frame: CGRect(x:0,y:py,width:w, height: pheight))
-        panel.backgroundColor = UIColor.pastCast.white()
-        
-        self.addSubview(panel)
-        
+        var fontsize:CGFloat = 14.0
+        var w:CGFloat = panel.bounds.width
         var eIcon = UIImage(named: "error-icon")
         var iconWH:CGFloat = 20.0
         var iconx = (UIScreen.mainScreen().bounds.width - iconWH) / 2.0
-            
-        var eView = UIImageView(image: eIcon )
-        eView.contentMode = UIViewContentMode.ScaleAspectFit
-        eView.frame = CGRect(x: iconx, y: labelTop, width: iconWH, height: iconWH)
+        var eIconVw = UIImageView(image: eIcon )
+        eIconVw.contentMode = UIViewContentMode.ScaleAspectFit
         
-        panel.addSubview(eView)
+        var marginBetweenIconTxt:CGFloat = 10
+        var fontsizeFactor:CGFloat = 1.75
+        var fontHeight:CGFloat = fontsize * fontsizeFactor
+        var iconY:CGFloat = (panel.bounds.height - (iconWH + fontHeight + marginBetweenIconTxt) )/2
+        var textY = iconY + iconWH + marginBetweenIconTxt
         
-        errorLabel = UITextView( frame: CGRect(x: (w * 0.05), y: labelTop + iconWH + 5 , width: (w * 0.9), height: (labelh * 2)) )
-        errorLabel.font = UIFont.futuraSerieBQBook(fontsize: 14.0)
+        eIconVw.frame = CGRect(x: iconx, y: iconY, width: iconWH, height: iconWH)
+        
+        errorLabel = UITextView( frame: CGRect(x: (w * 0.05), y: textY , width: (w * 0.9), height: fontHeight) )
+        errorLabel.font = UIFont.futuraSerieBQBook(fontsize: fontsize)
         errorLabel.textColor = UIColor.pastCast.red()
         errorLabel.editable = false
         errorLabel.textAlignment = .Center
         errorLabel.backgroundColor = UIColor.clearColor()
         errorLabel.text = errorMsg
         
+        panel.addSubview(eIconVw)
         panel.addSubview(errorLabel)
-        
         animateIn()
-    
+        
     }
     
-    func animateIn() {
-        var pfinalY = UIScreen.mainScreen().bounds.height * globals.halfHeight
-
-        UIView.animateWithDuration(0.35,
-            
-            animations: {
-                self.panel!.frame.origin.y = pfinalY
-            },
-            
-            completion: { (finished:Bool) in
-                if( finished ){
-                    
-                }
-            }
-        )
-    }
     
     func updateError(msg:NSString) {
-        
+        animateOut(remove: false, animateInAfter: true)
         errorLabel.text = msg
     }
     

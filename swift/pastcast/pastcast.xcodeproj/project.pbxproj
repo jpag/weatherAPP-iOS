@@ -25,6 +25,8 @@
 		C0E520161983053C006C0DBA /* FreightBigBookItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0E520141983053C006C0DBA /* FreightBigBookItalic.ttf */; };
 		C0F87EE919E9D0EE00AA40CA /* ViewError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F87EE819E9D0EE00AA40CA /* ViewError.swift */; };
 		D1079F4E1A6F4B3C0052DBC9 /* FuturaSerieBQ-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = D1079F4D1A6F4B3C0052DBC9 /* FuturaSerieBQ-Book.otf */; };
+		D1DCD95D1A6FFCC70057BDE0 /* ViewBottomNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DCD95C1A6FFCC70057BDE0 /* ViewBottomNotification.swift */; };
+		D1DCD95F1A701BC50057BDE0 /* ViewLoaderIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DCD95E1A701BC50057BDE0 /* ViewLoaderIcon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,8 @@
 		C0F39D8119AF969800C8B4D8 /* playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = playground.playground; sourceTree = "<group>"; };
 		C0F87EE819E9D0EE00AA40CA /* ViewError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewError.swift; sourceTree = "<group>"; };
 		D1079F4D1A6F4B3C0052DBC9 /* FuturaSerieBQ-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FuturaSerieBQ-Book.otf"; sourceTree = "<group>"; };
+		D1DCD95C1A6FFCC70057BDE0 /* ViewBottomNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBottomNotification.swift; sourceTree = "<group>"; };
+		D1DCD95E1A701BC50057BDE0 /* ViewLoaderIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewLoaderIcon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,8 +125,10 @@
 				C0E51FF11982E1DA006C0DBA /* ViewController.swift */,
 				C095C1E119EA1144004C9C61 /* ViewPoweredBy.swift */,
 				C095C1DF19E9F116004C9C61 /* ViewLoading.swift */,
+				D1DCD95E1A701BC50057BDE0 /* ViewLoaderIcon.swift */,
 				C089571519842C57007B851A /* ViewTempBlock.swift */,
 				C0F87EE819E9D0EE00AA40CA /* ViewError.swift */,
+				D1DCD95C1A6FFCC70057BDE0 /* ViewBottomNotification.swift */,
 				C0E51FF31982E1DA006C0DBA /* Main.storyboard */,
 				C0E520101982F168006C0DBA /* _Model.swift */,
 				C0E5200C1982F0BE006C0DBA /* _Globals.swift */,
@@ -280,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0E51FF21982E1DA006C0DBA /* ViewController.swift in Sources */,
+				D1DCD95D1A6FFCC70057BDE0 /* ViewBottomNotification.swift in Sources */,
 				C0E51FF01982E1DA006C0DBA /* pastcast.xcdatamodeld in Sources */,
 				C095C1E019E9F116004C9C61 /* ViewLoading.swift in Sources */,
 				C089571619842C57007B851A /* ViewTempBlock.swift in Sources */,
@@ -288,6 +295,7 @@
 				C0E5200F1982F0FE006C0DBA /* _Extensions.swift in Sources */,
 				C0E5200D1982F0BE006C0DBA /* _Globals.swift in Sources */,
 				C095C1E219EA1144004C9C61 /* ViewPoweredBy.swift in Sources */,
+				D1DCD95F1A701BC50057BDE0 /* ViewLoaderIcon.swift in Sources */,
 				C0F87EE919E9D0EE00AA40CA /* ViewError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
