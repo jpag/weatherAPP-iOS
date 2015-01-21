@@ -34,7 +34,6 @@ class ViewLoading: UIView {
         super.init(frame:frame)
         
         // insert loader icon here:
-        var loaderIcon = UIImage(named: "temp-icon")
         var iconWH = 50 as CGFloat
         var iconx = (UIScreen.mainScreen().bounds.width - iconWH) / 2
         var icony = (self.frame.height - iconWH ) / 2
@@ -43,6 +42,7 @@ class ViewLoading: UIView {
             // slightly different design
             // icony = (self.frame.height - iconWH )/2
         }
+        var loaderIcon = UIImage(named: "loading")
         
         iconView = UIImageView(image: loaderIcon )
         iconView.contentMode = UIViewContentMode.ScaleAspectFit
@@ -53,7 +53,7 @@ class ViewLoading: UIView {
         if( type == globals.loaderSmall ){
             self.backgroundColor = UIColor.pastCast.white()
             
-            let time:NSTimeInterval = 0.75
+            let time:NSTimeInterval = 0.35
             let delay:NSTimeInterval = 0.0
             let options = UIViewAnimationOptions.CurveEaseOut
             var destinationY = UIScreen.mainScreen().bounds.height * globals.halfHeight
@@ -99,7 +99,7 @@ class ViewLoading: UIView {
     func spin() {
         // this loops indefintely
         let fullRotation = CGFloat(M_PI * 2)
-        let duration:NSTimeInterval = 0.75
+        let duration:NSTimeInterval = 0.25
         let delay:NSTimeInterval = 0.0
         //let options = UIViewKeyframeAnimationOptions.CalculationModePaced | UIViewKeyframeAnimationOptions.Repeat | UIViewAnimationOptions.CurveLinear
         
@@ -135,12 +135,13 @@ class ViewLoading: UIView {
             println(" we cant animate OUT the loader until it is done animating IN!")
             
         }else if( self.type == globals.loaderSmall ){
+            println(" animateout() animate out now... \(delay)")
             var time = 0.35
             var destinationY = UIScreen.mainScreen().bounds.height
             
             UIView.animateWithDuration(time,
                 delay : delay,
-                options : UIViewAnimationOptions.CurveEaseIn,
+                options : nil, // UIViewAnimationOptions.CurveEaseIn,
                 animations: {
                     self.frame.origin.y = destinationY
                 },
@@ -162,6 +163,8 @@ class ViewLoading: UIView {
             "type" : loaderDoneReason
         ]
         _notificationCenter.postNotificationName(_ncEvents.loaderDoneAnimating, object: obj)
+        
+        self.removeFromSuperview();
     }
     
     /*

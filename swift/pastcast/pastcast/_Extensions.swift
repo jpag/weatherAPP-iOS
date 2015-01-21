@@ -68,11 +68,6 @@ extension UIFont {
     }
     
     
-    
-//    class func avenirLight(fontsize:CGFloat = 20) -> UIFont {
-//        return UIFont(name: "Avenir-Light", size: fontsize)
-//    }
-    
     class func freightBigBlack(fontsize:CGFloat = 20) -> UIFont {
         return UIFont(name: "FreightBigBlack", size: fontsize)!
     }
@@ -87,6 +82,10 @@ extension UIFont {
     
     class func futuraBold(fontsize:CGFloat = 20) -> UIFont {
         return UIFont(name: "FuturaStd-Bold", size: fontsize)!
+    }
+    
+    class func futuraSerieBQBook(fontsize:CGFloat = 20) -> UIFont {
+        return UIFont(name: "FuturaSerieBQ-Book", size: fontsize)!
     }
     
     

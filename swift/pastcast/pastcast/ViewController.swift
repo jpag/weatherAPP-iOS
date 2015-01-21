@@ -42,6 +42,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        //UIFont.cycleThroughSysFonts()
+        
         self.view.backgroundColor = UIColor.clearColor()
         
         var newFrame = self.view.frame
@@ -62,6 +64,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         findLocation()
         
+        
     }
     
     func setScrollViewHeight(newH:CGFloat) {
@@ -80,6 +83,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     
     
     func showLoader(){
+        println(" show loader ---- ")
         
         setScrollViewHeight(UIScreen.mainScreen().bounds.height);
         _notificationCenter.postNotificationName(_ncEvents.hidePoweredBy, object: nil)
@@ -576,35 +580,27 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     }
     
     func showWarning(msg:String){
-        //var message = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.Alert)
-        //    message.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-        //self.presentViewController(message, animated: true, completion: nil)
-        
-        if NSThread.isMainThread()
-        {
+        if NSThread.isMainThread(){
             showWarningMainThread(msg);
-        }
-        else
-        {
+        }else{
             dispatch_sync(dispatch_get_main_queue(), { self.showWarningMainThread(msg) });
         }
     }
     
     func showWarningMainThread(msg:String){
         
-        removeLoader("NA")
+        self.removeLoader("NA")
         setScrollViewHeight(UIScreen.mainScreen().bounds.height);
         _notificationCenter.postNotificationName(_ncEvents.hidePoweredBy, object: nil)
         
         var width = UIScreen.mainScreen().bounds.width
-        var height = UIScreen.mainScreen().bounds.height * (1.0 - globals.halfHeight)
-        var y = UIScreen.mainScreen().bounds.height
-        var finalY = UIScreen.mainScreen().bounds.height * globals.halfHeight
+        var height = UIScreen.mainScreen().bounds.height
         
         println(" SHOW error view")
+        
         if( errorMsg == nil ){
             println(" error msg was nil")
-            errorMsg = ViewError( frame: CGRect(x: 0, y:y, width: width, height: height), errorMsg: msg )
+            errorMsg = ViewError( frame: CGRect(x: 0, y:0.0, width: width, height: height), errorMsg: msg )
         }else{
             // remove the existing error and show this one ?
             println(" error msg already exists")
@@ -613,18 +609,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         }
         
         self.view.addSubview(errorMsg!)
-        
-        UIView.animateWithDuration(0.35,
-            animations: {
-                //self.errorMsg!.alpha = 1.0
-                self.errorMsg!.frame.origin.y = finalY
-            },
-            completion: { (finished:Bool) in
-                if( finished ){
-                    
-                }
-            }
-        )
         
     }
     

@@ -97,10 +97,10 @@ class ViewTempBlock: UIView {
         timeLabel.font = UIFont.freightBoldItalic(fontsize: timeHeight)
         timeLabel.textColor = UIColor.pastCast.white()
         
-        temperatureLabel.font = UIFont.futuraBook(fontsize: tempLabelHeight)
+        temperatureLabel.font = UIFont.futuraSerieBQBook(fontsize: tempLabelHeight)
         temperatureLabel.textColor = UIColor.pastCast.white()
         
-        tempTypeLabel.font = UIFont.futuraBook(fontsize: tempTypeLabelHeight)
+        tempTypeLabel.font = UIFont.futuraSerieBQBook(fontsize: tempTypeLabelHeight)
         //tempTypeLabel.font = UIFont.freightBoldItalic(fontsize: tempTypeLabelHeight)
         tempTypeLabel.textColor = UIColor.pastCast.white()
         
