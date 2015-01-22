@@ -20,6 +20,8 @@ class ViewTempBlock: UIView {
     
     var padding:CGFloat         = 10.0
     var paddingSide:CGFloat     = 20.0
+    var paddingTopIcon:CGFloat  = 30.0
+    var paddingSideIcon:CGFloat = 20.0
     var paddingTop:CGFloat      = 20.0
     var paddingTopTime:CGFloat  = 19.0
     var locationHeight:CGFloat  = 28.0
@@ -28,18 +30,24 @@ class ViewTempBlock: UIView {
     var timeTop:CGFloat         = 0
     var locaTop:CGFloat         = 0
     
+    // labels for top left corner
     var locationLabel:UILabel!
     var timeLabel:UILabel!
     
-    
-    // container to hold temperature, icon, and temp type
+    // container to hold temperatureLabel, iconBlock, and tempTypeLabel
     var tempContainer:UIView!
+    // the temperature value is placed in here
     var temperatureLabel:UILabel!
+    // degrees in C or F
     var tempTypeLabel:UILabel!
+    // Icon block holds the weather icon and has a mask to crop out the icon
+    var iconBlock:UIView!
+    // the line to divide between the icon and the temperature
+    var dividerLine:UIImageView!
+    var dividerLineStroke:CGFloat = 2.0
+    
     var tempLabelHeight:CGFloat     = 30.0
     var tempTypeLabelHeight:CGFloat = 18.0
-    var iconBlock:UIView!
-    
     var weatherCode:NSString = "sunny";
     
     
@@ -64,7 +72,6 @@ class ViewTempBlock: UIView {
         tempTypeLabel   = UILabel(frame: CGRect(x: 0, y: 0, width: w, height: tempTypeLabelHeight))
         
         tempContainer = UIView(frame: CGRect(x:0, y:0, width:w, height: (tempLabelHeight + tempTypeLabelHeight) ) )
-        
         
         super.init(frame:frame)
         
@@ -100,14 +107,18 @@ class ViewTempBlock: UIView {
         temperatureLabel.textColor = UIColor.pastCast.white()
         
         tempTypeLabel.font = UIFont.futuraSerieBQBook(fontsize: tempTypeLabelHeight)
-        //tempTypeLabel.font = UIFont.freightBoldItalic(fontsize: tempTypeLabelHeight)
         tempTypeLabel.textColor = UIColor.pastCast.white()
+        
+        // create line divider :
+        dividerLine = UIImageView(frame: CGRect(x: 0, y: 0, width: 15, height: dividerLineStroke))
+        dividerLine.backgroundColor = UIColor.pastCast.white(alpha: 1.0)
         
         self.addSubview( locationLabel )
         self.addSubview( timeLabel )
         
         tempContainer.addSubview( temperatureLabel )
         tempContainer.addSubview( tempTypeLabel )
+        tempContainer.addSubview( dividerLine )
         tempContainer.addSubview( iconBlock )
         self.addSubview(tempContainer)
         
@@ -182,8 +193,8 @@ class ViewTempBlock: UIView {
         )
         
         let iconRangeY = (
-            min : CGFloat( paddingTop + locationHeight ),
-            med : CGFloat( paddingTop + locationHeight ),
+            min : CGFloat( dividerLineStroke + paddingTopIcon + locationHeight ),
+            med : CGFloat( dividerLineStroke + paddingTopIcon + locationHeight ),
             max : CGFloat( 0 )
         )
         
@@ -194,11 +205,11 @@ class ViewTempBlock: UIView {
             twoThirds : CGFloat( globals.iconWH() )
         )
         
-        let iconRangeX = (
-            min : CGFloat(),
-            med : CGFloat(),
-            max : CGFloat()
-        )
+//        let iconRangeX = (
+//            min : CGFloat(),
+//            med : CGFloat(),
+//            max : CGFloat()
+//        )
         
         let locRange = (
             min:-(locationHeight + paddingTop),
@@ -219,7 +230,11 @@ class ViewTempBlock: UIView {
         var newiconWidth:CGFloat!
         var tempContainerX:CGFloat = UIScreen.mainScreen().bounds.width/2
         var timeLabelTop = locaTop + locationHeight + padding
-
+        
+        var dividerX:CGFloat!
+        var dividerY:CGFloat!
+        var dividerW:CGFloat!
+        var dividerH:CGFloat!
         
         if( locpercent < third ) {
             per = (locpercent / third)
@@ -253,33 +268,37 @@ class ViewTempBlock: UIView {
         var iconX:CGFloat!
         
         if( locpercent < third ){
+            // fully collapsed just temp number no icon
             per = (locpercent) / third
-            
             newiconHeight = recalFromRange(iconRangeHW.zero, max: iconRangeHW.third, percent: per)
             newiconWidth = iconRangeHW.third
             iconY = recalFromRange(iconRangeY.min, max: iconRangeY.med, percent: per)
             iconX = temperatureLabel.frame.origin.x
             
+            dividerW = 1
+            dividerH = dividerLineStroke
+            dividerX = iconX
+            dividerY = iconY + newiconHeight
         }else if( locpercent < midWayBetweenThirds ){
-            // close the icon up
+            // open state
             per = (locpercent - third) / (midWayBetweenThirds - third)
-            //println(" percent \(per) ----- ")
             newiconHeight = recalFromRange(iconRangeHW.third, max: iconRangeHW.half, percent: per)
             newiconWidth = iconRangeHW.third
             iconX = temperatureLabel.frame.origin.x
             iconY = iconRangeY.min
             
+            dividerW = newiconWidth
+            dividerH = dividerLineStroke
+            dividerX = iconX
+            dividerY = iconY - (paddingTopIcon/2) + (dividerLineStroke + 2)
+
         }else if( locpercent < twoThirds ) {
             // open the icon on the side and shift the container over left
             per = (locpercent - midWayBetweenThirds) / (midWayBetweenThirds - third)
-            
             newiconHeight = iconRangeHW.twoThirds
             newiconWidth = recalFromRange(iconRangeHW.half, max: iconRangeHW.twoThirds, percent: per)
-            
             iconY = iconRangeY.max
-            iconX = tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width + padding
-            
-            //recalFromRange(temperatureLabel.frame.origin.x , max: tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width + padding, percent: per)
+            iconX = tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width + paddingSideIcon
             
             tempContainerX = recalFromRange(
                 tempContainerX,
@@ -287,15 +306,23 @@ class ViewTempBlock: UIView {
                 percent: per
             )
             
+            dividerW = dividerLineStroke
+            dividerH = newiconHeight
+            dividerX = iconX  - paddingSideIcon/2
+            dividerY = iconY
+            
         }else {
-            // hitting max
+            // hitting temp and icon side by side.
             newiconHeight = iconRangeHW.twoThirds
             newiconWidth = iconRangeHW.twoThirds
-            
-            iconX = tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width + padding
+            iconX = tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width + paddingSideIcon
             iconY = iconRangeY.max
-            
             tempContainerX = (UIScreen.mainScreen().bounds.width/2 - (tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width) )
+            
+            dividerW = dividerLineStroke
+            dividerH = newiconHeight
+            dividerX = iconX - paddingSideIcon/2
+            dividerY = iconY
         }
         
         tempContainer.frame.origin = CGPoint(x: tempContainerX, y: tempYPos)
@@ -304,9 +331,9 @@ class ViewTempBlock: UIView {
         
         iconBlock.frame.origin.y = iconY
         iconBlock.frame.origin.x = iconX
-        
         iconBlock.maskView?.frame = CGRect(x: 0, y: 0, width: newiconWidth, height: newiconHeight)
-
+        
+        dividerLine.frame = CGRect(x: dividerX, y: dividerY, width: dividerW, height: dividerH)
     }
     
     func recalFromRange(min:CGFloat,max:CGFloat, percent:CGFloat ) -> CGFloat {
