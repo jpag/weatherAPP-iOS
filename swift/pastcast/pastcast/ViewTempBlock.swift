@@ -20,8 +20,8 @@ class ViewTempBlock: UIView {
     
     var padding:CGFloat         = 10.0
     var paddingSide:CGFloat     = 20.0
-    var paddingTopIcon:CGFloat  = 30.0
-    var paddingSideIcon:CGFloat = 20.0
+    var paddingTopIcon:CGFloat  = 40.0
+    var paddingSideIcon:CGFloat = 40.0
     var paddingTop:CGFloat      = 20.0
     var paddingTopTime:CGFloat  = 19.0
     var locationHeight:CGFloat  = 28.0
@@ -42,9 +42,11 @@ class ViewTempBlock: UIView {
     var tempTypeLabel:UILabel!
     // Icon block holds the weather icon and has a mask to crop out the icon
     var iconBlock:UIView!
+    // The image view
+    var weatherIconView:UIImageView!
     // the line to divide between the icon and the temperature
     var dividerLine:UIImageView!
-    var dividerLineStroke:CGFloat = 2.0
+    var dividerLineStroke:CGFloat = 1.0
     
     var tempLabelHeight:CGFloat     = 30.0
     var tempTypeLabelHeight:CGFloat = 18.0
@@ -81,9 +83,11 @@ class ViewTempBlock: UIView {
         weatherCode = _weathercode
         var weatherIcon = UIImage(named: weatherCodes.getCodeFromString(weatherCode))
         
-        var weatherIconView = UIImageView(image: weatherIcon )
+        weatherIconView = UIImageView(image: weatherIcon )
         weatherIconView.contentMode = UIViewContentMode.ScaleAspectFit
         weatherIconView.frame = CGRect(x: 0, y: 0, width: iconWH, height: iconWH)
+        
+        //weatherIconView.backgroundColor = UIColor.pastCast.white(alpha: 0.15)
         
         iconBlock = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
         iconBlock.addSubview(weatherIconView)
@@ -188,7 +192,7 @@ class ViewTempBlock: UIView {
         
         let tempYRange = (
             min : CGFloat( ((UIScreen.mainScreen().bounds.height * 0.3) - temperatureLabel.frame.height) / 2 ),
-            med : CGFloat( frame.height / 2 ),
+            med : CGFloat( frame.height / 2.2 ),
             max : CGFloat( frame.height * 0.83)
         )
         
@@ -266,6 +270,12 @@ class ViewTempBlock: UIView {
         timeLabel.frame.origin.x = paddingSide
         
         var iconX:CGFloat!
+        var percentOfIconHeightForDivider = (height:CGFloat(0.5), width:CGFloat(0.9))
+        var dividerAlpha:CGFloat = 1.0
+        var dividerYFactor:CGFloat = 2.25
+        
+        var iconWH:CGFloat = globals.iconWH()
+        var iconImagePos:(x:CGFloat,y:CGFloat) = (x:0, y:0)
         
         if( locpercent < third ){
             // fully collapsed just temp number no icon
@@ -275,10 +285,14 @@ class ViewTempBlock: UIView {
             iconY = recalFromRange(iconRangeY.min, max: iconRangeY.med, percent: per)
             iconX = temperatureLabel.frame.origin.x
             
-            dividerW = 1
+            dividerAlpha = per
+            dividerW = (newiconWidth * percentOfIconHeightForDivider.width) * per
             dividerH = dividerLineStroke
-            dividerX = iconX
-            dividerY = iconY + newiconHeight
+            dividerX = iconX + (newiconWidth - dividerW)/2
+            dividerY = iconY - ((per) * (paddingTopIcon/dividerYFactor) + dividerLineStroke)
+            
+            iconImagePos.y = (1 - per) * -(iconWH * 2)
+            
         }else if( locpercent < midWayBetweenThirds ){
             // open state
             per = (locpercent - third) / (midWayBetweenThirds - third)
@@ -287,11 +301,13 @@ class ViewTempBlock: UIView {
             iconX = temperatureLabel.frame.origin.x
             iconY = iconRangeY.min
             
-            dividerW = newiconWidth
+            dividerW = (newiconWidth * percentOfIconHeightForDivider.width) * (1 - per)
             dividerH = dividerLineStroke
-            dividerX = iconX
-            dividerY = iconY - (paddingTopIcon/2) + (dividerLineStroke + 2)
-
+            dividerX = iconX + (newiconWidth - dividerW)/2
+            dividerY = iconY - ((1 - per) * ((paddingTopIcon/dividerYFactor) + dividerLineStroke))
+            dividerAlpha = 1 - per;
+            
+            iconImagePos.y = (per) * -(iconWH * 1)
         }else if( locpercent < twoThirds ) {
             // open the icon on the side and shift the container over left
             per = (locpercent - midWayBetweenThirds) / (midWayBetweenThirds - third)
@@ -307,10 +323,12 @@ class ViewTempBlock: UIView {
             )
             
             dividerW = dividerLineStroke
-            dividerH = newiconHeight
-            dividerX = iconX  - paddingSideIcon/2
-            dividerY = iconY
+            dividerH = (newiconHeight * percentOfIconHeightForDivider.height) * per
+            dividerX = iconX - (paddingSideIcon/2 * per)
+            dividerY = iconY + (newiconHeight - dividerH)/2
+            dividerAlpha = per;
             
+            iconImagePos.x = (1 - per) * -(iconWH)
         }else {
             // hitting temp and icon side by side.
             newiconHeight = iconRangeHW.twoThirds
@@ -319,10 +337,14 @@ class ViewTempBlock: UIView {
             iconY = iconRangeY.max
             tempContainerX = (UIScreen.mainScreen().bounds.width/2 - (tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width) )
             
+            println(per)
+            
             dividerW = dividerLineStroke
-            dividerH = newiconHeight
-            dividerX = iconX - paddingSideIcon/2
-            dividerY = iconY
+            dividerH = newiconHeight * percentOfIconHeightForDivider.height
+            dividerX = iconX - (paddingSideIcon/2)
+            dividerY = iconY + (newiconHeight - dividerH)/2
+            
+            
         }
         
         tempContainer.frame.origin = CGPoint(x: tempContainerX, y: tempYPos)
@@ -333,7 +355,11 @@ class ViewTempBlock: UIView {
         iconBlock.frame.origin.x = iconX
         iconBlock.maskView?.frame = CGRect(x: 0, y: 0, width: newiconWidth, height: newiconHeight)
         
+        weatherIconView.frame = CGRect(x:iconImagePos.x, y:iconImagePos.y, width:iconWH, height: iconWH )
+            
+        
         dividerLine.frame = CGRect(x: dividerX, y: dividerY, width: dividerW, height: dividerH)
+        dividerLine.alpha = dividerAlpha
     }
     
     func recalFromRange(min:CGFloat,max:CGFloat, percent:CGFloat ) -> CGFloat {

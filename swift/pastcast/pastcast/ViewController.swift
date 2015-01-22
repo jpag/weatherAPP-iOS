@@ -555,9 +555,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         println(" - check has time gone long enough to run again?")
         
-        return true
+        //return true
         
-        /*
+        
         if( dataRecieved == nil || dataRecieved?.timeIntervalSinceNow < globals.minUpdateTimeInSeconds ){
             // go ahead do another update
             println("  YES\n")
@@ -566,7 +566,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             println(" NO\n")
             return false
         }
-        */
+        
         
     }
     
