@@ -42,7 +42,7 @@ class ViewError: ViewBottomNotification {
         
         eIconVw.frame = CGRect(x: iconx, y: iconY, width: iconWH, height: iconWH)
         
-        errorLabel = UITextView( frame: CGRect(x: (w * 0.05), y: textY , width: (w * 0.9), height: fontHeight) )
+        errorLabel = UITextView( frame: CGRect(x: (w * 0.05), y: textY , width: (w * 0.9), height: (fontHeight * 2)) )
         errorLabel.font = UIFont.futuraSerieBQBook(fontsize: fontsize)
         errorLabel.textColor = UIColor.pastCast.red()
         errorLabel.editable = false

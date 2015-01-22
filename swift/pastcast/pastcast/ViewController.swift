@@ -103,6 +103,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             var y = UIScreen.mainScreen().bounds.height
             loaderView = ViewLoading( frame: CGRect(x: 0, y:y, width: width, height: bottomHeight), loaderType: globals.loaderSmall)
             self.view.addSubview(loaderView!)
+            loaderView?.animateInOnSmall()
         }else{
             loaderView = ViewLoading( frame: CGRect(x: 0, y:0, width: width, height: height), loaderType: globals.loaderLarge)
             self.view.addSubview(loaderView!)
@@ -235,7 +236,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         }
         scrollViewDestination = snapto
         scrollTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("stepAnimate"), userInfo: nil, repeats: true)
-        
         // TODO should we disable fire()
         scrollTimer?.fire()
     }
@@ -299,18 +299,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
         println(" -- FAIL to locate...")
         stopUpdatingLocation()
-        showWarning("Failed to find a location.")
-        // TODO add a default location? or a popup/autocomplete of location?
+        showWarning(globals.errorMsg[0].msg)
+        
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         // println("locations = \(locations)")
-        if( locations.count > 0 ){
+        
+        if( locations.count > 0 && !globals.errorMsg[1].show ){
             stopUpdatingLocation()
             pastCastModel.location = locations[0] as CLLocation
             findLocationName()
         }else{
-            showWarning("Unable to find your location")
+            stopUpdatingLocation()
+            showWarning(globals.errorMsg[1].msg)
         }
     }
     
@@ -319,16 +321,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         geocoder.reverseGeocodeLocation(
             pastCastModel.location,
             completionHandler: {(placemarks, error) in
-                if (error != nil) {
-                    println("reverse geodcode fail: \(error.localizedDescription)")
-                    self.showWarning("Unable to find your location")
+                if (error != nil || globals.errorMsg[2].show ) {
+                    //println("reverse geodcode fail: \(error.localizedDescription)")
+                    println( "reverse geodcode fail" )
+                    self.showWarning(globals.errorMsg[2].msg)
                     return;
                 }
                 let pm = placemarks as [CLPlacemark]
-                if pm.count > 0 {
+                
+                if( pm.count > 0 && !globals.errorMsg[3].show ){
                     self.locationNameFound(placemarks[0] as CLPlacemark)
                 }else{
-                   self.showWarning("Unable to find your location")
+                   self.showWarning(globals.errorMsg[3].msg)
                 }
             }
         )
@@ -353,7 +357,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     // http://ios-blog.co.uk/swift-tutorials/beginners-guide/developing-ios8-apps-using-swift-part-7-animations-audio-and-custom-table-view-cells/
     
     func getJSON() {
-        let webErrorStr = "We were unable to connect to weather data"
         let long = roundCoordinate(pastCastModel.location.coordinate.longitude)
         let lat = roundCoordinate(pastCastModel.location.coordinate.latitude)
         let path = globals.apiRequests + "lat/\(lat)/lng/\(long)/"
@@ -365,33 +368,34 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         let task = session.dataTaskWithURL(url!, completionHandler: { data, response, error -> Void in
             
-            if( response == nil ){
-                self.showWarning(webErrorStr)
+            if( response == nil || globals.errorMsg[4].show ){
+                self.showWarning(globals.errorMsg[4].msg)
                 return
             }
             
-            if((error) != nil) {
+            if((error) != nil || globals.errorMsg[5].show ) {
                 // If there is an error in the web request, print it to the console
-                println(error.localizedDescription)
-                self.showWarning(webErrorStr)
+                // println(error.localizedDescription)
+                println(" web request error")
+                self.showWarning(globals.errorMsg[5].msg)
                 return
             }
             
             var statusCode = (response as NSHTTPURLResponse).statusCode
             println("--- JSON loaded --- http status code \(statusCode)")
             
-            if( statusCode == 404 ){
+            if( statusCode == 404 || globals.errorMsg[6].show ){
                 println("Could not find server")
-                self.showWarning(webErrorStr)
+                self.showWarning(globals.errorMsg[6].msg)
                 return
             }
 
             var err: NSError?
             var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
             
-            if((err?) != nil) {
+            if( (err?) != nil || globals.errorMsg[7].show) {
                 // If there is an error parsing JSON, print it to the console
-                self.showWarning(webErrorStr)
+                self.showWarning(globals.errorMsg[7].msg)
                 return
             }
             

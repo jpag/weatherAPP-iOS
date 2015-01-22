@@ -22,8 +22,8 @@ class ViewLoading: UIView {
     var iconView:ViewLoaderIcon!
     var iconyOffset:CGFloat = 30.0
     
-    let durationIn:NSTimeInterval = 0.5
-    let durationOut:NSTimeInterval = 1.5
+    let durationIn:NSTimeInterval = 0.75
+    let durationOut:NSTimeInterval = 0.35
     
     let iconWH = 50 as CGFloat
     var icony:CGFloat!
@@ -46,18 +46,18 @@ class ViewLoading: UIView {
         icony = (self.frame.height - iconWH ) / 2
         
         iconView = ViewLoaderIcon(frame:CGRect(x: iconx, y: icony, width: iconWH, height: iconWH))
-        iconView.alpha = 1.0
         self.addSubview(iconView)
         
         UIView.setAnimationBeginsFromCurrentState(true)
         
         if( type == globals.loaderSmall ){
             self.backgroundColor = UIColor.pastCast.white()
-            animateInOnSmall()
+            //animateInOnSmall()
         }
     }
     
     func animateInOnSmall() {
+        println(" ANIMATE IN")
         
         let delay:NSTimeInterval = 0.0
         let options = UIViewAnimationOptions.CurveEaseOut
@@ -66,8 +66,8 @@ class ViewLoading: UIView {
         
         UIView.animateWithDuration(
             durationIn,
-            delay: 0.0,
-            options: options,
+//            delay: 0.0,
+//            options: options,
             animations: {
                 self.frame.origin.y = destinationY
             },
@@ -79,36 +79,34 @@ class ViewLoading: UIView {
         println(" ----- stop and collapse loader \(self.type)")
         self.loaderDoneReason = _type
         self.removingLoader = true
-        self.animateOut(0.0)
+        self.animateOut(delay: 0.0)
     }
     
-    func animateOut(delay:NSTimeInterval) {
+    func animateOut(delay:NSTimeInterval = 0.0) {
         // animate out the view first!
+        
+        println(" ANIMATE OUT")
         
         self.iconView.animateOut = true
         
         if( self.type == globals.loaderSmall ){
             
-            var destinationY = self.frame.origin.y
-            
-            println(" animateout() animate out now... \(delay)")
+            var destinationY = UIScreen.mainScreen().bounds.height
             
             UIView.animateWithDuration(durationOut,
-                //delay : delay,
-                //options : nil,
                 animations: {
-                    self.alpha = 0.0
                     self.frame.origin.y = destinationY
                 },
-                completion: { (finished:Bool) in
-                    println(" completion .... ")
-                    if( finished ){
-                        println(" stop and collapse animation FINISHED: \(self.frame.origin.y) ")
-                        self.loaderDone()
-                    }
-                }
+                completion: nil
             )
             
+            let delay = (1.1 * durationOut) * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            
+            dispatch_after(time, dispatch_get_main_queue()) {
+                //call the method which have the steps after delay.
+                self.loaderDone()
+            }
         } else {
             // set a timer to give the loader icon a headstart...
             println(" - set TIMER for loaderDone() -")

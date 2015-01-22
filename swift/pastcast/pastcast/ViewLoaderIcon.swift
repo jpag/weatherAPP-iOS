@@ -52,7 +52,7 @@ class ViewLoaderIcon: UIView {
         // println(" animateOut \(animateOut) animateIn \(animateIn) ")
         
         if( self.animateOut ){
-            duration = 0.15
+            duration = 0.4
             itIsOver = true
             iy = self.frame.origin.y + offsetY
             ialpha = 0.0

@@ -43,8 +43,7 @@ class ViewTempBlock: UIView {
     var weatherCode:NSString = "sunny";
     
     
-    required init(coder aDecoder: NSCoder)
-    {
+    required init(coder aDecoder: NSCoder){
         super.init(coder: aDecoder)
     }
     

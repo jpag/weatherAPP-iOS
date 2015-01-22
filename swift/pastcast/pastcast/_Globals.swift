@@ -11,6 +11,8 @@ import CoreLocation
 
 var _notificationCenter = NSNotificationCenter()
 
+typealias errorMsg = (Bool,NSString)
+
 class Globals {
     
     // dev
@@ -32,6 +34,26 @@ class Globals {
     let borderBetweenHalves = CGFloat(1.0)
     
     let tempError:CGFloat = -270.0
+    
+    let errorMsg = [
+        // this error msg can not be tested by show:true
+        // CLLocation manager fail.
+        (show:false, msg:"Check your permissions. \nUnable to find your location."),
+        // CLLocation manager Unable to find your location
+        (show:false, msg:"Unable to find your location"),
+        // geocoder Unable to find your location
+        (show:false, msg:"Unable to find your location"),
+        // no placemark found.
+        (show:false, msg:"Unable to find your location"),
+        // json response was nil
+        (show:false, msg:"Unable to find your location"),
+        // error response was not nil
+        (show:false, msg:"We were unable to connect to weather data"),
+        // server error status code is 404.
+        (show:false, msg:"We were unable to connect to weather data"),
+        // error when trying to parse the json
+        (show:false, msg:"We were unable to connect to weather data")
+    ]
     
     // does not work...
     func roundCoordinate(coord:CLLocationDegrees) -> Double{
