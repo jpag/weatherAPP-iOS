@@ -91,6 +91,7 @@ class ViewTempBlock: UIView {
         
         iconBlock = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
         iconBlock.addSubview(weatherIconView)
+        iconBlock.backgroundColor = UIColor.pastCast.white(alpha: 0.1)
         
         var iconMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
         iconMaskLayer.backgroundColor = UIColor.blackColor()
@@ -199,7 +200,7 @@ class ViewTempBlock: UIView {
         let iconRangeY = (
             min : CGFloat( dividerLineStroke + paddingTopIcon + locationHeight ),
             med : CGFloat( dividerLineStroke + paddingTopIcon + locationHeight ),
-            max : CGFloat( 0 )
+            max : CGFloat( -globals.iconWH() * 0.1 )
         )
         
         let iconRangeHW = (
@@ -270,7 +271,7 @@ class ViewTempBlock: UIView {
         timeLabel.frame.origin.x = paddingSide
         
         var iconX:CGFloat!
-        var percentOfIconHeightForDivider = (height:CGFloat(0.5), width:CGFloat(0.9))
+        var percentOfIconHeightForDivider = (height:CGFloat(0.8), width:CGFloat(0.9))
         var dividerAlpha:CGFloat = 1.0
         var dividerYFactor:CGFloat = 2.25
         
@@ -289,7 +290,9 @@ class ViewTempBlock: UIView {
             dividerW = (newiconWidth * percentOfIconHeightForDivider.width) * per
             dividerH = dividerLineStroke
             dividerX = iconX + (newiconWidth - dividerW)/2
-            dividerY = iconY - ((per) * (paddingTopIcon/dividerYFactor) + dividerLineStroke)
+            
+            dividerY = iconY - ((1) * (paddingTopIcon/dividerYFactor) + dividerLineStroke)
+            iconY = iconY - ((1 - per) * (paddingTopIcon/dividerYFactor) + dividerLineStroke)
             
             iconImagePos.y = (1 - per) * -(iconWH * 2)
             
@@ -304,9 +307,17 @@ class ViewTempBlock: UIView {
             dividerW = (newiconWidth * percentOfIconHeightForDivider.width) * (1 - per)
             dividerH = dividerLineStroke
             dividerX = iconX + (newiconWidth - dividerW)/2
-            dividerY = iconY - ((1 - per) * ((paddingTopIcon/dividerYFactor) + dividerLineStroke))
-            dividerAlpha = 1 - per;
             
+            var dividerPer:CGFloat = (per < 0.5) ? 0.0 : (per - 0.5)
+            
+            
+            dividerY = iconY - ((1) * ((paddingTopIcon/dividerYFactor) + dividerLineStroke))
+            
+            var rangeOfIconMove:CGFloat = 0.5
+            var iconYper = (per < rangeOfIconMove) ? 0.0 : ( (per - rangeOfIconMove) / (rangeOfIconMove) )
+            iconY = iconY - (iconYper * ((paddingTopIcon/dividerYFactor) + dividerLineStroke))
+            
+            dividerAlpha = 1 - per;
             iconImagePos.y = (per) * -(iconWH * 1)
         }else if( locpercent < twoThirds ) {
             // open the icon on the side and shift the container over left
@@ -324,7 +335,15 @@ class ViewTempBlock: UIView {
             
             dividerW = dividerLineStroke
             dividerH = (newiconHeight * percentOfIconHeightForDivider.height) * per
-            dividerX = iconX - (paddingSideIcon/2 * per)
+            
+            dividerX = iconX - (paddingSideIcon/2 * 1)
+            
+            var rangeOfIconMove:CGFloat = 0.5
+            var iconXper = (per < rangeOfIconMove) ? 1.0 : ( (1 - per) / (1 - rangeOfIconMove) )
+            println(" \(iconXper ) and per \(per ) ")
+            
+            iconX =  iconX - (paddingSideIcon/2 * (iconXper))
+            
             dividerY = iconY + (newiconHeight - dividerH)/2
             dividerAlpha = per;
             
@@ -337,11 +356,11 @@ class ViewTempBlock: UIView {
             iconY = iconRangeY.max
             tempContainerX = (UIScreen.mainScreen().bounds.width/2 - (tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width) )
             
-            println(per)
-            
             dividerW = dividerLineStroke
             dividerH = newiconHeight * percentOfIconHeightForDivider.height
             dividerX = iconX - (paddingSideIcon/2)
+            
+            
             dividerY = iconY + (newiconHeight - dividerH)/2
             
             

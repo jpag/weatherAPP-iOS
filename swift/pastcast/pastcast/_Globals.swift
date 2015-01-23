@@ -38,7 +38,7 @@ class Globals {
     let errorMsg = [
         // this error msg can not be tested by show:true
         // CLLocation manager fail.
-        (show:false, msg:"Check your permissions. \nUnable to find your location."),
+        (show:false, msg:"Unable to find your location"),
         // CLLocation manager Unable to find your location
         (show:false, msg:"Unable to find your location"),
         // geocoder Unable to find your location
