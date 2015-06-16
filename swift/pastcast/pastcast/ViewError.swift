@@ -48,7 +48,7 @@ class ViewError: ViewBottomNotification {
         errorLabel.editable = false
         errorLabel.textAlignment = .Center
         errorLabel.backgroundColor = UIColor.clearColor()
-        errorLabel.text = errorMsg
+        errorLabel.text = errorMsg as String
         
         panel.addSubview(eIconVw)
         panel.addSubview(errorLabel)
@@ -59,7 +59,7 @@ class ViewError: ViewBottomNotification {
     
     func updateError(msg:NSString) {
         animateOut(remove: false, animateInAfter: true)
-        errorLabel.text = msg
+        errorLabel.text = msg as String
     }
     
 

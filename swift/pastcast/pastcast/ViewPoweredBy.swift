@@ -19,7 +19,10 @@ class ViewPoweredBy: UIView {
     }
     
     // temps[0] is always 'this' temp. temp[1] is the one to compare to.
-    override init() {
+    init() {
+        
+        println(" powered by ")
+        
         var w = UIScreen.mainScreen().bounds.width
         var h = UIScreen.mainScreen().bounds.height
         
@@ -35,10 +38,10 @@ class ViewPoweredBy: UIView {
         txtVw.textAlignment = .Center
         txtVw.text = msg
         
-        self.backgroundColor = UIColor.pastCast.white()
+        self.backgroundColor = UIColor.clearColor()
         self.addSubview(txtVw)
         
-        txtVw.alpha = 0
+//        txtVw.alpha = 0
         
         _notificationCenter.addObserverForName(_ncEvents.showPoweredBy, object: nil, queue: nil, usingBlock: showMsg )
         _notificationCenter.addObserverForName(_ncEvents.hidePoweredBy, object: nil, queue: nil, usingBlock: hideMsg )

@@ -65,7 +65,7 @@ extension UIFont {
         for font : AnyObject in UIFont.familyNames() {
             println(font)
             
-            for fontName : AnyObject in UIFont.fontNamesForFamilyName(font as String) {
+            for fontName : AnyObject in UIFont.fontNamesForFamilyName(font as! String) {
                 println(fontName)
             }
             

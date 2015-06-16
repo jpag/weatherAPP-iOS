@@ -36,7 +36,7 @@ class ViewLoading: UIView {
     init(frame: CGRect, loaderType:NSString) {
         
         imageList = globals.shuffle(imageList)
-        type = loaderType
+        type = loaderType as String
         
         super.init(frame:frame)
         
@@ -54,6 +54,8 @@ class ViewLoading: UIView {
             self.backgroundColor = UIColor.pastCast.white()
             //animateInOnSmall()
         }
+        
+        
     }
     
     func animateInOnSmall() {
@@ -77,7 +79,7 @@ class ViewLoading: UIView {
     
     func removeLoader(_type:NSString) {
         println(" ----- stop and collapse loader \(self.type)")
-        self.loaderDoneReason = _type
+        self.loaderDoneReason = _type as String
         self.removingLoader = true
         self.animateOut(delay: 0.0)
     }
@@ -93,12 +95,12 @@ class ViewLoading: UIView {
             
             var destinationY = UIScreen.mainScreen().bounds.height
             
-            UIView.animateWithDuration(durationOut,
-                animations: {
-                    self.frame.origin.y = destinationY
-                },
-                completion: nil
-            )
+//            UIView.animateWithDuration(durationOut,
+//                animations: {
+//                    self.frame.origin.y = destinationY
+//                },
+//                completion: nil
+//            )
             
             let delay = (1.1 * durationOut) * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))

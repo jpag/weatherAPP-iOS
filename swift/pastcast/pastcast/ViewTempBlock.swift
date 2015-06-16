@@ -81,7 +81,7 @@ class ViewTempBlock: UIView {
         var iconWH:CGFloat = globals.iconWH()
         
         weatherCode = _weathercode
-        var weatherIcon = UIImage(named: weatherCodes.getCodeFromString(weatherCode))
+        var weatherIcon = UIImage(named: weatherCodes.getCodeFromString(weatherCode) as String)
         
         weatherIconView = UIImageView(image: weatherIcon )
         weatherIconView.contentMode = UIViewContentMode.ScaleAspectFit
@@ -91,7 +91,7 @@ class ViewTempBlock: UIView {
         
         iconBlock = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
         iconBlock.addSubview(weatherIconView)
-        iconBlock.backgroundColor = UIColor.pastCast.white(alpha: 0.1)
+        //iconBlock.backgroundColor = UIColor.pastCast.white(alpha: 0.1)
         
         var iconMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
         iconMaskLayer.backgroundColor = UIColor.blackColor()
@@ -137,12 +137,12 @@ class ViewTempBlock: UIView {
         
         temps = tempBlock
         
-        if( Int(temps[0] as NSNumber) > Int(temps[1] as NSNumber) ){
+        if( Int(temps[0] as! NSNumber) > Int(temps[1] as! NSNumber) ){
             
             println( " it is warmer")
             self.backgroundColor = UIColor.pastCast.red(alpha: 1.0)
             
-        }else if( Int(temps[0] as NSNumber) < Int(temps[1] as NSNumber) ){
+        }else if( Int(temps[0] as! NSNumber) < Int(temps[1] as! NSNumber) ){
             println( " it is colder" )
             self.backgroundColor = UIColor.pastCast.blue(alpha: 1.0)
         }else {
@@ -154,7 +154,7 @@ class ViewTempBlock: UIView {
         if( pastCastModel.isCelsius ){
             tempType = "C"
         }
-        var temp = Int(temps[0] as NSNumber)
+        var temp = Int(temps[0] as! NSNumber)
         temperatureLabel.text = String(temp) + "°"
         tempTypeLabel.text = tempType
         tempTypeLabel.sizeToFit()
@@ -290,9 +290,15 @@ class ViewTempBlock: UIView {
             dividerW = (newiconWidth * percentOfIconHeightForDivider.width) * per
             dividerH = dividerLineStroke
             dividerX = iconX + (newiconWidth - dividerW)/2
-            
             dividerY = iconY - ((1) * (paddingTopIcon/dividerYFactor) + dividerLineStroke)
-            iconY = iconY - ((1 - per) * (paddingTopIcon/dividerYFactor) + dividerLineStroke)
+            
+            // icon Y is at the desired point.
+            // dont bring them apart until 75% of per
+            
+            var adjustedID = self.subsetAdjust(iconY, dividerCord: dividerY, per: per, subsetRangePer: 0.8)
+            iconY = adjustedID.icon
+            dividerY = adjustedID.divider
+            
             
             iconImagePos.y = (1 - per) * -(iconWH * 2)
             
@@ -308,14 +314,12 @@ class ViewTempBlock: UIView {
             dividerH = dividerLineStroke
             dividerX = iconX + (newiconWidth - dividerW)/2
             
-            var dividerPer:CGFloat = (per < 0.5) ? 0.0 : (per - 0.5)
-            
-            
             dividerY = iconY - ((1) * ((paddingTopIcon/dividerYFactor) + dividerLineStroke))
             
-            var rangeOfIconMove:CGFloat = 0.5
-            var iconYper = (per < rangeOfIconMove) ? 0.0 : ( (per - rangeOfIconMove) / (rangeOfIconMove) )
-            iconY = iconY - (iconYper * ((paddingTopIcon/dividerYFactor) + dividerLineStroke))
+            var adjustedID = self.subsetAdjust(iconY, dividerCord: dividerY, per: 1 - per, subsetRangePer: 0.85)
+            
+            iconY = adjustedID.icon
+            dividerY = adjustedID.divider
             
             dividerAlpha = 1 - per;
             iconImagePos.y = (per) * -(iconWH * 1)
@@ -335,14 +339,11 @@ class ViewTempBlock: UIView {
             
             dividerW = dividerLineStroke
             dividerH = (newiconHeight * percentOfIconHeightForDivider.height) * per
+            dividerX = iconX - (paddingSideIcon/2)
             
-            dividerX = iconX - (paddingSideIcon/2 * 1)
-            
-            var rangeOfIconMove:CGFloat = 0.5
-            var iconXper = (per < rangeOfIconMove) ? 1.0 : ( (1 - per) / (1 - rangeOfIconMove) )
-            println(" \(iconXper ) and per \(per ) ")
-            
-            iconX =  iconX - (paddingSideIcon/2 * (iconXper))
+            var adjustedID = self.subsetAdjust(iconX, dividerCord: dividerX, per: per, subsetRangePer: 0.8)
+            iconX = adjustedID.icon
+            dividerX = adjustedID.divider
             
             dividerY = iconY + (newiconHeight - dividerH)/2
             dividerAlpha = per;
@@ -360,9 +361,7 @@ class ViewTempBlock: UIView {
             dividerH = newiconHeight * percentOfIconHeightForDivider.height
             dividerX = iconX - (paddingSideIcon/2)
             
-            
             dividerY = iconY + (newiconHeight - dividerH)/2
-            
             
         }
         
@@ -389,6 +388,31 @@ class ViewTempBlock: UIView {
         }
     }
     
+    // adjust positioning of the icon and line to a further subset percent
+    func subsetAdjust(iconCord:CGFloat, dividerCord:CGFloat, per:CGFloat, subsetRangePer:CGFloat = 0.80 )
+        -> (icon:CGFloat, divider:CGFloat) {
+
+        var rIconCord:CGFloat = iconCord
+        var rDividerCord:CGFloat = dividerCord
+        
+        // icon Y is at the desired point.
+        // dont bring them apart until 75% of per
+        var midwayPt:CGFloat = rIconCord - (rIconCord - rDividerCord)/2
+        if( per < subsetRangePer ){
+            // keep them together:
+            rIconCord = midwayPt
+            rDividerCord = rIconCord
+        }else{
+            // else increment them towards their destinations:
+            var p:CGFloat = (per - subsetRangePer) / (1 - subsetRangePer)
+            
+            rDividerCord = dividerCord - (dividerCord - midwayPt) * (1 - p)
+            rIconCord = iconCord - (iconCord - midwayPt) * (1 - p)
+        }
+        
+        return (icon:rIconCord, divider:rDividerCord)
+    }
+
     func updateState(percent:CGFloat) {
         
         if( pos == 0 ) {

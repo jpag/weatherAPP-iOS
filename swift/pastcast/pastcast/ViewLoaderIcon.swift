@@ -54,12 +54,13 @@ class ViewLoaderIcon: UIView {
         if( self.animateOut ){
             duration = 0.4
             itIsOver = true
-            iy = self.frame.origin.y + offsetY
+//            iy = self.frame.origin.y + offsetY
             ialpha = 0.0
         }else if( self.animateIn ){
             duration = 0.4
             self.alpha = 0.0
-            self.frame.origin.y = defaultY + offsetY
+//            self.frame.origin.y = defaultY + offsetY
+            self.frame.origin.y = defaultY
         }
         
         fullRotation = -2.25 * numR
@@ -71,7 +72,7 @@ class ViewLoaderIcon: UIView {
             options: options,
             animations: {
                 self.loaderUIImgVW.transform = CGAffineTransformRotate(self.transform, fullRotation)
-                self.frame.origin.y = iy
+//                self.frame.origin.y = iy
                 self.alpha = ialpha
             },
             completion: {(finished:Bool) in
