@@ -321,6 +321,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     }
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+        println(error)
         println(" -- FAIL to locate...")
         stopUpdatingLocation()
         showWarning(globals.errorMsg[0].msg)
