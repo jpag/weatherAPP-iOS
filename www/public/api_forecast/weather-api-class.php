@@ -100,11 +100,15 @@
 
 		// All queries are made via lat long :
 		protected function queryBothTimes($LATLONG){
+
 			$TIMESTAMP = $this->TIME;
 			$FROMTIME = $this->FROMTIME;
 
 			$RESULTPAST = json_decode($this->query($LATLONG, $FROMTIME));
-			$RESULT = json_decode($this->query($LATLONG, $TIMESTAMP));
+			$RESULT = json_decode($this->query($LATLONG));
+
+			// echo json_encode($RESULT);
+			// exit(1);
 
 			if( $RESULTPAST && $RESULT ){
 
@@ -117,34 +121,77 @@
 
 					$RESULTPAST_FORMATTED = new stdClass();
 					$RESULT_FORMATTED = new stdClass();
-
+					$RESULT_TOMORROW = new stdClass();
 
 					$RESULTPAST_FORMATTED->temp = $this->convertTemp( $PAST->temperature );
 					$RESULTPAST_FORMATTED->weathercode = $PAST->icon; 
 					$RESULTPAST_FORMATTED->rain = $PAST->precipIntensity;
 					$RESULTPAST_FORMATTED->rainchance = $PAST->precipProbability;
 					$RESULTPAST_FORMATTED->summary = $PAST->summary;
+					$RESULTPAST_FORMATTED->timestamp = $PAST->time;
 
 					$RESULT_FORMATTED->temp = $this->convertTemp( $CURRENT->temperature );
 					$RESULT_FORMATTED->weathercode = $CURRENT->icon;
 					$RESULT_FORMATTED->rain = $CURRENT->precipIntensity;
 					$RESULT_FORMATTED->rainchance = $CURRENT->precipProbability;
 					$RESULT_FORMATTED->summary = $CURRENT->summary;
+					$RESULT_FORMATTED->timestamp = $CURRENT->time;
 
 					if( $this->DEV_STATE == 'dev' ){
 						$RESULTPAST_FORMATTED->dev = $RESULTPAST;
 						$RESULT_FORMATTED->dev = $RESULT;
 					}
 
+					if( isset($RESULT->hourly) ){
+						// let us add the future:
+						$tomorrowMin = strtotime("+23 hours");
+						$tomorrowMax = strtotime("+25 hours");
+						
+						// print "today time " . $TIMESTAMP;
+						// print " tomorrow - ". $tomorrowMin;
+						// print " tomorrow one day one hour ". $tomorrowMax;
+
+						if( isset($RESULT->hourly->data) ){
+							$counter = 0;
+							foreach($RESULT->hourly->data as &$hour) {
+								$counter++;
+								$dataTime = $hour->time;
+								
+								// print "\n\n " . $tomorrowMin . " < hour time: " . $dataTime . " < ". $tomorrowMax;
+								// print "-----  \n";
+								// var_dump($tomorrowMin < $dataTime);
+								// print "----- and \n";
+								// var_dump($dataTime < $tomorrowMax);
+
+								if( ($tomorrowMin < $dataTime) && ($dataTime < $tomorrowMax) ){
+									// print " found matching time point " . $hour->time;
+									$TOMORROW = $hour;
+									break;
+								}
+								// print " -- count ". $counter;
+							}
+							
+							// exit(1);
+
+							// $numOfHours = count($RESULT->hourly->data) - 1;
+							// $TOMORROW = $RESULT->hourly->data[$numOfHours];
+
+							$RESULT_TOMORROW->temp = $this->convertTemp( $TOMORROW->temperature );
+							$RESULT_TOMORROW->weathercode = $TOMORROW->icon;
+							$RESULT_TOMORROW->rain = $TOMORROW->precipIntensity;
+							$RESULT_TOMORROW->rainchance = $TOMORROW->precipProbability;
+							$RESULT_TOMORROW->summary = $TOMORROW->summary;
+							$RESULT_TOMORROW->timestamp = $TOMORROW->time;
+						}
+					}
+
 					$RESULTS = array( 
 									'timecompared' => array(
 															'past' => $RESULTPAST_FORMATTED, 
-															'present' => $RESULT_FORMATTED 
+															'present' => $RESULT_FORMATTED,
+															'tomorrow' => $RESULT_TOMORROW
 														)
 									);
-
-
-
 				}else{
 					$RESULTS = array(
 								'error' => '101',
@@ -177,7 +224,11 @@
 				}
 			}
 			
-			$URL  = $this->API_ENDPOINT . $this->ACCESS_TOKEN .'/'. $LATLONG[0].','.$LATLONG[1] .','. $TIME ;
+			if( isset($TIME)){
+				$URL  = $this->API_ENDPOINT . $this->ACCESS_TOKEN .'/'. $LATLONG[0].','.$LATLONG[1] .','. $TIME ;
+			}else{
+				$URL  = $this->API_ENDPOINT . $this->ACCESS_TOKEN .'/'. $LATLONG[0].','.$LATLONG[1];
+			}
 			
 			$URL .= $PARAMSFORMATTED;
 			

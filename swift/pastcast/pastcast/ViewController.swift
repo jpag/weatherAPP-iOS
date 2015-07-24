@@ -15,7 +15,6 @@
 import UIKit
 import CoreLocation
 
-
 class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewDelegate {
     
     var locationManager = CLLocationManager()
@@ -82,7 +81,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         findLocation()
         
-        //showWarning(globals.errorMsg[5].msg)
+//        self.showWarning(globals.errorMsg[5])
         
     }
     
@@ -186,6 +185,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         if( scrollView.contentOffset.y < 0 ){
             // pull to refresh!
+            println(" --- we are going far enough to load tomorrow? \(scrollView.contentOffset.y)")
             
         }else if( scrollView.contentOffset.y > maxScrollY ){
             scrollView.contentOffset.y = maxScrollY
@@ -321,15 +321,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     }
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+        println("\n\n -- FAIL to locate...")
         println(error)
-        println(" -- FAIL to locate...")
+        
         stopUpdatingLocation()
-        showWarning(globals.errorMsg[0].msg)
+        self.showWarning(globals.errorMsg[0])
         
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        // println("locations = \(locations)")
+        println("\n\n -- locations = \(locations)")
         
         if( locations.count > 0 && !globals.errorMsg[1].show ){
             stopUpdatingLocation()
@@ -337,7 +338,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             findLocationName()
         }else{
             stopUpdatingLocation()
-            showWarning(globals.errorMsg[1].msg)
+            self.showWarning(globals.errorMsg[1])
         }
     }
     
@@ -349,7 +350,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
                 if (error != nil || globals.errorMsg[2].show ) {
                     //println("reverse geodcode fail: \(error.localizedDescription)")
                     println( "reverse geodcode fail" )
-                    self.showWarning(globals.errorMsg[2].msg)
+                    self.showWarning(globals.errorMsg[2])
                     return;
                 }
                 let pm = placemarks as! [CLPlacemark]
@@ -357,7 +358,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
                 if( pm.count > 0 && !globals.errorMsg[3].show ){
                     self.locationNameFound(placemarks[0] as! CLPlacemark)
                 }else{
-                    self.showWarning(globals.errorMsg[3].msg)
+                    self.showWarning(globals.errorMsg[3])
                 }
             }
         )
@@ -386,6 +387,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         let lat = roundCoordinate(pastCastModel.location.coordinate.latitude)
         let path = globals.apiRequests + "lat/\(lat)/lng/\(long)/"
         
+        println("-- loading json --")
         println(path)
         
         let url = NSURL(string: path)
@@ -394,7 +396,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         let task = session.dataTaskWithURL(url!, completionHandler: { data, response, error -> Void in
             
             if( response == nil || globals.errorMsg[4].show ){
-                self.showWarning(globals.errorMsg[4].msg)
+                println("------ resonse was nil from server.")
+                self.showWarning(globals.errorMsg[4])
                 return
             }
             
@@ -402,7 +405,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
                 // If there is an error in the web request, print it to the console
                 // println(error.localizedDescription)
                 println(" web request error")
-                self.showWarning(globals.errorMsg[5].msg)
+                self.showWarning(globals.errorMsg[5])
                 return
             }
             
@@ -411,7 +414,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             
             if( statusCode == 404 || globals.errorMsg[6].show ){
                 println("Could not find server")
-                self.showWarning(globals.errorMsg[6].msg)
+                self.showWarning(globals.errorMsg[6])
                 return
             }
             
@@ -420,7 +423,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             
             if( (err) != nil || globals.errorMsg[7].show) {
                 // If there is an error parsing JSON, print it to the console
-                self.showWarning(globals.errorMsg[7].msg)
+                self.showWarning(globals.errorMsg[7])
                 return
             }
             
@@ -606,17 +609,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         println(" Stop updating location")
     }
     
-    func showWarning(msg:String){
+    func showWarning(error:ErrorTup){
         if NSThread.isMainThread(){
-            showWarningMainThread(msg);
+            showWarningMainThread(error);
         }else{
-            dispatch_sync(dispatch_get_main_queue(), { self.showWarningMainThread(msg) });
+            dispatch_sync(dispatch_get_main_queue(), { self.showWarningMainThread(error) });
         }
     }
     
-    func showWarningMainThread(msg:String){
+    func showWarningMainThread(error:ErrorTup){
         
         self.removeLoader("NA")
+        
         setScrollViewHeight(UIScreen.mainScreen().bounds.height);
         _notificationCenter.postNotificationName(_ncEvents.hidePoweredBy, object: nil)
         
@@ -627,12 +631,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         if( errorMsg == nil ){
             println(" error msg was nil")
-            errorMsg = ViewError( frame: CGRect(x: 0, y:0.0, width: width, height: height), errorMsg: msg )
+            errorMsg = ViewError( frame: CGRect(x: 0, y:0.0, width: width, height: height), errorMsg: error.msg, notifyUs:error.notifyUs )
         }else{
             // remove the existing error and show this one ?
             println(" error msg already exists")
             // update the error msg :
-            errorMsg?.updateError(msg)
+            errorMsg?.updateError(error.msg, notifyUs: error.notifyUs)
         }
         
         self.scrollView.addSubview(errorMsg!)

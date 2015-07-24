@@ -11,14 +11,14 @@ import CoreLocation
 
 var _notificationCenter = NSNotificationCenter()
 
-typealias errorMsg = (Bool,NSString)
+public typealias ErrorTup = (show:Bool,msg:String,notifyUs:Bool)
 
 class Globals {
     
     // dev
-    let apiRequests = "http://weather.yaapee.com/api/"
+    // let apiRequests = "http://weather.yaapee.com/api/"
     // local
-    //let apiRequests = "http://local.weather.com/api/"
+    let apiRequests = "http://local.pastcast.com/api/"
     
     let loaderLarge = "State.Loader.Full.onStart"
     let loaderSmall = "State.Loader.Small"
@@ -37,22 +37,22 @@ class Globals {
     
     let errorMsg = [
         // this error msg can not be tested by show:true
-        // CLLocation manager fail.
-        (show:false, msg:"Unable to find your location"),
-        // CLLocation manager Unable to find your location
-        (show:false, msg:"Unable to find your location"),
-        // geocoder Unable to find your location
-        (show:false, msg:"Unable to find your location"),
-        // no placemark found.
-        (show:false, msg:"Unable to find your location"),
-        // json response was nil
-        (show:false, msg:"Unable to find your location"),
-        // error response was not nil
-        (show:false, msg:"We were unable to connect to weather data"),
-        // server error status code is 404.
-        (show:false, msg:"We were unable to connect to weather data"),
-        // error when trying to parse the json
-        (show:false, msg:"We were unable to connect to weather data")
+        // errorMsg[0] CLLocation manager fail.
+        (show:false, msg:"Unable to find your location", notifyUs:false),
+        // errorMsg[1] CLLocation manager Unable to find your location
+        (show:false, msg:"Unable to find your location", notifyUs:false),
+        // errorMsg[2] geocoder Unable to find your location
+        (show:false, msg:"Unable to find your location", notifyUs:false),
+        // errorMsg[3] no placemark found.
+        (show:false, msg:"Unable to find your location", notifyUs:false),
+        // errorMsg[4] json response was nil
+        (show:false, msg:"We were unable to connect to weather data", notifyUs:true),
+        // errorMsg[5] error response was not nil
+        (show:false, msg:"We were unable to connect to weather data", notifyUs:true),
+        // errorMsg[6] server error status code is 404.
+        (show:false, msg:"We were unable to connect to weather data", notifyUs:true),
+        // errorMsg[7] error when trying to parse the json
+        (show:false, msg:"We were unable to connect to weather data", notifyUs:true)
     ]
     
     // does not work...

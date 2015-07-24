@@ -22,6 +22,8 @@
 		$DB_HOST = 'localhost';
 		$DB_NAME = 'weather_forecastcache';
 
+		// $CACHEEXPIRE_CRON = '1 second';
+
 	}else if( $STATE == 'live' ){
 		
 		$DB_USER = 'db162706_weather';

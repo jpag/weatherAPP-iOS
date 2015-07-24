@@ -1,4 +1,8 @@
 <?php	
+
+	// example request
+	//  HOST /api/lat/40.7127/lng/-74.0059/
+
 	require_once('json_header.php');
 	
 	//recieve incoming LAT LONG and determine closest city.
@@ -47,7 +51,8 @@
 			"CACHEEXPIRES" => $CACHEEXPIRE_CRON ,
 			"OVERRIDECACHE" => $disableCache,
 			"CACHEFOLDER" => $CACHEFOLDER,
-			"PARAMS" => array('exclude'=>'minutely,flags,daily', 'units'=>$UNITOFMEASUREMENT ),
+			"PARAMS" => array('exclude'=>'minutely,flags,daily', 'units'=>$UNITOFMEASUREMENT, 'extend'=>'hourly' ),
+			// "PARAMS" => array('exclude'=>'minutely,flags', 'units'=>$UNITOFMEASUREMENT ),
 			"TIME" => $TIMESTAMP,
 			"FROMTIME" => $FROMTIME,
 			"DEV_STATE" => 'live'
