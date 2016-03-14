@@ -63,10 +63,10 @@ extension UIColor {
 extension UIFont {
     class func cycleThroughSysFonts () {
         for font : AnyObject in UIFont.familyNames() {
-            println(font)
+            print(font)
             
             for fontName : AnyObject in UIFont.fontNamesForFamilyName(font as! String) {
-                println(fontName)
+                print(fontName)
             }
             
         }

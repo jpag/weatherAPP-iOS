@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>CA3CFDAB-C377-4572-B85B-F1C6895369EA</string>
 	<key>IDESourceControlProjectName</key>
-	<string>pastcast</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>0436BDF9AD3A5367D41427B770EC72D3D32BA259</key>
 		<string>https://github.com/jpag/weatherAPP-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>swift/pastcast/pastcast.xcodeproj</string>
+	<string>swift/pastcast/pastcast.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>0436BDF9AD3A5367D41427B770EC72D3D32BA259</key>

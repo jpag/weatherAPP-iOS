@@ -13,7 +13,7 @@ class ViewPoweredBy: UIView {
     let msg = "Powered by Forecast"
     var txtVw:UITextView!
     
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
@@ -21,18 +21,18 @@ class ViewPoweredBy: UIView {
     // temps[0] is always 'this' temp. temp[1] is the one to compare to.
     init() {
         
-        println(" powered by ")
+        print(" powered by ")
         
-        var w = UIScreen.mainScreen().bounds.width
-        var h = UIScreen.mainScreen().bounds.height
+        let w = UIScreen.mainScreen().bounds.width
+        let h = UIScreen.mainScreen().bounds.height
         
-        var frame = CGRect(x: 0, y:0, width: w, height: h)
+        let frame = CGRect(x: 0, y:0, width: w, height: h)
         
         super.init(frame:frame)
         
         txtVw = UITextView( frame: CGRect(x: 0, y: 15 , width: w, height: 25.0) )
-        txtVw.font = UIFont.freightBigBlack(fontsize: 16.0)
-        txtVw.textColor = UIColor.darkGray(alpha: 0.5)
+        txtVw.font = UIFont.freightBigBlack(16.0)
+        txtVw.textColor = UIColor.darkGray(0.5)
         txtVw.backgroundColor = UIColor.clearColor()
         txtVw.editable = false
         txtVw.textAlignment = .Center

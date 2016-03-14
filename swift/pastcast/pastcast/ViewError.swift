@@ -18,7 +18,7 @@ class ViewError: ViewBottomNotification {
     
 //    var panel:UIView!
     
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
@@ -27,28 +27,28 @@ class ViewError: ViewBottomNotification {
     init(frame: CGRect, errorMsg:NSString, notifyUs:Bool) {
         
         super.init(frame:frame)
-        var fontsize:CGFloat = 14.0
-        var w:CGFloat = panel.bounds.width
-        var eIcon = UIImage(named: "error-icon")
-        var iconWH:CGFloat = 20.0
-        var iconx = (UIScreen.mainScreen().bounds.width - iconWH) / 2.0
-        var eIconVw = UIImageView(image: eIcon )
+        let fontsize:CGFloat = 14.0
+        let w:CGFloat = panel.bounds.width
+        let eIcon = UIImage(named: "error-icon")
+        let iconWH:CGFloat = 20.0
+        let iconx = (UIScreen.mainScreen().bounds.width - iconWH) / 2.0
+        let eIconVw = UIImageView(image: eIcon )
         eIconVw.contentMode = UIViewContentMode.ScaleAspectFit
         
-        var marginBetweenIconTxt:CGFloat = 10
-        var fontsizeFactor:CGFloat = 1.75
-        var fontHeight:CGFloat = fontsize * fontsizeFactor
-        var iconY:CGFloat = (panel.bounds.height - (iconWH + fontHeight + marginBetweenIconTxt) )/2
-        var textY = iconY + iconWH + marginBetweenIconTxt
+        let marginBetweenIconTxt:CGFloat = 10
+        let fontsizeFactor:CGFloat = 1.75
+        let fontHeight:CGFloat = fontsize * fontsizeFactor
+        let iconY:CGFloat = (panel.bounds.height - (iconWH + fontHeight + marginBetweenIconTxt) )/2
+        let textY = iconY + iconWH + marginBetweenIconTxt
         
         eIconVw.frame = CGRect(x: iconx, y: iconY, width: iconWH, height: iconWH)
         
-        var textFieldX:CGFloat = w * 0.05
-        var textFieldW:CGFloat = w * 0.9
-        var textFieldH:CGFloat = fontHeight * 2.0
+        let textFieldX:CGFloat = w * 0.05
+        let textFieldW:CGFloat = w * 0.9
+        let textFieldH:CGFloat = fontHeight * 2.0
         
         errorLabel = UITextView( frame: CGRect(x: (w * 0.05), y: textY , width: textFieldW, height: textFieldH) )
-        errorLabel.font = UIFont.futuraSerieBQBook(fontsize: fontsize)
+        errorLabel.font = UIFont.futuraSerieBQBook(fontsize)
         errorLabel.textColor = UIColor.pastCast.red()
         errorLabel.editable = false
         errorLabel.textAlignment = .Center
@@ -65,7 +65,7 @@ class ViewError: ViewBottomNotification {
         
         contactSupport.textColor = UIColor.pastCast.red()
 //        contactSupport.editable = false
-        contactSupport.font = UIFont.futuraSerieBQBook(fontsize: fontsize)
+        contactSupport.font = UIFont.futuraSerieBQBook(fontsize)
         
         contactSupport.textAlignment = .Center
         contactSupport.text = "Notify Us"
@@ -92,7 +92,7 @@ class ViewError: ViewBottomNotification {
     
     
     func updateError(msg:NSString, notifyUs:Bool) {
-        animateOut(remove: false, animateInAfter: true)
+        animateOut(false, animateInAfter: true)
         errorLabel.text = msg as String
         
         if( notifyUs ){
@@ -104,7 +104,7 @@ class ViewError: ViewBottomNotification {
     }
     
     func tap() {
-        println(" OPEN EMAIL! - Note that this works only on a device, not in the simulator.")
+        print(" OPEN EMAIL! - Note that this works only on a device, not in the simulator.")
         let email = "pastcast@jpg.is"
         let url = NSURL(string: "mailto:\(email)")
         

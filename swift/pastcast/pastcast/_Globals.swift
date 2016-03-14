@@ -101,16 +101,16 @@ class WeatherCodes {
     
     // used with dark sky.
     func getCodeFromString(val:NSString) ->NSString {
-        var clear = "weather-sunny"
-        var storm = "weather-tstorm"
-        var rain = "weather-rain"
-        var snow = "weather-snow"
-        var atmosphere = "weather-clouds"
-        var clouds = "weather-clouds"
-        var extreme = "weather-tstorm"
-        
-        var tornado = "weather-tstorm"
-        var hurricane = "weather-tstorm"
+        let clear = "weather-sunny"
+        let rain = "weather-rain"
+        let snow = "weather-snow"
+        let clouds = "weather-clouds"
+
+        //var storm = "weather-tstorm"
+        //var atmosphere = "weather-clouds"
+        //var extreme = "weather-tstorm"
+        //var tornado = "weather-tstorm"
+        //var hurricane = "weather-tstorm"
         
         if( val == "clear-day" ){
             return clear
@@ -157,15 +157,15 @@ class WeatherCodes {
     
     func getCode(val:Int) -> NSString {
 
-        var clear = "weather-sunny"
-        var storm = "weather-tstorm"
-        var rain = "weather-rain"
-        var snow = "weather-snow"
-        var atmosphere = "weather-clouds"
-        var clouds = "weather-clouds"
-        var extreme = "weather-tstorm"
-        var tornado = "weather-tstorm"
-        var hurricane = "weather-tstorm"
+        let clear = "weather-sunny"
+        let storm = "weather-tstorm"
+        let rain = "weather-rain"
+        let snow = "weather-snow"
+        let atmosphere = "weather-clouds"
+        let clouds = "weather-clouds"
+        let extreme = "weather-tstorm"
+        let tornado = "weather-tstorm"
+        let hurricane = "weather-tstorm"
         
         if( val == 781 || val == 900 ){
             // tornado

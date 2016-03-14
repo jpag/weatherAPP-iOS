@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication!, launchOptions: NSDictionary!) -> Bool {
         // Override point for customization after application launch.
         
-        println("RUN!")
+        print("RUN!")
         
         // add background color:
 //        println(UIScreen.mainScreen().bounds.width)
@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        backgroundColor.backgroundColor = UIColor.pastCast.blue()
 //        self.window!.addSubview(backgroundColor)
         
-        var poweredBy = ViewPoweredBy()
+        let poweredBy = ViewPoweredBy()
         self.window!.addSubview(poweredBy)
         
 //        self.window!.backgroundColor = UIColor.pastCast.white()
@@ -44,14 +44,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
-        println(" entering background ")
+        print(" entering background ")
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-        println(" -- application will enter foreground ")
+        print(" -- application will enter foreground ")
         
-        var vcontroller = self.window!.rootViewController as! ViewController
+        let vcontroller = self.window!.rootViewController as! ViewController
         vcontroller.updateLocation()
         
     }

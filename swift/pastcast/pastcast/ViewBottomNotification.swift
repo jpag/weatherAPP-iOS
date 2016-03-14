@@ -15,7 +15,7 @@ class ViewBottomNotification: UIView {
     
     var panel:UIView!
     
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
@@ -24,19 +24,19 @@ class ViewBottomNotification: UIView {
     
         super.init(frame:frame)
     
-        self.backgroundColor = UIColor.darkGray(alpha: 0.1)
+        self.backgroundColor = UIColor.darkGray(0.1)
     
-        var time = 0.25
+        //var time = 0.25
     
-        var w:CGFloat = UIScreen.mainScreen().bounds.width
-        var h:CGFloat = UIScreen.mainScreen().bounds.height
+        let w:CGFloat = UIScreen.mainScreen().bounds.width
+        //var h:CGFloat = UIScreen.mainScreen().bounds.height
     
         // has icon?
     
-        var pheight = UIScreen.mainScreen().bounds.height * (1.0 - globals.halfHeight)
-        var py = UIScreen.mainScreen().bounds.height
+        let pheight = UIScreen.mainScreen().bounds.height * (1.0 - globals.halfHeight)
+        let py = UIScreen.mainScreen().bounds.height
     
-        var labelh:CGFloat = 50.0
+        //var labelh:CGFloat = 50.0
     
         panel = UIView(frame: CGRect(x:0,y:py,width:w, height: pheight))
         panel.backgroundColor = UIColor.pastCast.white()
@@ -45,7 +45,7 @@ class ViewBottomNotification: UIView {
     }
     
     func animateIn() {
-        var visibleY = UIScreen.mainScreen().bounds.height * globals.halfHeight
+        let visibleY = UIScreen.mainScreen().bounds.height * globals.halfHeight
         
         UIView.animateWithDuration(0.35,
             
@@ -62,7 +62,7 @@ class ViewBottomNotification: UIView {
     }
     
     func animateOut(remove:Bool = false, animateInAfter:Bool = false ) {
-        var hideY = UIScreen.mainScreen().bounds.height
+        let hideY = UIScreen.mainScreen().bounds.height
         
         UIView.animateWithDuration(0.35,
             
@@ -84,7 +84,7 @@ class ViewBottomNotification: UIView {
     }
     
     func remove() {
-        animateOut(remove: true)
+        animateOut(true)
     }
     
 }

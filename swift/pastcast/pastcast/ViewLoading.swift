@@ -28,7 +28,7 @@ class ViewLoading: UIView {
     let iconWH = 50 as CGFloat
     var icony:CGFloat!
     
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
@@ -41,7 +41,7 @@ class ViewLoading: UIView {
         super.init(frame:frame)
         
         // insert loader icon here:
-        var iconx = (UIScreen.mainScreen().bounds.width - iconWH) / 2
+        let iconx = (UIScreen.mainScreen().bounds.width - iconWH) / 2
         
         icony = (self.frame.height - iconWH ) / 2
         
@@ -59,16 +59,16 @@ class ViewLoading: UIView {
     }
     
     func animateInOnSmall() {
-        println(" ANIMATE IN")
+        print(" ANIMATE IN")
         
-        let delay:NSTimeInterval = 0.0
-        let options = UIViewAnimationOptions.CurveEaseOut
-        var destinationY:CGFloat = UIScreen.mainScreen().bounds.height * globals.halfHeight
+        //let delay:NSTimeInterval = 0.0
+        //let options = UIViewAnimationOptions.CurveEaseOut
+        let destinationY:CGFloat = UIScreen.mainScreen().bounds.height * globals.halfHeight
         
         
         UIView.animateWithDuration(
             durationIn,
-//            delay: 0.0,
+//            delay: delay,
 //            options: options,
             animations: {
                 self.frame.origin.y = destinationY
@@ -78,22 +78,22 @@ class ViewLoading: UIView {
     }
     
     func removeLoader(_type:NSString) {
-        println(" ----- stop and collapse loader \(self.type)")
+        print(" ----- stop and collapse loader \(self.type)")
         self.loaderDoneReason = _type as String
         self.removingLoader = true
-        self.animateOut(delay: 0.0)
+        self.animateOut(0.0)
     }
     
     func animateOut(delay:NSTimeInterval = 0.0) {
         // animate out the view first!
         
-        println(" ANIMATE OUT")
+        print(" ANIMATE OUT")
         
         self.iconView.animateOut = true
         
         if( self.type == globals.loaderSmall ){
             
-            var destinationY = UIScreen.mainScreen().bounds.height
+            // let destinationY = UIScreen.mainScreen().bounds.height
             
 //            UIView.animateWithDuration(durationOut,
 //                animations: {
@@ -111,7 +111,7 @@ class ViewLoading: UIView {
             }
         } else {
             // set a timer to give the loader icon a headstart...
-            println(" - set TIMER for loaderDone() -")
+            print(" - set TIMER for loaderDone() -")
             
             // .75 seconds
             let delay = 0.75 * Double(NSEC_PER_SEC)
@@ -127,10 +127,10 @@ class ViewLoading: UIView {
     }
     
     func loaderDone() {
-        println("------- LOADER is done dispatch event")
+        print("------- LOADER is done dispatch event")
         self.stopSpinning = true
         
-        var obj = [
+        let obj = [
             "type" : loaderDoneReason
         ]
         _notificationCenter.postNotificationName(_ncEvents.loaderDoneAnimating, object: obj)

@@ -53,7 +53,7 @@ class ViewTempBlock: UIView {
     var weatherCode:NSString = "sunny";
     
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         super.init(coder: aDecoder)
     }
     
@@ -65,7 +65,7 @@ class ViewTempBlock: UIView {
         pos = _pos
         state = _state
         
-        var w = UIScreen.mainScreen().bounds.width
+        let w = UIScreen.mainScreen().bounds.width
         
         locationLabel = UILabel( frame: CGRect(x: 0, y: 0, width: w, height: locationHeight) )
         timeLabel = UILabel( frame: CGRect(x: 0, y: 0, width: w, height:timeHeight) )
@@ -78,10 +78,10 @@ class ViewTempBlock: UIView {
         super.init(frame:frame)
         
         // type of weather :
-        var iconWH:CGFloat = globals.iconWH()
+        let iconWH:CGFloat = globals.iconWH()
         
         weatherCode = _weathercode
-        var weatherIcon = UIImage(named: weatherCodes.getCodeFromString(weatherCode) as String)
+        let weatherIcon = UIImage(named: weatherCodes.getCodeFromString(weatherCode) as String)
         
         weatherIconView = UIImageView(image: weatherIcon )
         weatherIconView.contentMode = UIViewContentMode.ScaleAspectFit
@@ -93,30 +93,30 @@ class ViewTempBlock: UIView {
         iconBlock.addSubview(weatherIconView)
         //iconBlock.backgroundColor = UIColor.pastCast.white(alpha: 0.1)
         
-        var iconMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
+        let iconMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
         iconMaskLayer.backgroundColor = UIColor.blackColor()
         iconBlock.maskView = iconMaskLayer
         
-        var maskLayer = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        let maskLayer = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
         maskLayer.backgroundColor = UIColor.blackColor()
         self.maskView = maskLayer
         
         
-        locationLabel.font = UIFont.freightBigBlack(fontsize: locationHeight)
+        locationLabel.font = UIFont.freightBigBlack(locationHeight)
         locationLabel.textColor = UIColor.pastCast.white()
         
-        timeLabel.font = UIFont.freightBoldItalic(fontsize: timeHeight)
+        timeLabel.font = UIFont.freightBoldItalic(timeHeight)
         timeLabel.textColor = UIColor.pastCast.white()
         
-        temperatureLabel.font = UIFont.futuraSerieBQBook(fontsize: tempLabelHeight)
+        temperatureLabel.font = UIFont.futuraSerieBQBook(tempLabelHeight)
         temperatureLabel.textColor = UIColor.pastCast.white()
         
-        tempTypeLabel.font = UIFont.futuraSerieBQBook(fontsize: tempTypeLabelHeight)
+        tempTypeLabel.font = UIFont.futuraSerieBQBook(tempTypeLabelHeight)
         tempTypeLabel.textColor = UIColor.pastCast.white()
         
         // create line divider :
         dividerLine = UIImageView(frame: CGRect(x: 0, y: 0, width: 15, height: dividerLineStroke))
-        dividerLine.backgroundColor = UIColor.pastCast.white(alpha: 1.0)
+        dividerLine.backgroundColor = UIColor.pastCast.white(1.0)
         
         self.addSubview( locationLabel )
         self.addSubview( timeLabel )
@@ -139,22 +139,22 @@ class ViewTempBlock: UIView {
         
         if( Int(temps[0] as! NSNumber) > Int(temps[1] as! NSNumber) ){
             
-            println( " it is warmer")
-            self.backgroundColor = UIColor.pastCast.red(alpha: 1.0)
+            print( " it is warmer")
+            self.backgroundColor = UIColor.pastCast.red(1.0)
             
         }else if( Int(temps[0] as! NSNumber) < Int(temps[1] as! NSNumber) ){
-            println( " it is colder" )
-            self.backgroundColor = UIColor.pastCast.blue(alpha: 1.0)
+            print( " it is colder" )
+            self.backgroundColor = UIColor.pastCast.blue(1.0)
         }else {
-            println(" same temps")
-            self.backgroundColor = UIColor.pastCast.red(alpha: 1.0)
+            print(" same temps")
+            self.backgroundColor = UIColor.pastCast.red(1.0)
         }
         
         var tempType = "F"
         if( pastCastModel.isCelsius ){
             tempType = "C"
         }
-        var temp = Int(temps[0] as! NSNumber)
+        let temp = Int(temps[0] as! NSNumber)
         temperatureLabel.text = String(temp) + "°"
         tempTypeLabel.text = tempType
         tempTypeLabel.sizeToFit()
@@ -167,7 +167,7 @@ class ViewTempBlock: UIView {
         if( pos == 1 ){
             date = date.dateByAddingTimeInterval( -60 * 60 * 24 )
         }
-        var formater = NSDateFormatter()
+        let formater = NSDateFormatter()
         formater.dateFormat = "EEEE MMMM d"
         dateStr = formater.stringFromDate(date)
         timeLabel.text = dateStr
@@ -260,7 +260,7 @@ class ViewTempBlock: UIView {
             tempYPos = tempYRange.max
         }
         
-        var tempContMinY = timeLabelTop + locationHeight
+        let tempContMinY = timeLabelTop + locationHeight
         if( tempYPos <= tempContMinY ){
             tempYPos = tempContMinY
         }
@@ -271,11 +271,11 @@ class ViewTempBlock: UIView {
         timeLabel.frame.origin.x = paddingSide
         
         var iconX:CGFloat!
-        var percentOfIconHeightForDivider = (height:CGFloat(0.8), width:CGFloat(0.9))
+        let percentOfIconHeightForDivider = (height:CGFloat(0.8), width:CGFloat(0.9))
         var dividerAlpha:CGFloat = 1.0
-        var dividerYFactor:CGFloat = 2.25
+        let dividerYFactor:CGFloat = 2.25
         
-        var iconWH:CGFloat = globals.iconWH()
+        let iconWH:CGFloat = globals.iconWH()
         var iconImagePos:(x:CGFloat,y:CGFloat) = (x:0, y:0)
         
         if( locpercent < third ){
@@ -295,7 +295,7 @@ class ViewTempBlock: UIView {
             // icon Y is at the desired point.
             // dont bring them apart until 75% of per
             
-            var adjustedID = self.subsetAdjust(iconY, dividerCord: dividerY, per: per, subsetRangePer: 0.8)
+            let adjustedID = self.subsetAdjust(iconY, dividerCord: dividerY, per: per, subsetRangePer: 0.8)
             iconY = adjustedID.icon
             dividerY = adjustedID.divider
             
@@ -316,7 +316,7 @@ class ViewTempBlock: UIView {
             
             dividerY = iconY - ((1) * ((paddingTopIcon/dividerYFactor) + dividerLineStroke))
             
-            var adjustedID = self.subsetAdjust(iconY, dividerCord: dividerY, per: 1 - per, subsetRangePer: 0.85)
+            let adjustedID = self.subsetAdjust(iconY, dividerCord: dividerY, per: 1 - per, subsetRangePer: 0.85)
             
             iconY = adjustedID.icon
             dividerY = adjustedID.divider
@@ -341,7 +341,7 @@ class ViewTempBlock: UIView {
             dividerH = (newiconHeight * percentOfIconHeightForDivider.height) * per
             dividerX = iconX - (paddingSideIcon/2)
             
-            var adjustedID = self.subsetAdjust(iconX, dividerCord: dividerX, per: per, subsetRangePer: 0.8)
+            let adjustedID = self.subsetAdjust(iconX, dividerCord: dividerX, per: per, subsetRangePer: 0.8)
             iconX = adjustedID.icon
             dividerX = adjustedID.divider
             
@@ -397,14 +397,14 @@ class ViewTempBlock: UIView {
         
         // icon Y is at the desired point.
         // dont bring them apart until 75% of per
-        var midwayPt:CGFloat = rIconCord - (rIconCord - rDividerCord)/2
+        let midwayPt:CGFloat = rIconCord - (rIconCord - rDividerCord)/2
         if( per < subsetRangePer ){
             // keep them together:
             rIconCord = midwayPt
             rDividerCord = rIconCord
         }else{
             // else increment them towards their destinations:
-            var p:CGFloat = (per - subsetRangePer) / (1 - subsetRangePer)
+            let p:CGFloat = (per - subsetRangePer) / (1 - subsetRangePer)
             
             rDividerCord = dividerCord - (dividerCord - midwayPt) * (1 - p)
             rIconCord = iconCord - (iconCord - midwayPt) * (1 - p)

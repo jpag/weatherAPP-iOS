@@ -19,14 +19,14 @@ class ViewLoaderIcon: UIView {
     var loaderUIImgVW:UIImageView!
     var numR:CGFloat = 1.0
     
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
     
     override init(frame: CGRect) {
         
-        var loaderIcon = UIImage(named: "loading")
+        let loaderIcon = UIImage(named: "loading")
         loaderUIImgVW = UIImageView(image: loaderIcon)
         loaderUIImgVW.contentMode = UIViewContentMode.ScaleAspectFit
         loaderUIImgVW.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
@@ -47,7 +47,7 @@ class ViewLoaderIcon: UIView {
         let options = UIViewAnimationOptions.CurveLinear
         var itIsOver = false
         
-        var iy:CGFloat = defaultY
+        //var iy:CGFloat = defaultY
         var ialpha:CGFloat = 1.0
         // println(" animateOut \(animateOut) animateIn \(animateIn) ")
         
@@ -89,7 +89,7 @@ class ViewLoaderIcon: UIView {
     }
     
     func remove() {
-        println("removeFromSuperview() loader icon!")
+        print("removeFromSuperview() loader icon!")
         self.removeFromSuperview()
         
     }
