@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-var _notificationCenter = NSNotificationCenter()
+var _notificationCenter = NotificationCenter()
 
 public typealias ErrorTup = (show:Bool,msg:String,notifyUs:Bool)
 
@@ -56,7 +56,7 @@ class Globals {
     ]
     
     // does not work...
-    func roundCoordinate(coord:CLLocationDegrees) -> Double{
+    func roundCoordinate(_ coord:CLLocationDegrees) -> Double{
         let rounded = Int(coord * globals.gpsdecmialpt)
         let result = Double(rounded) / globals.gpsdecmialpt
         return result
@@ -64,16 +64,17 @@ class Globals {
     
     // shuffle an array
     // http://stackoverflow.com/questions/24026510/how-do-i-shuffle-an-array-in-swift
-    func shuffle<T>(var list: Array<T>) -> Array<T> {
+    func shuffle<T>(_ list: Array<T>) -> Array<T> {
+        var list = list
         for i in 0..<list.count {
             let j = Int(arc4random_uniform(UInt32(list.count - i))) + i
-            list.insert(list.removeAtIndex(j), atIndex: i)
+            list.insert(list.remove(at: j), at: i)
         }
         return list
     }
     
     func iconWH()-> CGFloat {
-        return UIScreen.mainScreen().bounds.width * 0.15
+        return UIScreen.main.bounds.width * 0.15
     }
 }
 
@@ -100,7 +101,7 @@ class WeatherCodes {
                     ]
     
     // used with dark sky.
-    func getCodeFromString(val:NSString) ->NSString {
+    func getCodeFromString(_ val:NSString) ->NSString {
         let clear = "weather-sunny"
         let rain = "weather-rain"
         let snow = "weather-snow"
@@ -113,49 +114,49 @@ class WeatherCodes {
         //var hurricane = "weather-tstorm"
         
         if( val == "clear-day" ){
-            return clear
+            return clear as NSString
         }
         
         if( val == "clear-night" ){
-            return clear
+            return clear as NSString
         }
         
         if( val == "rain" ){
-            return rain
+            return rain as NSString
         }
         
         if( val == "snow" ){
-            return snow
+            return snow as NSString
         }
         
         if( val == "sleet" ){
-            return snow
+            return snow as NSString
         }
         
         if( val == "wind" ){
-            return clouds
+            return clouds as NSString
         }
         
         if( val == "fog" ){
-            return clouds
+            return clouds as NSString
         }
         
         if( val == "cloudy" ){
-            return clouds
+            return clouds as NSString
         }
         
         if( val == "partly-cloudy-day" ){
-            return clouds
+            return clouds as NSString
         }
         if( val == "partly-cloudy-night" ){
-            return clouds
+            return clouds as NSString
         }
         
-        return clear
+        return clear as NSString
         
     }
     
-    func getCode(val:Int) -> NSString {
+    func getCode(_ val:Int) -> NSString {
 
         let clear = "weather-sunny"
         let storm = "weather-tstorm"
@@ -169,54 +170,54 @@ class WeatherCodes {
         
         if( val == 781 || val == 900 ){
             // tornado
-            return tornado
+            return tornado as NSString
         }
         if( val == 901 || val == 901 || val == 962 ){
-            return hurricane
+            return hurricane as NSString
         }
         
         if( val < 100 ){
-            return clear
+            return clear as NSString
         }else if( val < 200 ){
-            return clear
+            return clear as NSString
         }else if( val < 300 ){
             // thunderstorm
-            return storm
+            return storm as NSString
         }else if( val < 400 ){
             // drizzle
-            return rain
+            return rain as NSString
             
         // }else if( val < 500 ){
             // EH?
 
         }else if( val < 600 ){
             // rain
-            return rain
+            return rain as NSString
         }else if( val < 600 ){
             // snow
-            return snow
+            return snow as NSString
         }else if( val < 800 ){
             // atmosphere
             // mist,smoke,haze,sand,dust,volcanic ash, squalls, tornado
-            return atmosphere
+            return atmosphere as NSString
         }else if( val < 900 ){
             // clouds
-            return clouds
+            return clouds as NSString
         }else if( val < 950 ){
             // extreme
-            return extreme
+            return extreme as NSString
         }else if( val < 959 ){
             // additional
             // setting, calm, light breeze, gentle breeze, moderate breeze, fresh breeze, strong breeze, high wind,
             // gale
-            return atmosphere
+            return atmosphere as NSString
         }else if( val < 959 ){
             // severe gale, storm, violent storm,
             // hurricane
-            return storm
+            return storm as NSString
         }
         
-        return clear
+        return clear as NSString
     }
 }
 

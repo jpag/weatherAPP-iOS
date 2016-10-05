@@ -10,6 +10,26 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 
 class ViewTempBlock: UIView {
     
@@ -65,7 +85,7 @@ class ViewTempBlock: UIView {
         pos = _pos
         state = _state
         
-        let w = UIScreen.mainScreen().bounds.width
+        let w = UIScreen.main.bounds.width
         
         locationLabel = UILabel( frame: CGRect(x: 0, y: 0, width: w, height: locationHeight) )
         timeLabel = UILabel( frame: CGRect(x: 0, y: 0, width: w, height:timeHeight) )
@@ -84,7 +104,7 @@ class ViewTempBlock: UIView {
         let weatherIcon = UIImage(named: weatherCodes.getCodeFromString(weatherCode) as String)
         
         weatherIconView = UIImageView(image: weatherIcon )
-        weatherIconView.contentMode = UIViewContentMode.ScaleAspectFit
+        weatherIconView.contentMode = UIViewContentMode.scaleAspectFit
         weatherIconView.frame = CGRect(x: 0, y: 0, width: iconWH, height: iconWH)
         
         //weatherIconView.backgroundColor = UIColor.pastCast.white(alpha: 0.15)
@@ -94,12 +114,12 @@ class ViewTempBlock: UIView {
         //iconBlock.backgroundColor = UIColor.pastCast.white(alpha: 0.1)
         
         let iconMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: iconWH, height: iconWH))
-        iconMaskLayer.backgroundColor = UIColor.blackColor()
-        iconBlock.maskView = iconMaskLayer
+        iconMaskLayer.backgroundColor = UIColor.black
+        iconBlock.mask = iconMaskLayer
         
         let maskLayer = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
-        maskLayer.backgroundColor = UIColor.blackColor()
-        self.maskView = maskLayer
+        maskLayer.backgroundColor = UIColor.black
+        self.mask = maskLayer
         
         
         locationLabel.font = UIFont.freightBigBlack(locationHeight)
@@ -131,7 +151,7 @@ class ViewTempBlock: UIView {
     }
     
     
-    func update(tempBlock:NSArray) {
+    func update(_ tempBlock:NSArray) {
         // update 
         // println( "\n---- Temp block update ---- \(tempBlock[0])")
         
@@ -163,13 +183,13 @@ class ViewTempBlock: UIView {
         // update labels:
         locationLabel.text = pastCastModel.locationName
         var dateStr = "N/A"
-        var date = NSDate()
+        var date = Date()
         if( pos == 1 ){
-            date = date.dateByAddingTimeInterval( -60 * 60 * 24 )
+            date = date.addingTimeInterval( -60 * 60 * 24 )
         }
-        let formater = NSDateFormatter()
+        let formater = DateFormatter()
         formater.dateFormat = "EEEE MMMM d"
-        dateStr = formater.stringFromDate(date)
+        dateStr = formater.string(from: date)
         timeLabel.text = dateStr
         
         updatePositions()
@@ -192,7 +212,7 @@ class ViewTempBlock: UIView {
         }
         
         let tempYRange = (
-            min : CGFloat( ((UIScreen.mainScreen().bounds.height * 0.3) - temperatureLabel.frame.height) / 2 ),
+            min : CGFloat( ((UIScreen.main.bounds.height * 0.3) - temperatureLabel.frame.height) / 2 ),
             med : CGFloat( frame.height / 2.2 ),
             max : CGFloat( frame.height * 0.83)
         )
@@ -233,7 +253,7 @@ class ViewTempBlock: UIView {
         var iconY: CGFloat!
         var newiconHeight:CGFloat!
         var newiconWidth:CGFloat!
-        var tempContainerX:CGFloat = UIScreen.mainScreen().bounds.width/2
+        var tempContainerX:CGFloat = UIScreen.main.bounds.width/2
         var timeLabelTop = locaTop + locationHeight + padding
         
         var dividerX:CGFloat!
@@ -333,7 +353,7 @@ class ViewTempBlock: UIView {
             
             tempContainerX = recalFromRange(
                 tempContainerX,
-                max: UIScreen.mainScreen().bounds.width/2 - (tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width ),
+                max: UIScreen.main.bounds.width/2 - (tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width ),
                 percent: per
             )
             
@@ -355,7 +375,7 @@ class ViewTempBlock: UIView {
             newiconWidth = iconRangeHW.twoThirds
             iconX = tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width + paddingSideIcon
             iconY = iconRangeY.max
-            tempContainerX = (UIScreen.mainScreen().bounds.width/2 - (tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width) )
+            tempContainerX = (UIScreen.main.bounds.width/2 - (tempTypeLabel.frame.origin.x + tempTypeLabel.frame.width) )
             
             dividerW = dividerLineStroke
             dividerH = newiconHeight * percentOfIconHeightForDivider.height
@@ -371,7 +391,7 @@ class ViewTempBlock: UIView {
         
         iconBlock.frame.origin.y = iconY
         iconBlock.frame.origin.x = iconX
-        iconBlock.maskView?.frame = CGRect(x: 0, y: 0, width: newiconWidth, height: newiconHeight)
+        iconBlock.mask?.frame = CGRect(x: 0, y: 0, width: newiconWidth, height: newiconHeight)
         
         weatherIconView.frame = CGRect(x:iconImagePos.x, y:iconImagePos.y, width:iconWH, height: iconWH )
             
@@ -380,7 +400,7 @@ class ViewTempBlock: UIView {
         dividerLine.alpha = dividerAlpha
     }
     
-    func recalFromRange(min:CGFloat,max:CGFloat, percent:CGFloat ) -> CGFloat {
+    func recalFromRange(_ min:CGFloat,max:CGFloat, percent:CGFloat ) -> CGFloat {
         if( max < min){
             return min - (abs( max - min) * percent)
         }else{
@@ -389,7 +409,7 @@ class ViewTempBlock: UIView {
     }
     
     // adjust positioning of the icon and line to a further subset percent
-    func subsetAdjust(iconCord:CGFloat, dividerCord:CGFloat, per:CGFloat, subsetRangePer:CGFloat = 0.80 )
+    func subsetAdjust(_ iconCord:CGFloat, dividerCord:CGFloat, per:CGFloat, subsetRangePer:CGFloat = 0.80 )
         -> (icon:CGFloat, divider:CGFloat) {
 
         var rIconCord:CGFloat = iconCord
@@ -413,7 +433,7 @@ class ViewTempBlock: UIView {
         return (icon:rIconCord, divider:rDividerCord)
     }
 
-    func updateState(percent:CGFloat) {
+    func updateState(_ percent:CGFloat) {
         
         if( pos == 0 ) {
             statePercent = (percent * 0.33) + 0.33

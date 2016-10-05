@@ -23,8 +23,8 @@ class ViewPoweredBy: UIView {
         
         print(" powered by ")
         
-        let w = UIScreen.mainScreen().bounds.width
-        let h = UIScreen.mainScreen().bounds.height
+        let w = UIScreen.main.bounds.width
+        let h = UIScreen.main.bounds.height
         
         let frame = CGRect(x: 0, y:0, width: w, height: h)
         
@@ -33,27 +33,27 @@ class ViewPoweredBy: UIView {
         txtVw = UITextView( frame: CGRect(x: 0, y: 15 , width: w, height: 25.0) )
         txtVw.font = UIFont.freightBigBlack(16.0)
         txtVw.textColor = UIColor.darkGray(0.5)
-        txtVw.backgroundColor = UIColor.clearColor()
-        txtVw.editable = false
-        txtVw.textAlignment = .Center
+        txtVw.backgroundColor = UIColor.clear
+        txtVw.isEditable = false
+        txtVw.textAlignment = .center
         txtVw.text = msg
         
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         self.addSubview(txtVw)
         
 //        txtVw.alpha = 0
         
-        _notificationCenter.addObserverForName(_ncEvents.showPoweredBy, object: nil, queue: nil, usingBlock: showMsg )
-        _notificationCenter.addObserverForName(_ncEvents.hidePoweredBy, object: nil, queue: nil, usingBlock: hideMsg )
+        _notificationCenter.addObserver(forName: _ncEvents.showPoweredBy, object: nil, queue: nil, using: showMsg )
+        _notificationCenter.addObserver(forName: _ncEvents.hidePoweredBy, object: nil, queue: nil, using: hideMsg )
     }
     
-    func showMsg(obj:NSNotification!) {
+    func showMsg(_ obj:Notification!) {
         
         txtVw.alpha = 1.0
 
     }
     
-    func hideMsg(obj:NSNotification!) {
+    func hideMsg(_ obj:Notification!) {
         txtVw.alpha = 0
     }
     

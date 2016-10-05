@@ -14,11 +14,22 @@
 
 import UIKit
 import CoreLocation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewDelegate {
     
     var locationManager = CLLocationManager()
-    var dataRecieved:NSDate?
+    var dataRecieved:Date?
     
     var currentResults:NSDictionary?
     var previousResults:NSDictionary?
@@ -30,7 +41,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     var scrollView:UIScrollView = UIScrollView()
     
     var scrollTop = (current:CGFloat(0.0),previous:CGFloat(0.0))
-    var scrollTimer:NSTimer?
+    var scrollTimer:Timer?
     var scrollViewDestination:CGFloat?
     
     // loader
@@ -44,21 +55,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         // Do any additional setup after loading the view, typically from a nib.
         
         //UIFont.cycleThroughSysFonts()
-        self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: UIScreen.mainScreen().bounds.height)
+        self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         
         //        var newFrame = self.view.frame
         //        newFrame.size.height = (UIScreen.mainScreen().bounds.height * globals.halfHeight) * 2
         //        var scrollView = self.view as! UIScrollView
-        let scrollHeight = (UIScreen.mainScreen().bounds.height * globals.halfHeight) * 2
+        let scrollHeight = (UIScreen.main.bounds.height * globals.halfHeight) * 2
         
-        self.scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: scrollHeight))
-        self.scrollView.scrollEnabled = true
+        self.scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: scrollHeight))
+        self.scrollView.isScrollEnabled = true
         self.scrollView.delegate = self
         self.scrollView.decelerationRate = 0.75
         self.scrollView.showsVerticalScrollIndicator = false
         self.scrollView.bounds = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
         
-        self.scrollView.addGestureRecognizer(UITapGestureRecognizer(target:self, action:"tap"))
+        self.scrollView.addGestureRecognizer(UITapGestureRecognizer(target:self, action:#selector(ViewController.tap)))
         
         let poweredBy = ViewPoweredBy()
         self.view.addSubview(poweredBy)
@@ -77,17 +88,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         print( self.scrollView.bounds )
         print( self.scrollView.frame )
         
-        _notificationCenter.addObserverForName(_ncEvents.loaderDoneAnimating, object: nil, queue: nil, usingBlock: loaderDoneAnimating )
+        _notificationCenter.addObserver(forName: _ncEvents.loaderDoneAnimating, object: nil, queue: nil, using: loaderDoneAnimating )
         
         findLocation()
         //self.showWarning(globals.errorMsg[5])
         
     }
     
-    func setScrollViewHeight(newH:CGFloat) {
+    func setScrollViewHeight(_ newH:CGFloat) {
         print(" Set scroll view \(newH)")
         let scrollView = self.scrollView
-        scrollView.contentSize = CGSize(width:  UIScreen.mainScreen().bounds.width, height: newH )
+        scrollView.contentSize = CGSize(width:  UIScreen.main.bounds.width, height: newH )
     }
     
     func tap () {
@@ -102,11 +113,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     func showLoader(){
         print(" show loader ---- ")
         
-        setScrollViewHeight(UIScreen.mainScreen().bounds.height);
-        _notificationCenter.postNotificationName(_ncEvents.hidePoweredBy, object: nil)
+        setScrollViewHeight(UIScreen.main.bounds.height);
+        _notificationCenter.post(name: Notification.Name(rawValue: _ncEvents.hidePoweredBy), object: nil)
         
-        let width = UIScreen.mainScreen().bounds.width
-        let height = UIScreen.mainScreen().bounds.height
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height
         
         
         /*
@@ -120,19 +131,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             print(" top and bottom half exists.")
             // add the bottom loader display:
             
-            let bottomHeight = UIScreen.mainScreen().bounds.height * (1.0 - globals.halfHeight)
-            let y = UIScreen.mainScreen().bounds.height
-            loaderView = ViewLoading( frame: CGRect(x: 0, y:y, width: width, height: bottomHeight), loaderType: globals.loaderSmall)
+            let bottomHeight = UIScreen.main.bounds.height * (1.0 - globals.halfHeight)
+            let y = UIScreen.main.bounds.height
+            loaderView = ViewLoading( frame: CGRect(x: 0, y:y, width: width, height: bottomHeight), loaderType: globals.loaderSmall as NSString)
             self.scrollView.addSubview(loaderView!)
             loaderView?.animateInOnSmall()
         }else{
-            loaderView = ViewLoading( frame: CGRect(x: 0, y:0, width: width, height: height), loaderType: globals.loaderLarge)
+            loaderView = ViewLoading( frame: CGRect(x: 0, y:0, width: width, height: height), loaderType: globals.loaderLarge as NSString)
             self.scrollView.addSubview(loaderView!)
             
         }
     }
     
-    func removeLoader(type:NSString) {
+    func removeLoader(_ type:NSString) {
         print(" --- view controller removeLoader() ")
         if( loaderView != nil ){
             loaderView!.removeLoader(type)
@@ -145,7 +156,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         }
     }
     
-    func loaderDoneAnimating(obj:NSNotification!){
+    func loaderDoneAnimating(_ obj:Notification!){
         let vals = obj.object as! NSDictionary
         let type = vals["type"] as! NSString
         
@@ -174,7 +185,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         updateDisplay()
     }
     
-    func scrollViewDidScroll(scrollView:UIScrollView){
+    func scrollViewDidScroll(_ scrollView:UIScrollView){
         // println(" user scrolling \(scrollView.contentOffset.y)")
         
         let maxScrollY = getMaxScroll()
@@ -195,12 +206,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         bottomHalf?.updateState( scrollView.contentOffset.y / maxScrollY )
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         print(" scrollViewDidEndDecelerating ")
         snapTo(scrollView)
     }
     
-    func scrollViewWillBeginDecelerating(scrollView: UIScrollView) {
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
         print(" scrollViewWillBeginDecelerating ")
         
         if( scrollView.contentOffset.y >= 0 ){
@@ -210,14 +221,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         //snapTo(scrollView)
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         print( " Scroll view did end dragging decelerate: \(decelerate)")
         if( !decelerate){
             snapTo(scrollView)
         }
     }
     
-    func snapTo(scrollView:UIScrollView) {
+    func snapTo(_ scrollView:UIScrollView) {
         print(" snap to ")
         
         let maxScrollY          = getMaxScroll()
@@ -251,14 +262,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
         //let distance = Double( abs( scrollView.contentOffset.y - snapto) )
         //let timePerPixel = Double(0.0025)
-        //var time:Double = distance * timePerPixel
+        // var time:Double = distance * timePerPixel
         
         if( scrollTimer != nil ){
             scrollTimer?.invalidate()
         }
         
         scrollViewDestination = snapto
-        scrollTimer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: Selector("stepAnimate"), userInfo: nil, repeats: true)
+        scrollTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(ViewController.stepAnimate), userInfo: nil, repeats: true)
         // TODO should we disable fire()
         scrollTimer?.fire()
     }
@@ -296,7 +307,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     }
     
     func getMaxScroll() -> CGFloat {
-        return UIScreen.mainScreen().bounds.height * (globals.halfHeight * 2) - UIScreen.mainScreen().bounds.height
+        return UIScreen.main.bounds.height * (globals.halfHeight * 2) - UIScreen.main.bounds.height
     }
     
     // user has resumed app status
@@ -319,7 +330,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("\n\n -- FAIL to locate...")
         print(error)
         
@@ -328,7 +339,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("\n\n -- locations = \(locations)")
         
         if( locations.count > 0 && !globals.errorMsg[1].show ){
@@ -363,7 +374,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         )
     }
     
-    func locationNameFound(place:CLPlacemark) {
+    func locationNameFound(_ place:CLPlacemark) {
         
         if(( place.locality ) != nil){
             pastCastModel.locationName = place.locality! + ", " + place.administrativeArea!
@@ -389,10 +400,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         print("-- loading json --")
         print(path)
         
-        let url = NSURL(string: path)
-        let session = NSURLSession.sharedSession()
+        let url = URL(string: path)
+        let session = URLSession.shared
         
-        let task = session.dataTaskWithURL(url!, completionHandler: { data, response, error -> Void in
+        let task = session.dataTask(with: url!, completionHandler: { data, response, error -> Void in
             
             if( response == nil || globals.errorMsg[4].show ){
                 print("------ resonse was nil from server.")
@@ -408,7 +419,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
                 return
             }
             
-            let statusCode = (response as! NSHTTPURLResponse).statusCode
+            let statusCode = (response as! HTTPURLResponse).statusCode
             print("--- JSON loaded --- http status code \(statusCode)")
             
             if( statusCode == 404 || globals.errorMsg[6].show ){
@@ -418,7 +429,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             }
             
             //let err: NSError?
-            let jsonResult = (try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
+            let jsonResult = (try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)) as! NSDictionary
             
             if( globals.errorMsg[7].show) {
                 // If there is an error parsing JSON, print it to the console
@@ -427,7 +438,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             }
             
             let results = jsonResult["timecompared"] as! NSDictionary
-            self.dataRecieved = NSDate()
+            self.dataRecieved = Date()
             self.displayData(results)
             // once the loader is removed the views will be added.
             self.removeLoader("ADDVIEWS")
@@ -437,7 +448,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         task.resume()
     }
     
-    func displayData(dataResults:NSDictionary) {
+    func displayData(_ dataResults:NSDictionary) {
         currentResults = dataResults["present"] as? NSDictionary
         previousResults = dataResults["past"] as? NSDictionary
     }
@@ -445,21 +456,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
     // we wait for the loader to be done in a sequence before displaying the views.
     func readyToAddViews() {
         // make sure this is on main thread or else it will break:
-        if NSThread.isMainThread()
+        if Thread.isMainThread
         {
             addViews();
         }
         else
         {
-            dispatch_sync(dispatch_get_main_queue(), { self.addViews() });
+            DispatchQueue.main.sync(execute: { self.addViews() });
         }
     }
     
     func addViews() {
         print(" add Views - DISPLAY DATA")
         
-        setScrollViewHeight(UIScreen.mainScreen().bounds.height * (globals.halfHeight*2.0));
-        _notificationCenter.postNotificationName(_ncEvents.showPoweredBy, object: nil)
+        setScrollViewHeight(UIScreen.main.bounds.height * (globals.halfHeight*2.0));
+        _notificationCenter.post(name: Notification.Name(rawValue: _ncEvents.showPoweredBy), object: nil)
         
         let calculatedTemps = updateTemps()
         
@@ -468,8 +479,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             return
         }
         
-        let width = UIScreen.mainScreen().bounds.width as CGFloat
-        let halfheight = UIScreen.mainScreen().bounds.height * globals.halfHeight
+        let width = UIScreen.main.bounds.width as CGFloat
+        let halfheight = UIScreen.main.bounds.height * globals.halfHeight
         let topHeight = halfheight
         let bottomY = topHeight + globals.borderBetweenHalves
         let bottomHeight = halfheight
@@ -486,7 +497,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             _temps: [calculatedTemps.c,calculatedTemps.p],
             _weathercode : _weatherCodes.present,
             _pos: 0,
-            _state:appStates.tempStateOpen
+            _state:appStates.tempStateOpen as NSString
         )
         
         bottomHalf = ViewTempBlock(
@@ -494,7 +505,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
             _temps: [calculatedTemps.p,calculatedTemps.c],
             _weathercode : _weatherCodes.past,
             _pos: 1,
-            _state: appStates.tempStateClosed
+            _state: appStates.tempStateClosed as NSString
         )
         
         let maxScrollY = getMaxScroll()
@@ -564,7 +575,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         }
     }
     
-    func convertTemperature( kelvin:CGFloat ) -> CGFloat {
+    func convertTemperature( _ kelvin:CGFloat ) -> CGFloat {
         
         let abszero:CGFloat = 273.15
         if( pastCastModel.isCelsius ){
@@ -597,7 +608,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         
     }
     
-    func roundCoordinate(coord:CLLocationDegrees) -> Double{
+    func roundCoordinate(_ coord:CLLocationDegrees) -> Double{
         let rounded = Int(coord * globals.gpsdecmialpt)
         let result = Double(rounded) / globals.gpsdecmialpt
         return result
@@ -608,29 +619,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIScrollViewD
         print(" Stop updating location")
     }
     
-    func showWarning(error:ErrorTup){
-        if NSThread.isMainThread(){
+    func showWarning(_ error:ErrorTup){
+        if Thread.isMainThread{
             showWarningMainThread(error);
         }else{
-            dispatch_sync(dispatch_get_main_queue(), { self.showWarningMainThread(error) });
+            DispatchQueue.main.sync(execute: { self.showWarningMainThread(error) });
         }
     }
     
-    func showWarningMainThread(error:ErrorTup){
+    func showWarningMainThread(_ error:ErrorTup){
         
         self.removeLoader("NA")
         
-        setScrollViewHeight(UIScreen.mainScreen().bounds.height);
-        _notificationCenter.postNotificationName(_ncEvents.hidePoweredBy, object: nil)
+        setScrollViewHeight(UIScreen.main.bounds.height);
+        _notificationCenter.post(name: Notification.Name(rawValue: _ncEvents.hidePoweredBy), object: nil)
         
-        let width = UIScreen.mainScreen().bounds.width
-        let height = UIScreen.mainScreen().bounds.height
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height
         
         print(" SHOW error view")
         
         if( errorMsg == nil ){
             print(" error msg was nil")
-            errorMsg = ViewError( frame: CGRect(x: 0, y:0.0, width: width, height: height), errorMsg: error.msg, notifyUs:error.notifyUs )
+            errorMsg = ViewError( frame: CGRect(x: 0, y:0.0, width: width, height: height), errorMsg: error.msg as NSString, notifyUs:error.notifyUs )
         }else{
             // remove the existing error and show this one ?
             print(" error msg already exists")

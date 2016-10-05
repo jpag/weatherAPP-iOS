@@ -22,8 +22,8 @@ class ViewLoading: UIView {
     var iconView:ViewLoaderIcon!
     var iconyOffset:CGFloat = 30.0
     
-    let durationIn:NSTimeInterval = 0.75
-    let durationOut:NSTimeInterval = 0.35
+    let durationIn:TimeInterval = 0.75
+    let durationOut:TimeInterval = 0.35
     
     let iconWH = 50 as CGFloat
     var icony:CGFloat!
@@ -41,7 +41,7 @@ class ViewLoading: UIView {
         super.init(frame:frame)
         
         // insert loader icon here:
-        let iconx = (UIScreen.mainScreen().bounds.width - iconWH) / 2
+        let iconx = (UIScreen.main.bounds.width - iconWH) / 2
         
         icony = (self.frame.height - iconWH ) / 2
         
@@ -63,11 +63,11 @@ class ViewLoading: UIView {
         
         //let delay:NSTimeInterval = 0.0
         //let options = UIViewAnimationOptions.CurveEaseOut
-        let destinationY:CGFloat = UIScreen.mainScreen().bounds.height * globals.halfHeight
+        let destinationY:CGFloat = UIScreen.main.bounds.height * globals.halfHeight
         
         
-        UIView.animateWithDuration(
-            durationIn,
+        UIView.animate(
+            withDuration: durationIn,
 //            delay: delay,
 //            options: options,
             animations: {
@@ -77,14 +77,14 @@ class ViewLoading: UIView {
         )
     }
     
-    func removeLoader(_type:NSString) {
+    func removeLoader(_ _type:NSString) {
         print(" ----- stop and collapse loader \(self.type)")
         self.loaderDoneReason = _type as String
         self.removingLoader = true
         self.animateOut(0.0)
     }
     
-    func animateOut(delay:NSTimeInterval = 0.0) {
+    func animateOut(_ delay:TimeInterval = 0.0) {
         // animate out the view first!
         
         print(" ANIMATE OUT")
@@ -103,9 +103,9 @@ class ViewLoading: UIView {
 //            )
             
             let delay = (1.1 * durationOut) * Double(NSEC_PER_SEC)
-            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            let time = DispatchTime.now() + Double(Int64(delay)) / Double(NSEC_PER_SEC)
             
-            dispatch_after(time, dispatch_get_main_queue()) {
+            DispatchQueue.main.asyncAfter(deadline: time) {
                 //call the method which have the steps after delay.
                 self.loaderDone()
             }
@@ -115,8 +115,8 @@ class ViewLoading: UIView {
             
             // .75 seconds
             let delay = 0.75 * Double(NSEC_PER_SEC)
-            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-            dispatch_after(time, dispatch_get_main_queue()) {
+            let time = DispatchTime.now() + Double(Int64(delay)) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: time) {
                 //call the method which have the steps after delay.
                 self.loaderDone()
             }
@@ -133,7 +133,7 @@ class ViewLoading: UIView {
         let obj = [
             "type" : loaderDoneReason
         ]
-        _notificationCenter.postNotificationName(_ncEvents.loaderDoneAnimating, object: obj)
+        _notificationCenter.post(name: Notification.Name(rawValue: _ncEvents.loaderDoneAnimating), object: obj)
         // self.iconView.removeFromSuperview()
         self.removeFromSuperview();
     }

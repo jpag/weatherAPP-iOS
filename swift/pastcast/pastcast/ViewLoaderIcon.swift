@@ -28,7 +28,7 @@ class ViewLoaderIcon: UIView {
         
         let loaderIcon = UIImage(named: "loading")
         loaderUIImgVW = UIImageView(image: loaderIcon)
-        loaderUIImgVW.contentMode = UIViewContentMode.ScaleAspectFit
+        loaderUIImgVW.contentMode = UIViewContentMode.scaleAspectFit
         loaderUIImgVW.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
         
         super.init(frame:frame)
@@ -43,8 +43,8 @@ class ViewLoaderIcon: UIView {
         // this loops indefintely
         var duration = 0.25
         var fullRotation = CGFloat(M_PI * -2)
-        let delay:NSTimeInterval = 0.0
-        let options = UIViewAnimationOptions.CurveLinear
+        let delay:TimeInterval = 0.0
+        let options = UIViewAnimationOptions.curveLinear
         var itIsOver = false
         
         //var iy:CGFloat = defaultY
@@ -64,14 +64,14 @@ class ViewLoaderIcon: UIView {
         }
         
         fullRotation = -2.25 * numR
-        numR++
+        numR += 1
         
-        UIView.animateWithDuration(
-            duration,
+        UIView.animate(
+            withDuration: duration,
             delay: delay,
             options: options,
             animations: {
-                self.loaderUIImgVW.transform = CGAffineTransformRotate(self.transform, fullRotation)
+                self.loaderUIImgVW.transform = self.transform.rotated(by: fullRotation)
 //                self.frame.origin.y = iy
                 self.alpha = ialpha
             },

@@ -28,13 +28,13 @@ class ViewBottomNotification: UIView {
     
         //var time = 0.25
     
-        let w:CGFloat = UIScreen.mainScreen().bounds.width
+        let w:CGFloat = UIScreen.main.bounds.width
         //var h:CGFloat = UIScreen.mainScreen().bounds.height
     
         // has icon?
     
-        let pheight = UIScreen.mainScreen().bounds.height * (1.0 - globals.halfHeight)
-        let py = UIScreen.mainScreen().bounds.height
+        let pheight = UIScreen.main.bounds.height * (1.0 - globals.halfHeight)
+        let py = UIScreen.main.bounds.height
     
         //var labelh:CGFloat = 50.0
     
@@ -45,9 +45,9 @@ class ViewBottomNotification: UIView {
     }
     
     func animateIn() {
-        let visibleY = UIScreen.mainScreen().bounds.height * globals.halfHeight
+        let visibleY = UIScreen.main.bounds.height * globals.halfHeight
         
-        UIView.animateWithDuration(0.35,
+        UIView.animate(withDuration: 0.35,
             
             animations: {
                 self.panel!.frame.origin.y = visibleY
@@ -61,10 +61,10 @@ class ViewBottomNotification: UIView {
         )
     }
     
-    func animateOut(remove:Bool = false, animateInAfter:Bool = false ) {
-        let hideY = UIScreen.mainScreen().bounds.height
+    func animateOut(_ remove:Bool = false, animateInAfter:Bool = false ) {
+        let hideY = UIScreen.main.bounds.height
         
-        UIView.animateWithDuration(0.35,
+        UIView.animate(withDuration: 0.35,
             
             animations: {
                 self.panel!.frame.origin.y = hideY

@@ -15,8 +15,9 @@
 
 	class forecast{
 
-		// SCRIBBLE API:
-		protected $API_ENDPOINT = 'https://api.forecast.io/forecast/';
+		//protected $API_ENDPOINT = 'https://api.forecast.io/forecast/';
+		protected $API_ENDPOINT = 'https://api.darksky.net/forecast/';
+
 		protected $ACCESS_TOKEN;
 
 		//CONFIG SETTINGS

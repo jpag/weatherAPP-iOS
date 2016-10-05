@@ -31,9 +31,9 @@ class ViewError: ViewBottomNotification {
         let w:CGFloat = panel.bounds.width
         let eIcon = UIImage(named: "error-icon")
         let iconWH:CGFloat = 20.0
-        let iconx = (UIScreen.mainScreen().bounds.width - iconWH) / 2.0
+        let iconx = (UIScreen.main.bounds.width - iconWH) / 2.0
         let eIconVw = UIImageView(image: eIcon )
-        eIconVw.contentMode = UIViewContentMode.ScaleAspectFit
+        eIconVw.contentMode = UIViewContentMode.scaleAspectFit
         
         let marginBetweenIconTxt:CGFloat = 10
         let fontsizeFactor:CGFloat = 1.75
@@ -50,9 +50,9 @@ class ViewError: ViewBottomNotification {
         errorLabel = UITextView( frame: CGRect(x: (w * 0.05), y: textY , width: textFieldW, height: textFieldH) )
         errorLabel.font = UIFont.futuraSerieBQBook(fontsize)
         errorLabel.textColor = UIColor.pastCast.red()
-        errorLabel.editable = false
-        errorLabel.textAlignment = .Center
-        errorLabel.backgroundColor = UIColor.clearColor()
+        errorLabel.isEditable = false
+        errorLabel.textAlignment = .center
+        errorLabel.backgroundColor = UIColor.clear
         errorLabel.text = errorMsg as String
         
         
@@ -67,14 +67,14 @@ class ViewError: ViewBottomNotification {
 //        contactSupport.editable = false
         contactSupport.font = UIFont.futuraSerieBQBook(fontsize)
         
-        contactSupport.textAlignment = .Center
+        contactSupport.textAlignment = .center
         contactSupport.text = "Notify Us"
 //        let underlineAttribute = [NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
 //        let underlineAttributedString = NSAttributedString(string: "Contact Us", attributes: underlineAttribute)
 //        contactSupport.attributedText = underlineAttributedString
         
-        contactSupport.backgroundColor = UIColor.clearColor()
-        self.contactSupport.addGestureRecognizer(UITapGestureRecognizer(target:self, action:"tap"))
+        contactSupport.backgroundColor = UIColor.clear
+        self.contactSupport.addGestureRecognizer(UITapGestureRecognizer(target:self, action:#selector(ViewError.tap)))
         
         panel.addSubview(eIconVw)
         panel.addSubview(errorLabel)
@@ -91,7 +91,7 @@ class ViewError: ViewBottomNotification {
     }
     
     
-    func updateError(msg:NSString, notifyUs:Bool) {
+    func updateError(_ msg:NSString, notifyUs:Bool) {
         animateOut(false, animateInAfter: true)
         errorLabel.text = msg as String
         
@@ -106,17 +106,17 @@ class ViewError: ViewBottomNotification {
     func tap() {
         print(" OPEN EMAIL! - Note that this works only on a device, not in the simulator.")
         let email = "pastcast@jpg.is"
-        let url = NSURL(string: "mailto:\(email)")
+        let url = URL(string: "mailto:\(email)")
         
-        UIApplication.sharedApplication().openURL(url!)
+        UIApplication.shared.openURL(url!)
     }
     
     func showContact(){
-        self.contactSupport.hidden = false
+        self.contactSupport.isHidden = false
     }
     
     func hideContact(){
-        self.contactSupport.hidden = true
+        self.contactSupport.isHidden = true
     }
     
 
